@@ -5,10 +5,10 @@ Server kost app
 ## Registration
 ### {url}/api/v1/auth/register
 
-**Header**
-Content-Type : Application/json
-Accept : **/**
-**Body**
+**Header** \n
+Content-Type : Application/json \n
+Accept : **/** \n
+**Body** \n
 {
   "email" : {email}
   "phone" : {phone}
