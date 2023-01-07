@@ -1,7 +1,5 @@
 package com.kostserver.utils;
 
-import com.kostserver.model.User;
-
 public class DatabaseSeeder {
 
     String[] emails = {"admin@mail.com", "user1@mail.com", "user2@mail.com"};

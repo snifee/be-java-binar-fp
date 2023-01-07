@@ -21,7 +21,7 @@ public class Rating extends BaseEntity{
     private Integer rating;
 
     @ManyToOne
-    private User userId;
+    private Account accountId;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

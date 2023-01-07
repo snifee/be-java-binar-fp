@@ -1,6 +1,5 @@
 package com.kostserver.model;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,7 +29,7 @@ public class Transaction extends BaseEntity {
     private String urlDocument;
 
     @ManyToOne
-    private User userId;
+    private Account accountId;
     @ManyToOne
     private Room roomId;
 

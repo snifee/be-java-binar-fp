@@ -25,5 +25,5 @@ public class UserProfile extends BaseEntity{
     private String photoUrl;
     private String documentUrl;
     @OneToOne
-    private User userId;
+    private Account accountId;
 }
