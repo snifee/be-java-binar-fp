@@ -4,22 +4,25 @@ Server kost app
 
 ## Registration
 
-**POST {url}/v1/auth/register**
+**POST /v1/auth/register**
 ----
-  Returns all users in the system.
+  Creates a new User and returns the success message.
 * **URL Params**  
-  None
-* **Data Params**  
   None
 * **Headers**  
   Content-Type: application/json  
-* **Success Response:**  
-* **Code:** 200  
-  **Content:**  
+* **Body**  
 ```
-**Body** <br />
-{
-    "email" : {email} <br />
-    "phone" : {phone} <br />
-    "password" : {password} <br />
-}  
+  {
+    email: string,
+    phone: string,
+    password : string,
+  }
+```
+* **Success Response:**  
+* Code: 200  
+  Content:  `User created`  
+
+* **Error Response:**  
+* Code: 405  
+  Content:  `email is registered` 
