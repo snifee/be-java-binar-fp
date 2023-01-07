@@ -20,9 +20,9 @@ Server kost app
   }
 ```
 * **Success Response:**  
-* Code: 200  
+  Code: 200  
   Content:  `User created`  
 
 * **Error Response:**  
-* Code: 405  
+  Code: 405  
   Content:  `email is registered` 
