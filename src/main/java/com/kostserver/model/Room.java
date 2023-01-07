@@ -24,7 +24,7 @@ public class Room extends BaseEntity{
     private String rentalScheme;
 
     @ManyToOne
-    private UserProfile ownerId;
+    private Account ownerId;
 
     @ManyToOne
     private RoomType roomTypeId;
