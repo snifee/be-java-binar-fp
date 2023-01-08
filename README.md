@@ -47,22 +47,22 @@ Return all information that user need, in this case I put 50 dummy data but for 
             }
         },
         {
-            "id": 2,
-            "kostName": "Connelly - Waelchi",
-            "createdDate": "2023-01-07T13:13:48.629Z",
+            "id": 10,
+            "kostName": "McCullough LLC",
+            "createdDate": "2023-01-07T18:32:49.143Z",
             "image": "https://loremflickr.com/640/480/city",
-            "price": 956000,
-            "capacity": 26,
-            "facility": "facility 2",
-            "rating": 0.7,
-            "location": "San Marcos",
+            "price": 825000,
+            "capacity": 51,
+            "facility": "facility 10",
+            "rating": 2.35,
+            "location": "Gulfport",
             "type": {
-                "id": "0",
-                "name": "Campuran"
+                "id": "2",
+                "name": "Khsus Perempuan"
             },
             "categories": {
-                "id": "0",
-                "name": "Murah"
+                "id": "2",
+                "name": "Eksklusif"
             }
         }
 ],
