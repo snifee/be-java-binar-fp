@@ -1,11 +1,12 @@
 # Final Project Synrgy Batch 5
 ---
 This branch was made only for test, using dummy data from mockapi.io
+
 This request would show some information for each kost that have been registered, like kost name, price, facility, location, etc.
 
 ## How to use
 
-###Kost
+### Kost
 
 **GET /mock-api/kost**
 
