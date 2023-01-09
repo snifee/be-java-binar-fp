@@ -27,7 +27,7 @@ Server kost app
   Code: 405  
   Content:  `email is registered` 
   
-  ## Login
+## Login
 
 **POST /v1/auth/login**
 ----
