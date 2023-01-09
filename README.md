@@ -31,7 +31,7 @@ Server kost app
 
 **POST /v1/auth/login**
 ----
-  Creates a new User and returns the success message.
+  Require email & password then returning jwt token.
 * **URL Params**  
   None
 * **Headers**  
