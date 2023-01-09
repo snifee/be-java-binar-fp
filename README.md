@@ -26,3 +26,27 @@ Server kost app
 * **Error Response:**  
   Code: 405  
   Content:  `email is registered` 
+  
+  ## Login
+
+**POST /v1/auth/register**
+----
+  Creates a new User and returns the success message.
+* **URL Params**  
+  None
+* **Headers**  
+  Content-Type: application/json  
+* **Body**  
+```
+  {
+    email: string,
+    password : string,
+  }
+```
+* **Success Response:**  
+  Code: 200  
+  Access_Token:  `{JWT Token}`  
+
+* **Error Response:**  
+  Code: 405  
+  Content:  `Login Failed` 
