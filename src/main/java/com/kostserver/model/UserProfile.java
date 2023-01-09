@@ -19,7 +19,8 @@ public class UserProfile extends BaseEntity{
     private String fullname;
     private Date birthDate;
     private String address;
-    private int gender;
+    @Enumerated(EnumType.STRING)
+    private String gender;
     private String job;
     private String phoneNumber;
     private String photoUrl;
