@@ -29,7 +29,7 @@ Server kost app
   
   ## Login
 
-**POST /v1/auth/register**
+**POST /v1/auth/login**
 ----
   Creates a new User and returns the success message.
 * **URL Params**  
