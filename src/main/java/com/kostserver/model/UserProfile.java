@@ -20,7 +20,7 @@ public class UserProfile extends BaseEntity{
     private Date birthDate;
     private String address;
     @Enumerated(EnumType.STRING)
-    private String gender;
+    private EnumGender gender;
     private String job;
     private String phoneNumber;
     private String photoUrl;
