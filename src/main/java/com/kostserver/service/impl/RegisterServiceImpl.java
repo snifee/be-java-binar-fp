@@ -43,7 +43,7 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     @Transactional
-    public Map register(RegisterRequestDto request) {
+    public Map register(RegisterRequestDto request, EnumRole roleRq) {
         Map<String, Object> response = new HashMap<>();
 
         try{
@@ -59,7 +59,7 @@ public class RegisterServiceImpl implements RegisterService {
                 throw new IllegalStateException("Email Already Taken");
             }
 
-            Role role = roleRepository.findByName(EnumRole.ROLE_USER_PENYEDIA).get();
+            Role role = roleRepository.findByName(roleRq).get();
             Set<Role> roleSet = new HashSet<>();
             roleSet.add(role);
 

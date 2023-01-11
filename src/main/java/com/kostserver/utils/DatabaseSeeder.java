@@ -30,7 +30,7 @@ public class DatabaseSeeder implements ApplicationRunner {
     private BCryptPasswordEncoder passwordEncoder;
 
     String[] emails = {"admin@mail.com", "user1@mail.com", "user2@mail.com"};
-    EnumRole[] roles = {EnumRole.ROLE_USER_PENYEDIA,EnumRole.ROLE_SUPERUSER};
+    EnumRole[] roles = {EnumRole.ROLE_USER_PENYEDIA,EnumRole.ROLE_USER_PENYEWA,EnumRole.ROLE_SUPERUSER};
     String defaultPassword = "password";
 
     private void insertToAccountTable(){
