@@ -1,6 +1,5 @@
 package com.kostserver.model;
 
-
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,7 +10,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "user_profile")
-public class UserProfile extends BaseEntity{
+public class UserProfile extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
