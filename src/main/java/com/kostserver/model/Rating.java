@@ -1,5 +1,7 @@
 package com.kostserver.model;
 
+import com.kostserver.model.entity.BaseEntity;
+import com.kostserver.model.entity.RoomKost;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "tbl_ratings")
-public class Rating extends BaseEntity{
+public class Rating extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,5 +31,5 @@ public class Rating extends BaseEntity{
             joinColumns = @JoinColumn(name = "rating_id"),
             inverseJoinColumns = @JoinColumn(name = "room_id")
     )
-    private List<Room> roomId;
+    private List<RoomKost> roomKostId;
 }

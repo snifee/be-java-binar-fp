@@ -1,5 +1,7 @@
 package com.kostserver.model;
 
+import com.kostserver.model.entity.BaseEntity;
+import com.kostserver.model.entity.RoomKost;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +33,7 @@ public class Transaction extends BaseEntity {
     @ManyToOne
     private Account accountId;
     @ManyToOne
-    private Room roomId;
+    private RoomKost roomKostId;
 
     @ManyToOne
     private Payment paymentId;

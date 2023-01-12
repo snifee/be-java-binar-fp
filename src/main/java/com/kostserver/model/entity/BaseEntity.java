@@ -1,4 +1,4 @@
-package com.kostserver.model;
+package com.kostserver.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
