@@ -12,8 +12,12 @@ import com.kostserver.service.OtpService;
 import com.kostserver.service.RegisterService;
 import com.kostserver.service.auth.AccountService;
 import com.kostserver.utils.EmailSender;
+import com.kostserver.utils.auth.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,48 +43,63 @@ public class RegisterServiceImpl implements RegisterService {
     private OtpService otpService;
 
     @Autowired
+    private JwtUtils jwtUtils;
+
+    @Autowired
     private AccountService accountService;
+
 
     @Override
     @Transactional
     public Map register(RegisterRequestDto request, EnumRole roleRq) {
         Map<String, Object> response = new HashMap<>();
+        EmailValidator emailValidator = EmailValidator.getInstance();
 
         try{
+            if (!emailValidator.isValid(request.getEmail())){
+                throw new IllegalStateException("Invalid email");
+            }
             Optional<Account> accountExist =  accountRepository.findByEmail(request.getEmail());
+
+            UserDetails userDetails = null;
 
             if (accountExist.isPresent()){
 
-                if (!accountExist.get().getVerified()){
+                if (accountExist.get().getVerified()){
+                    throw new IllegalStateException("Email Already Taken");
+                }else {
                     otpService.sentOtp(accountExist.get());
-                    throw new IllegalStateException("Need verification, confirmation code sent");
                 }
 
-                throw new IllegalStateException("Email Already Taken");
+            }else {
+                Role role = roleRepository.findByName(roleRq).get();
+                Set<Role> roleSet = new HashSet<>();
+                roleSet.add(role);
+
+                Account account = new Account();
+                account.setUsername(request.getEmail());
+                account.setEmail(request.getEmail());
+                account.setPhoneNumber(request.getPhone());
+                account.setVerified(false);
+                account.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
+                account.setRoles(roleSet);
+
+                accountRepository.save(account);
+                otpService.sentOtp(account);
             }
 
-            Role role = roleRepository.findByName(roleRq).get();
-            Set<Role> roleSet = new HashSet<>();
-            roleSet.add(role);
+            userDetails = accountService.loadUserByUsername(request.getEmail());
 
-            Account account = new Account();
-            account.setUsername(request.getEmail());
-            account.setEmail(request.getEmail());
-            account.setPhoneNumber(request.getPhone());
-            account.setVerified(false);
-            account.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
-            account.setRoles(roleSet);
-
-            accountRepository.save(account);
-            otpService.sentOtp(account);
-
-            response.put("status","success");
+            String jwt = jwtUtils.generateToken(userDetails);
+            response.put("status",HttpStatus.OK);
             response.put("message","Please check email for confirmation code");
+            response.put("access_token",jwt);
 
         }catch(Exception e){
             log.info(e.getMessage());
-            response.put("status","failed");
+            response.put("status", HttpStatus.BAD_REQUEST);
             response.put("message",e.getMessage());
+
         }
 
 

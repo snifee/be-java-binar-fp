@@ -31,19 +31,19 @@ public class AuthController {
     @PostMapping("/penyedia/register")
     ResponseEntity<Map> registerPenyedia(@RequestBody RegisterRequestDto requestDto){
         Map response = registerService.register(requestDto, EnumRole.ROLE_USER_PENYEDIA);
-        return new ResponseEntity<Map>(response, HttpStatus.OK);
+        return new ResponseEntity<Map>(response, (HttpStatus) response.get("status"));
     }
 
     @PostMapping("/penyewa/register")
     ResponseEntity<Map> registerPenyewa(@RequestBody RegisterRequestDto requestDto){
         Map response = registerService.register(requestDto, EnumRole.ROLE_USER_PENYEWA);
-        return new ResponseEntity<Map>(response, HttpStatus.OK);
+        return new ResponseEntity<Map>(response, (HttpStatus) response.get("status"));
     }
 
     @PostMapping("/login")
     ResponseEntity<Map> login(@RequestBody LoginRequestDto requestDto){
         Map response = loginService.login(requestDto);
-        return new ResponseEntity<Map>(response, HttpStatus.OK);
+        return new ResponseEntity<Map>(response, (HttpStatus) response.get("status"));
     }
 
 

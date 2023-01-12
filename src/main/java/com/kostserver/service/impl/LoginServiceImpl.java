@@ -6,7 +6,9 @@ import com.kostserver.repository.AccountRepository;
 import com.kostserver.service.LoginService;
 import com.kostserver.service.auth.AccountService;
 import com.kostserver.utils.auth.JwtUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,8 +43,12 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public Map login(LoginRequestDto requestDto) {
         Map<String, Object> response = new HashMap<>();
+        EmailValidator emailValidator = EmailValidator.getInstance();
 
         try{
+            if (!emailValidator.isValid(requestDto.getEmail())){
+                throw new UsernameNotFoundException("Invalid email");
+            }
             Optional<Account> accountExist =  accountRepository.findByEmail(requestDto.getEmail());
 
             if (!accountExist.isPresent()){
@@ -62,10 +68,10 @@ public class LoginServiceImpl implements LoginService {
 
             String jwtToken = jwtUtils.generateToken(userDetails);
 
-            response.put("status","success");
+            response.put("status", HttpStatus.OK);
             response.put("access_token",jwtToken);
         }catch (Exception e){
-            response.put("status","failed");
+            response.put("status",HttpStatus.UNAUTHORIZED);
             response.put("message",e.getMessage());
         }
 
