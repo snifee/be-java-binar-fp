@@ -53,13 +53,13 @@ public class AuthController {
 
         try{
             otpService.confirmOtp(otp);
-            response.put("status","success");
+            response.put("status",HttpStatus.OK);
             response.put("message","Account activated");
         }catch (Exception e){
-            response.put("status","failed");
+            response.put("status",HttpStatus.BAD_REQUEST);
             response.put("message",e.getMessage());
         }
 
-        return new ResponseEntity<Map>(response, HttpStatus.OK);
+        return new ResponseEntity<Map>(response, (HttpStatus) response.get("status"));
     }
 }
