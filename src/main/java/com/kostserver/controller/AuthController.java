@@ -29,20 +29,20 @@ public class AuthController {
     private OtpService otpService;
 
     @PostMapping("/penyedia/register")
-    ResponseEntity<Map> registerPenyedia(@RequestBody RegisterRequestDto requestDto){
-        Map response = registerService.register(requestDto, EnumRole.ROLE_USER_PENYEDIA);
+    ResponseEntity<Map> registerPenyedia(@RequestBody RegisterRequestDto request){
+        Map response = registerService.register(request, EnumRole.ROLE_USER_PENYEDIA);
         return new ResponseEntity<Map>(response, (HttpStatus) response.get("status"));
     }
 
     @PostMapping("/penyewa/register")
-    ResponseEntity<Map> registerPenyewa(@RequestBody RegisterRequestDto requestDto){
-        Map response = registerService.register(requestDto, EnumRole.ROLE_USER_PENYEWA);
+    ResponseEntity<Map> registerPenyewa(@RequestBody RegisterRequestDto request){
+        Map response = registerService.register(request, EnumRole.ROLE_USER_PENYEWA);
         return new ResponseEntity<Map>(response, (HttpStatus) response.get("status"));
     }
 
     @PostMapping("/login")
-    ResponseEntity<Map> login(@RequestBody LoginRequestDto requestDto){
-        Map response = loginService.login(requestDto);
+    ResponseEntity<Map> login(@RequestBody LoginRequestDto request){
+        Map response = loginService.login(request);
         return new ResponseEntity<Map>(response, (HttpStatus) response.get("status"));
     }
 

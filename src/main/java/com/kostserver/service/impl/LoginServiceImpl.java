@@ -70,6 +70,7 @@ public class LoginServiceImpl implements LoginService {
 
             response.put("status", HttpStatus.OK);
             response.put("access_token",jwtToken);
+            response.put("data",accountExist.get());
         }catch (Exception e){
             response.put("status",HttpStatus.UNAUTHORIZED);
             response.put("message",e.getMessage());

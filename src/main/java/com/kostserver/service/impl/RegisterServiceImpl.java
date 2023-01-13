@@ -1,10 +1,7 @@
 package com.kostserver.service.impl;
 
 import com.kostserver.dto.RegisterRequestDto;
-import com.kostserver.model.Account;
-import com.kostserver.model.ConfirmationToken;
-import com.kostserver.model.EnumRole;
-import com.kostserver.model.Role;
+import com.kostserver.model.*;
 import com.kostserver.repository.AccountRepository;
 import com.kostserver.repository.ConfirmationTokenRepository;
 import com.kostserver.repository.RoleRepository;
@@ -60,10 +57,13 @@ public class RegisterServiceImpl implements RegisterService {
                 throw new IllegalStateException("Invalid email");
             }
             Optional<Account> accountExist =  accountRepository.findByEmail(request.getEmail());
+            Account accountResponse = null;
 
             UserDetails userDetails = null;
 
             if (accountExist.isPresent()){
+
+                accountResponse = accountExist.get();
 
                 if (accountExist.get().getVerified()){
                     throw new IllegalStateException("Email Already Taken");
@@ -86,6 +86,8 @@ public class RegisterServiceImpl implements RegisterService {
 
                 accountRepository.save(account);
                 otpService.sentOtp(account);
+
+                accountResponse = account;
             }
 
             userDetails = accountService.loadUserByUsername(request.getEmail());
@@ -94,12 +96,12 @@ public class RegisterServiceImpl implements RegisterService {
             response.put("status",HttpStatus.OK);
             response.put("message","Please check email for confirmation code");
             response.put("access_token",jwt);
+            response.put("data",accountResponse);
 
         }catch(Exception e){
             log.info(e.getMessage());
             response.put("status", HttpStatus.BAD_REQUEST);
             response.put("message",e.getMessage());
-
         }
 
 

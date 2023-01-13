@@ -16,10 +16,22 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 @Service
 public class JwtAuthFilter extends OncePerRequestFilter {
+
+    private List<String> excludeUrlPatterns = new ArrayList<String>(Arrays.asList("/v2/api-docs",
+            "/configuration/ui",
+            "/swagger-resources/**",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/swagger-ui/",
+            "/v3/api-docs",
+            "/webjars/**"));
 
     @Autowired
     private AccountService accountService;
@@ -55,5 +67,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             log.info("Invalid Bearer token format");
         }
         filterChain.doFilter(request,response);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        log.info("jwt filter path " + path + "| "+excludeUrlPatterns.contains(path));
+        if (excludeUrlPatterns.contains(path)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
