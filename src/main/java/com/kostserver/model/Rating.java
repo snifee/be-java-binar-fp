@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Setter
@@ -20,14 +19,18 @@ public class Rating extends BaseEntity{
 
     private Integer rating;
 
-    @ManyToOne
-    private Account accountId;
+    private String reviewText;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "room_rating",
-            joinColumns = @JoinColumn(name = "rating_id"),
-            inverseJoinColumns = @JoinColumn(name = "room_id")
-    )
-    private List<Room> roomId;
+    @ManyToOne
+    private Account account;
+
+    @ManyToOne
+    private Room room;
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name = "room_rating",
+//            joinColumns = @JoinColumn(name = "rating_id"),
+//            inverseJoinColumns = @JoinColumn(name = "room_id")
+//    )
+//    private List<Room> roomId;
 }
