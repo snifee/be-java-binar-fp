@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "kost")
-public class Kost {
+public class Kost implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,14 +42,14 @@ public class Kost {
     private Thumbnail thumbnail;
 
     @ManyToMany
-    @JoinTable(name = "kost_rule",
+    @JoinTable(name = "kost_rules",
             joinColumns = @JoinColumn(name = "kost_id"),
             inverseJoinColumns = @JoinColumn(name = "rule_id"))
-    private KostRule kostRuleId;
+    private Set<KostRule> kostRuleId= new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "kost_facilities",
             joinColumns = @JoinColumn(name = "kost_id"),
-            inverseJoinColumns = @JoinColumn(name = "facility_id"))
-    private KostFacility kostFacility;
+            inverseJoinColumns = @JoinColumn(name = "kost_facility_id"))
+    private Set<KostFacility> kostFacilities = new HashSet<>();
 }

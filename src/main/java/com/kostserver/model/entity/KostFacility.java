@@ -14,7 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 
-@Entity(name = "kost_facilities")
+@Entity(name = "kost_facility")
 public class KostFacility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +24,7 @@ public class KostFacility {
 
     private String type;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "kostFacilities")
     private Set<Kost> kosts;
+
 }

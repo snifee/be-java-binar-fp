@@ -38,5 +38,8 @@ public class Account {
     @OneToOne
     private UserBank userBankId;
 
+    @OneToMany(mappedBy = "accountId")
+    private Set<Transaction> transactions;
+
 
 }
