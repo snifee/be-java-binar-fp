@@ -1,6 +1,9 @@
-package com.kostserver.model;
+package com.kostserver.model.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,12 +14,12 @@ import javax.persistence.Id;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
-@Entity(name = "tbl_facilities")
-public class Facility {
+@Entity(name = "tbl_payment")
+public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String facilityName;
+    private String name;
+    private String type;
 }
