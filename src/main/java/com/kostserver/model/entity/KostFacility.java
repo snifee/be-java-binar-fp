@@ -1,24 +1,29 @@
-package com.kostserver.model;
+package com.kostserver.model.entity;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "tbl_room_type")
-public class RoomType {
+
+@Entity(name = "kost_facilities")
+public class KostFacility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
+
+    private String facilityName;
 
     private String type;
+
+    @ManyToMany
+    private Set<Kost> kosts;
 }

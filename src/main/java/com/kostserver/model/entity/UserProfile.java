@@ -1,8 +1,8 @@
-package com.kostserver.model;
+package com.kostserver.model.entity;
+
 
 
 import lombok.*;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -11,7 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "user_profile")
-public class UserProfile extends BaseEntity{
+public class UserProfile extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,11 +20,9 @@ public class UserProfile extends BaseEntity{
     private Date birthDate;
     private String address;
     @Enumerated(EnumType.STRING)
-    private String gender;
-    private String job;
-    private String phoneNumber;
+    private EnumGender gender;
+    private String occupation;
     private String photoUrl;
-    private String documentUrl;
     @OneToOne
     private Account accountId;
 }
