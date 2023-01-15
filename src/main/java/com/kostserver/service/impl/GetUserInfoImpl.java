@@ -1,7 +1,7 @@
 package com.kostserver.service.impl;
 
-import com.kostserver.model.Account;
-import com.kostserver.model.Role;
+import com.kostserver.model.entity.Account;
+import com.kostserver.model.entity.Role;
 import com.kostserver.repository.AccountRepository;
 import com.kostserver.repository.RoleRepository;
 import com.kostserver.service.GetUserInfo;

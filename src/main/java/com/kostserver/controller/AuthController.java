@@ -3,7 +3,7 @@ package com.kostserver.controller;
 
 import com.kostserver.dto.LoginRequestDto;
 import com.kostserver.dto.RegisterRequestDto;
-import com.kostserver.model.EnumRole;
+import com.kostserver.model.entity.EnumRole;
 import com.kostserver.service.LoginService;
 import com.kostserver.service.OtpService;
 import com.kostserver.service.RegisterService;
@@ -36,7 +36,7 @@ public class AuthController {
 
     @PostMapping("/penyewa/register")
     ResponseEntity<Map> registerPenyewa(@RequestBody RegisterRequestDto request){
-        Map response = registerService.register(request, EnumRole.ROLE_USER_PENYEWA);
+        Map response = registerService.register(request, EnumRole.ROLE_USER_PENYEDIA);
         return new ResponseEntity<Map>(response, (HttpStatus) response.get("status"));
     }
 

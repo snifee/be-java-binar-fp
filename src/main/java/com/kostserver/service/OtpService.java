@@ -1,6 +1,6 @@
 package com.kostserver.service;
 
-import com.kostserver.model.Account;
+import com.kostserver.model.entity.Account;
 
 public interface OtpService {
     String confirmOtp(String token);

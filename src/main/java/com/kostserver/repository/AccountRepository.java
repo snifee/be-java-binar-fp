@@ -1,6 +1,6 @@
 package com.kostserver.repository;
 
-import com.kostserver.model.Account;
+import com.kostserver.model.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

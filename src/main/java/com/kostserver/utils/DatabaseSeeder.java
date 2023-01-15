@@ -1,8 +1,8 @@
 package com.kostserver.utils;
 
-import com.kostserver.model.Account;
-import com.kostserver.model.EnumRole;
-import com.kostserver.model.Role;
+import com.kostserver.model.entity.Account;
+import com.kostserver.model.entity.EnumRole;
+import com.kostserver.model.entity.Role;
 import com.kostserver.repository.AccountRepository;
 import com.kostserver.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +42,7 @@ public class DatabaseSeeder implements ApplicationRunner {
                 Account account = new Account();
                 account.setEmail(email);
                 account.setPassword(passwordEncoder.encode(defaultPassword));
-                account.setPhoneNumber("081234567");
-                account.setUsername(email);
+                account.setPhone("081234567");
                 account.setVerified(true);
                 Set<Role> roleSet = new HashSet<>();
 

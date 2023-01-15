@@ -1,7 +1,7 @@
 package com.kostserver.repository.test;
 
-import com.kostserver.model.Account;
-import com.kostserver.model.UserProfile;
+import com.kostserver.model.entity.Account;
+import com.kostserver.model.entity.UserProfile;
 import com.kostserver.repository.AccountRepository;
 import com.kostserver.repository.UserProfileRepository;
 import org.junit.Test;
@@ -27,7 +27,6 @@ public class RepositoryTest {
         accountRepository.save(account);
 
         UserProfile userProfile = new UserProfile();
-        userProfile.setPhoneNumber("0987");
         userProfile.setAccountId(account);
 
         userProfileRepository.save(userProfile);

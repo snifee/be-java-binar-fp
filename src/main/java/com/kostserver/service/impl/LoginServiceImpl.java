@@ -1,7 +1,7 @@
 package com.kostserver.service.impl;
 
 import com.kostserver.dto.LoginRequestDto;
-import com.kostserver.model.Account;
+import com.kostserver.model.entity.Account;
 import com.kostserver.repository.AccountRepository;
 import com.kostserver.service.LoginService;
 import com.kostserver.service.auth.AccountService;

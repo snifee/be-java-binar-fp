@@ -1,7 +1,7 @@
 package com.kostserver.service.impl;
 
 import com.kostserver.dto.RegisterRequestDto;
-import com.kostserver.model.*;
+import com.kostserver.model.entity.*;
 import com.kostserver.repository.AccountRepository;
 import com.kostserver.repository.ConfirmationTokenRepository;
 import com.kostserver.repository.RoleRepository;
@@ -77,9 +77,8 @@ public class RegisterServiceImpl implements RegisterService {
                 roleSet.add(role);
 
                 Account account = new Account();
-                account.setUsername(request.getEmail());
                 account.setEmail(request.getEmail());
-                account.setPhoneNumber(request.getPhone());
+                account.setPhone(request.getPhone());
                 account.setVerified(false);
                 account.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
                 account.setRoles(roleSet);
