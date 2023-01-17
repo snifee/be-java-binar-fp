@@ -1,6 +1,6 @@
-package com.kostserver.model;
+package com.kostserver.model.entity;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,13 +12,14 @@ import javax.persistence.Id;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "tbl_room_type")
-public class RoomType {
+@Entity(name = "user_validation")
+public class UserValidation extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
+    private String idCardUrl;
     private String type;
+
 }

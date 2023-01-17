@@ -1,17 +1,11 @@
 package com.kostserver.service.auth;
 
-import com.kostserver.dto.LoginRequestDto;
-import com.kostserver.model.Account;
-import com.kostserver.model.EnumRole;
-import com.kostserver.model.Role;
+import com.kostserver.model.entity.EnumRole;
+import com.kostserver.model.entity.Account;
+import com.kostserver.model.entity.Role;
 import com.kostserver.repository.AccountRepository;
-import com.kostserver.utils.auth.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -41,7 +35,7 @@ public class AccountService implements UserDetailsService {
         }
         return new User(accountExist.getEmail(),
                         accountExist.getPassword(),
-                        accountExist.getVerified(),
+                        true,
                 true,
                 true,
                 true, accountExist.getRoles().stream()

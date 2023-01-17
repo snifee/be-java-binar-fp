@@ -1,4 +1,4 @@
-package com.kostserver.model;
+package com.kostserver.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,18 +7,18 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name = "roles")
-public class Role {
+@Table(name = "price_category")
+public class RoomPriceCategory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 20)
-    @Enumerated(EnumType.STRING)
-    private EnumRole name;
+    private String priceCategory;
+
 }

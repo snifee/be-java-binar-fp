@@ -1,7 +1,7 @@
 package com.kostserver.service.impl;
 
-import com.kostserver.model.Account;
-import com.kostserver.model.ConfirmationToken;
+import com.kostserver.model.entity.Account;
+import com.kostserver.model.entity.ConfirmationToken;
 import com.kostserver.repository.AccountRepository;
 import com.kostserver.repository.ConfirmationTokenRepository;
 import com.kostserver.service.OtpService;

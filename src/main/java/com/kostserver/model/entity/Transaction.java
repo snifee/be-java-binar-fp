@@ -1,4 +1,4 @@
-package com.kostserver.model;
+package com.kostserver.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +19,6 @@ public class Transaction extends BaseEntity {
     private Long id;
 
     private int numOfPeople;
-
     private Date transactionDate;
     private Date startRent;
     private Double price;
@@ -31,7 +30,7 @@ public class Transaction extends BaseEntity {
     @ManyToOne
     private Account accountId;
     @ManyToOne
-    private Room roomId;
+    private RoomKost roomKostId;
 
     @ManyToOne
     private Payment paymentId;

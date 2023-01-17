@@ -1,4 +1,4 @@
-package com.kostserver.model;
+package com.kostserver.model.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,10 +46,10 @@ public class ConfirmationToken {
     public ConfirmationToken(String token,
                              LocalDateTime createdAt,
                              LocalDateTime expiresAt,
-                             Account appAccount) {
+                             Account account) {
         this.token = token;
         this.createdAt = createdAt;
         this.expiresAt = expiresAt;
-        this.account = appAccount;
+        this.account = account;
     }
 }

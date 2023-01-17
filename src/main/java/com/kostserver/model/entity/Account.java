@@ -1,4 +1,4 @@
-package com.kostserver.model;
+package com.kostserver.model.entity;
 
 
 import lombok.*;
@@ -18,16 +18,28 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
     private String email;
     private String password;
-    private String phoneNumber;
+    private String phone;
     private Boolean verified;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "account_roles",
             joinColumns = @JoinColumn(name = "account_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+
+    @OneToOne(mappedBy = "accountId")
+    private UserProfile userProfileId;
+
+    @OneToOne
+    private UserValidation userValidationId;
+
+    @OneToOne
+    private UserBank userBankId;
+
+    @OneToMany(mappedBy = "accountId")
+    private Set<Transaction> transactions;
 
 
 }
