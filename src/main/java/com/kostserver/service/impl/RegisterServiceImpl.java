@@ -64,13 +64,10 @@ public class RegisterServiceImpl implements RegisterService {
 
 
         try{
-            if (!emailValidator.isValid(request.getEmail())){
-                throw new IllegalStateException("Invalid email");
-            }
+//            if (!emailValidator.isValid(request.getEmail())){
+//                throw new IllegalStateException("Invalid email");
+//            }
 
-            if (!PhoneNumberValidator.isValid(request.getPhone())){
-                throw new IllegalStateException("Invalid phone number");
-            }
             Optional<Account> accountExist =  accountRepository.findByEmail(request.getEmail());
             Account accountResponse = null;
             UserDetails userDetails = null;
@@ -106,7 +103,7 @@ public class RegisterServiceImpl implements RegisterService {
 
                 userProfileRepository.save(userProfile);
                 accountRepository.save(account);
-                otpService.sentOtp(account);
+//                otpService.sentOtp(account);
 
                 accountResponse = account;
             }

@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,19 +30,19 @@ public class AuthController {
     private OtpService otpService;
 
     @PostMapping("/pemilik/register")
-    ResponseEntity<Map> registerPenyedia(@RequestBody RegisterRequestDto request){
+    ResponseEntity<Map> registerPenyedia(@Valid @RequestBody RegisterRequestDto request){
         Map response = registerService.register(request, EnumRole.ROLE_USER_PEMILIK);
         return new ResponseEntity<Map>(response, (HttpStatus) response.get("status"));
     }
 
     @PostMapping("/pencari/register")
-    ResponseEntity<Map> registerPenyewa(@RequestBody RegisterRequestDto request){
+    ResponseEntity<Map> registerPenyewa(@Valid @RequestBody RegisterRequestDto request){
         Map response = registerService.register(request, EnumRole.ROLE_USER_PENCARI);
         return new ResponseEntity<Map>(response, (HttpStatus) response.get("status"));
     }
 
     @PostMapping("/login")
-    ResponseEntity<Map> login(@RequestBody LoginRequestDto request){
+    ResponseEntity<Map> login(@Valid @RequestBody LoginRequestDto request){
         Map response = loginService.login(request);
         return new ResponseEntity<Map>(response, (HttpStatus) response.get("status"));
     }

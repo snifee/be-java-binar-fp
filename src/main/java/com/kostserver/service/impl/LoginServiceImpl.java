@@ -47,12 +47,7 @@ public class LoginServiceImpl implements LoginService {
         Map<String, Object> response = new LinkedHashMap<>();
         Map<String, Object> data = new LinkedHashMap<>();
 
-        EmailValidator emailValidator = EmailValidator.getInstance();
-
         try{
-            if (!emailValidator.isValid(requestDto.getEmail())){
-                throw new UsernameNotFoundException("Invalid email");
-            }
             Optional<Account> accountExist =  accountRepository.findByEmail(requestDto.getEmail());
 
             if (!accountExist.isPresent()){
