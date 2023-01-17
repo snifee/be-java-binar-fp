@@ -2,6 +2,7 @@ package com.kostserver.service.impl;
 
 import com.kostserver.dto.LoginRequestDto;
 import com.kostserver.model.entity.Account;
+import com.kostserver.model.response.UserDetailsRespond;
 import com.kostserver.repository.AccountRepository;
 import com.kostserver.service.LoginService;
 import com.kostserver.service.auth.AccountService;
@@ -19,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -42,7 +44,9 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public Map login(LoginRequestDto requestDto) {
-        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> response = new LinkedHashMap<>();
+        Map<String, Object> data = new LinkedHashMap<>();
+
         EmailValidator emailValidator = EmailValidator.getInstance();
 
         try{
@@ -66,11 +70,16 @@ public class LoginServiceImpl implements LoginService {
 
             UserDetails userDetails = accountService.loadUserByUsername(requestDto.getEmail());
 
+            UserDetailsRespond userDetailsRespond = new UserDetailsRespond(accountExist.get(), accountExist.get().getUserProfileId());
+
             String jwtToken = jwtUtils.generateToken(userDetails);
 
+            data.put("access_token",jwtToken);
+            data.put("user_details",userDetailsRespond);
+
             response.put("status", HttpStatus.OK);
-            response.put("access_token",jwtToken);
-            response.put("data",accountExist.get());
+            response.put("message","login");
+            response.put("data",data);
         }catch (Exception e){
             response.put("status",HttpStatus.UNAUTHORIZED);
             response.put("message",e.getMessage());

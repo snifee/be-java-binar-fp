@@ -35,7 +35,7 @@ public class AccountService implements UserDetailsService {
         }
         return new User(accountExist.getEmail(),
                         accountExist.getPassword(),
-                        accountExist.getVerified(),
+                        true,
                 true,
                 true,
                 true, accountExist.getRoles().stream()

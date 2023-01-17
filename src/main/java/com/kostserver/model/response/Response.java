@@ -3,6 +3,7 @@ package com.kostserver.model.response;
 public class Response {
     public int status;
     public String message;
+
     public Object data;
     public Object error;
 

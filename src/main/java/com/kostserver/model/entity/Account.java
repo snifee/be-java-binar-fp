@@ -29,7 +29,7 @@ public class Account {
     private Set<Role> roles = new HashSet<>();
 
 
-    @OneToOne
+    @OneToOne(mappedBy = "accountId")
     private UserProfile userProfileId;
 
     @OneToOne
