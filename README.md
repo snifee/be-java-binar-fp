@@ -4,7 +4,7 @@ https://be-java-binar-fp-staging.up.railway.app
 
 ## Registration
 
-**POST /v1/auth/penyewa/register**
+**POST /v1/auth/pencari/register**
 ----
   Creates a new User, send email otp and returns the success message.
 * **URL Params**  
@@ -14,20 +14,49 @@ https://be-java-binar-fp-staging.up.railway.app
 * **Body**  
 ```
   {
-    email: string,
-    phone: string,
-    password : string,
+    "email": string,
+    "phone": string,
+    "password" : string,
   }
 ```
 * **Success Response:**  
-  status: success  
-  message:  `{message success} `
+````
+  {
+    "status": "string",
+    "message": "string",
+    "data": {
+      "access_token": "string, jwt",
+      "user_details": {
+        "id": "number",
+        "fullname": "string",
+        "email": "string",
+        "phone": "string",
+        "birthdate": "string",
+        "gender": "string",
+        "occupation": "string",
+        "role": {
+          "id": "number",
+          "name": "string"
+        },
+        "verified": "boolean"
+      }
+    }
+  }
+````
 
 * **Error Response:**  
-  status: failed  
-  message:  `{message failed}`
+````
+  "status": BAD_REQUEST  
+  "message":  `{message failed}`
+  "error?":[
+    {
+      "field":"string",
+      "message":"string"
+    }
+   ]
+````
   
-**POST /v1/auth/penyedia/register**
+**POST /v1/auth/pemilik/register**
 ----
   Creates a new User, send email otp and returns the success message.
 * **URL Params**  
@@ -37,20 +66,49 @@ https://be-java-binar-fp-staging.up.railway.app
 * **Body**  
 ```
   {
-    email: string,
-    phone: string,
-    password : string,
+    "email": string,
+    "phone": string,
+    "password" : string,
   }
 ```
 * **Success Response:**  
-  status: success  
-  message:  `{message success}`
-
+````
+  {
+    "status": "string",
+    "message": "string",
+    "data": {
+      "access_token": "string, jwt",
+      "user_details": {
+        "id": "number",
+        "fullname": "string",
+        "email": "string",
+        "phone": "string",
+        "birthdate": "string",
+        "gender": "string",
+        "occupation": "string",
+        "role": {
+          "id": "number",
+          "name": "string"
+        },
+        "verified": "boolean"
+      }
+    }
+  }
+````
 * **Error Response:**  
-  status: failed  
-  message:  `{message failed}`
+````
+  "status": BAD_REQUEST  
+  "message":  `{message failed}`
+  "error?":[
+    {
+      "field":"string",
+      "message":"string"
+    }
+   ]
   
-## Confirmation OTP
+````
+  
+## Confirmation OTP (DEPRECATED)
 
 **POST /v1/auth/confirm**
 ----
@@ -83,14 +141,43 @@ https://be-java-binar-fp-staging.up.railway.app
 * **Body**  
 ```
   {
-    email: string,
-    password : string,
+    "email": string,
+    "password" : string,
   }
 ```
 * **Success Response:**  
-  status: success  
-  access_token:  `{JWT Token}`
-
-* **Error Response:**  
-  status: failed  
-  message:  `{message failed}`
+````
+{
+  "status": "string",
+  "message": "string",
+  "data": {
+    "access_token": "string, jwt",
+    "user_details": {
+      "id": "number",
+      "fullname": "string",
+      "email": "string",
+      "phone": "string",
+      "birthdate": "string",
+      "gender": "string",
+      "occupation": "string",
+      "role": {
+        "id": "number",
+        "name": "string"
+      },
+      "verified": "boolean"
+    }
+  }
+}
+````
+* **Error Response:** 
+````
+  "status": UNAUTHORIZED,BAD_REQUEST  
+  "message":  `{message failed}`
+  "error?":[
+    {
+      "field":"string",
+      "message":"string"
+    }
+   ]
+  
+````
