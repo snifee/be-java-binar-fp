@@ -8,9 +8,7 @@ import javax.validation.constraints.NotBlank;
 public class ChangePasswordDto {
 
     @NotBlank
-    private String old_password;
+    private String password;
     @NotBlank
     private String new_password;
-    @NotBlank
-    private String new_password2;
 }

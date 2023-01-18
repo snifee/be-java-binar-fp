@@ -30,10 +30,6 @@ public class ChangePasswordServiceImpl implements ChangePasswordService {
         Map<String ,Object> response = new LinkedHashMap<>();
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        if (!request.getNew_password().equals(request.getNew_password2())){
-            throw new IllegalStateException("new password entered not same");
-        }
-
         Optional<Account> account = accountRepository.findByEmail(email);
 
         String newPasswordEncoded = passwordEncoder.encode(request.getNew_password());
