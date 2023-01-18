@@ -24,9 +24,26 @@ public class Kost implements Serializable {
 
     @Column(nullable = false)
     private String kostName;
-    private String additionalKostRule;
     private String frontPhotoUrl;
     private String backPhotoUrl;
+    @Enumerated(EnumType.STRING)
+    private EnumKostType kostType;
+
+    private String description;
+    private String address;
+    private String city;
+    private String province;
+    private String district;
+    private Double latitude;
+    private Double longitude;
+    private String addressNote;
+    private String additionalKostRule;
+
+    @ManyToMany
+    @JoinTable(name = "tbl_kost_payment_scheme",
+            joinColumns = @JoinColumn(name = "kost_id"),
+            inverseJoinColumns = @JoinColumn(name = "payment_scheme_id"))
+    private Set<KostPaymentScheme> kostPaymentScheme = new HashSet<>();
 
 
     @ManyToOne
@@ -34,9 +51,6 @@ public class Kost implements Serializable {
 
     @OneToMany
     private Set<RoomKost> roomKosts = new HashSet<>();
-
-    @OneToOne
-    private KostLocation kostLocation;
 
     @OneToOne
     private Thumbnail thumbnail;

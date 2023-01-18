@@ -27,23 +27,18 @@ public class RoomKost extends BaseEntity{
     private String name;
 
     private Double width;
-    private Double width2;
+    private Double length;
 
-    @ManyToOne
-    private RoomPriceCategory roomPriceCategory;
-
-    @OneToOne
-    private RoomImage roomImage;
-
-    @ManyToOne
-    private RoomType roomType;
+    @ElementCollection(targetClass = String.class)
+    @CollectionTable(name = "room_image",joinColumns = @JoinColumn(name = "room_id"))
+    private List<String> imageUrl;
 
     @OneToOne
     private Thumbnail thumbnail;
 
     @ManyToMany
     @JoinTable(
-            name = "room_kostxfacility",
+            name = "room_kost_facility",
             joinColumns = @JoinColumn(name ="room_kost_id"),
             inverseJoinColumns = @JoinColumn(name = "facilities_id")
     )
