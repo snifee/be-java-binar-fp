@@ -14,7 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 
-@Entity(name = "kost_facility")
+@Entity(name = "tbl_kost_facility")
 public class KostFacility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

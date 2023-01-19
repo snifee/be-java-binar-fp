@@ -1,7 +1,7 @@
 package com.kostserver.service;
 
 import com.kostserver.dto.RegisterRequestDto;
-import com.kostserver.model.entity.EnumRole;
+import com.kostserver.model.EnumRole;
 
 import java.util.Map;
 

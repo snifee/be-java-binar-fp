@@ -1,4 +1,4 @@
-package com.kostserver.model.entity;
+package com.kostserver.model;
 
 public enum EnumGender {
     MALE, FEMALE

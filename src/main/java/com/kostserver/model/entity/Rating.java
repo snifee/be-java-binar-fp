@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "ratings")
+@Entity(name = "tbl_rating")
 public class Rating extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +24,8 @@ public class Rating extends BaseEntity {
     private String ulasan;
 
     @ManyToOne
-    private Account accountId;
+    private Account account;
 
     @ManyToOne
-    private RoomKost roomKostId;
+    private RoomKost roomKost;
 }

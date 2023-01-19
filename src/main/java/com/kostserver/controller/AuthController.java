@@ -4,7 +4,7 @@ package com.kostserver.controller;
 import com.kostserver.dto.ChangePasswordDto;
 import com.kostserver.dto.LoginRequestDto;
 import com.kostserver.dto.RegisterRequestDto;
-import com.kostserver.model.entity.EnumRole;
+import com.kostserver.model.EnumRole;
 import com.kostserver.service.ChangePasswordService;
 import com.kostserver.service.LoginService;
 import com.kostserver.service.OtpService;

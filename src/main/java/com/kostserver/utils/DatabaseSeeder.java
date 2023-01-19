@@ -1,12 +1,5 @@
 package com.kostserver.utils;
 
-<<<<<<< HEAD
-import com.kostserver.model.entity.Account;
-import com.kostserver.model.entity.EnumRole;
-import com.kostserver.model.entity.Role;
-import com.kostserver.repository.AccountRepository;
-import com.kostserver.repository.RoleRepository;
-=======
 import com.github.javafaker.Faker;
 import com.kostserver.model.EnumGender;
 import com.kostserver.model.EnumKostType;
@@ -14,7 +7,6 @@ import com.kostserver.model.entity.*;
 import com.kostserver.model.EnumRole;
 import com.kostserver.repository.*;
 import lombok.extern.slf4j.Slf4j;
->>>>>>> entity
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -25,14 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.HashSet;
-<<<<<<< HEAD
-import java.util.Set;
-
-@Component
-@Service
-public class DatabaseSeeder implements ApplicationRunner {
-
-=======
 import java.util.Optional;
 import java.util.Set;
 
@@ -54,13 +38,12 @@ public class DatabaseSeeder implements ApplicationRunner {
     private BCryptPasswordEncoder passwordEncoder;
 
     String[] emails = {"admin@mail.com", "user1@mail.com", "user2@mail.com"};
-    EnumRole[] roles = {EnumRole.ROLE_USER_PEMILIK, EnumRole.ROLE_USER_PENCARI, EnumRole.ROLE_SUPERUSER};
+    EnumRole[] roles = {EnumRole.ROLE_USER_PEMILIK,EnumRole.ROLE_USER_PENCARI,EnumRole.ROLE_SUPERUSER};
     String defaultPassword = "password";
-
 
     Faker faker = new Faker();
 
-    private void insertToAccountTable() {
+    private void insertToAccountTable(){
         Role role1 = roleRepository.findByName(EnumRole.ROLE_USER_PEMILIK).get();
         Set<Role> roles1 = new HashSet<>();
         roles1.add(role1);
@@ -148,7 +131,7 @@ public class DatabaseSeeder implements ApplicationRunner {
 
         Kost kost2 = new Kost();
         kost2.setAddress(userProfile3.getAddress());
-        kost2.setKostName("Kost " + userProfile3.getFullname() + " 2");
+        kost2.setKostName("Kost " + userProfile3.getFullname()+ " 2");
         kost2.setOwner(account3);
         kost2.setKostType(EnumKostType.PUTRI);
         kostRepository.save(kost2);
@@ -157,10 +140,10 @@ public class DatabaseSeeder implements ApplicationRunner {
         accountRepository.save(account3);
     }
 
-    private void insertToRoleTable() {
-        Arrays.asList(roles).forEach((role) -> {
+    private void insertToRoleTable(){
+        Arrays.asList(roles).forEach((role)->{
             Boolean existRole = roleRepository.existsByName(role);
-            if (!existRole) {
+            if (!existRole){
                 Role newRole = new Role();
                 newRole.setName(role);
 
@@ -168,6 +151,7 @@ public class DatabaseSeeder implements ApplicationRunner {
             }
         });
     }
+
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
