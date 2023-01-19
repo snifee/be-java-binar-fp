@@ -16,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "kost")
+@Table(name = "tbl_kost")
 public class Kost implements Serializable {
 
     @Id
@@ -41,16 +41,16 @@ public class Kost implements Serializable {
     private String additionalKostRule;
 
     @ManyToMany
-    @JoinTable(name = "tbl_kost_payment_scheme",
+    @JoinTable(name = "kost_payment_schemes",
             joinColumns = @JoinColumn(name = "kost_id"),
             inverseJoinColumns = @JoinColumn(name = "payment_scheme_id"))
     private Set<KostPaymentScheme> kostPaymentScheme = new HashSet<>();
 
 
     @ManyToOne
-    private Account ownerId;
+    private Account owner;
 
-    @OneToMany
+    @OneToMany(mappedBy = "kost")
     private Set<RoomKost> roomKosts = new HashSet<>();
 
     @ManyToMany

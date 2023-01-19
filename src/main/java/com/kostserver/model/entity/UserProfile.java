@@ -11,7 +11,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "user_profile")
+@Entity(name = "tbl_user_profile")
 public class UserProfile extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +24,7 @@ public class UserProfile extends BaseEntity {
     private EnumGender gender;
     private String occupation;
     private String photoUrl;
+
     @OneToOne
-    private Account accountId;
+    private Account account;
 }

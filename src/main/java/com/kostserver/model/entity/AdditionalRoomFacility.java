@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "additional_room_facility")
+@Entity(name = "tbl_additional_room_facility")
 public class AdditionalRoomFacility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,5 +20,4 @@ public class AdditionalRoomFacility {
 
     @ManyToOne
     private RoomKost roomKost;
-
 }

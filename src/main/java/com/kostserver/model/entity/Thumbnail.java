@@ -12,7 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "thumbnail")
+@Table(name = "tbl_thumbnail")
 public class Thumbnail {
 
     @Id

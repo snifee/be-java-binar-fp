@@ -12,7 +12,7 @@ import javax.persistence.Id;
 @Setter
 @Getter
 @NoArgsConstructor
-@Entity(name = "kost_payment_scheme")
+@Entity(name = "tbl_kost_payment_scheme")
 public class KostPaymentScheme {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

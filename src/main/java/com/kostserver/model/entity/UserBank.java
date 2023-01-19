@@ -8,7 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Data
-@Entity(name = "user_bank")
+@Entity(name = "tbl_user_bank")
 public class UserBank {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,8 +16,8 @@ public class UserBank {
 
     private String bankName;
     private String accountNumber;
-    private String branchBank;
+    private String accountName;
 
     @OneToOne
-    private Account userId;
+    private Account account;
 }

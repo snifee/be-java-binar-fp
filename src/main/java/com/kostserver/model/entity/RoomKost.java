@@ -12,7 +12,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "tbl_rooms")
+@Entity(name = "tbl_room")
 public class RoomKost extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +39,7 @@ public class RoomKost extends BaseEntity{
 
     @ManyToMany
     @JoinTable(
-            name = "room_kost_facility",
+            name = "room_kost_facilities",
             joinColumns = @JoinColumn(name ="room_kost_id"),
             inverseJoinColumns = @JoinColumn(name = "facilities_id")
     )
@@ -49,11 +49,14 @@ public class RoomKost extends BaseEntity{
     private Kost kost;
 
     @ManyToOne
-    private Account ownerId;
+    private Account owner;
 
-    @OneToMany
+    @OneToMany(mappedBy = "roomKost")
     private Set<Rating> ratings = new HashSet<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "roomKost")
     private Set<AdditionalRoomFacility> additionalRoomFacilities = new HashSet<>();
+
+    @OneToMany(mappedBy = "roomKost")
+    private Set<Transaction> transactions = new HashSet<>();
 }
