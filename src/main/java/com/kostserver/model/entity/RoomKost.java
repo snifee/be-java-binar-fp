@@ -18,16 +18,17 @@ public class RoomKost extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean bathroom;
+    private Double price;
+    private boolean indoorBathroom;
     private Integer roomNumber;
     private Boolean isAvailable;
     private String description;
     private Integer capacity;
-    private Double pricePerCategory;
     private String name;
-
     private Double width;
     private Double length;
+    private int quantity;
+    private int availableRoom;
 
     @ElementCollection(targetClass = String.class)
     @CollectionTable(name = "room_image",joinColumns = @JoinColumn(name = "room_id"))

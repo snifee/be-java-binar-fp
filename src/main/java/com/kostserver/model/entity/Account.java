@@ -12,12 +12,13 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "account")
+@Entity
 public class Account extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String email;
     private String password;
     private String phone;
@@ -29,7 +30,7 @@ public class Account extends BaseEntity{
     private Set<Role> roles = new HashSet<>();
 
 
-    @OneToOne
+    @OneToOne(mappedBy = "accountId")
     private UserProfile userProfileId;
 
     @OneToOne

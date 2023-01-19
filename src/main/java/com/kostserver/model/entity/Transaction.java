@@ -31,7 +31,6 @@ public class Transaction extends BaseEntity {
     private Account accountId;
     @ManyToOne
     private RoomKost roomKostId;
-
     @ManyToOne
     private Payment paymentId;
 }

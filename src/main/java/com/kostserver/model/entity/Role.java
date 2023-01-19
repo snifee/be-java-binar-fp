@@ -1,5 +1,6 @@
 package com.kostserver.model.entity;
 
+import com.kostserver.model.EnumRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

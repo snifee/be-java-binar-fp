@@ -1,5 +1,6 @@
 package com.kostserver.model.entity;
 
+import com.kostserver.model.EnumKostType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,9 +52,6 @@ public class Kost implements Serializable {
 
     @OneToMany
     private Set<RoomKost> roomKosts = new HashSet<>();
-
-    @OneToOne
-    private Thumbnail thumbnail;
 
     @ManyToMany
     @JoinTable(name = "kost_rules",

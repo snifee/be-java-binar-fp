@@ -2,6 +2,7 @@ package com.kostserver.model.entity;
 
 
 
+import com.kostserver.model.EnumGender;
 import lombok.*;
 import javax.persistence.*;
 import java.util.Date;
