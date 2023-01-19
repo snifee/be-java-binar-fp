@@ -22,7 +22,6 @@ public class UserProfile extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private EnumGender gender;
     private String occupation;
-
     private String photoUrl;
     @OneToOne
     private Account accountId;

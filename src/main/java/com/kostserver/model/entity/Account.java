@@ -12,7 +12,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Entity(name = "account")
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class Account {
     private Set<Role> roles = new HashSet<>();
 
 
-    @OneToOne(mappedBy = "accountId")
+    @OneToOne
     private UserProfile userProfileId;
 
     @OneToOne
