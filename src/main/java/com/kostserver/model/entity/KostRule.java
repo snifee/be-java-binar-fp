@@ -8,7 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Data
-@Entity(name = "kost_rule")
+@Entity(name = "tbl_kost_rule")
 public class KostRule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

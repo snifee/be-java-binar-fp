@@ -1,6 +1,6 @@
 package com.kostserver.repository;
 
-import com.kostserver.model.entity.EnumRole;
+import com.kostserver.model.EnumRole;
 import com.kostserver.model.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 

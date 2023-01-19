@@ -12,7 +12,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "tbl_transactions")
+@Entity(name = "tbl_transaction")
 public class Transaction extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +21,7 @@ public class Transaction extends BaseEntity {
     private int numOfPeople;
     private Date transactionDate;
     private Date startRent;
+    private Date endRent;
     private Double price;
     private String status;
     private int rentalDuration;
@@ -28,10 +29,9 @@ public class Transaction extends BaseEntity {
     private String urlDocument;
 
     @ManyToOne
-    private Account accountId;
+    private Account account;
     @ManyToOne
-    private RoomKost roomKostId;
-
+    private RoomKost roomKost;
     @ManyToOne
-    private Payment paymentId;
+    private Payment payment;
 }

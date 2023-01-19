@@ -5,15 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "user_validation")
+@Entity(name = "tbl_user_validation")
 public class UserValidation extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,4 +19,6 @@ public class UserValidation extends BaseEntity{
     private String idCardUrl;
     private String type;
 
+    @OneToOne
+    private Account account;
 }

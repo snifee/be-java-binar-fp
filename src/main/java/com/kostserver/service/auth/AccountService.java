@@ -1,6 +1,6 @@
 package com.kostserver.service.auth;
 
-import com.kostserver.model.entity.EnumRole;
+import com.kostserver.model.EnumRole;
 import com.kostserver.model.entity.Account;
 import com.kostserver.model.entity.Role;
 import com.kostserver.repository.AccountRepository;

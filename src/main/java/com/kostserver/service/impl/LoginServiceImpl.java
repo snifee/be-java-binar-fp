@@ -7,7 +7,6 @@ import com.kostserver.repository.AccountRepository;
 import com.kostserver.service.LoginService;
 import com.kostserver.service.auth.AccountService;
 import com.kostserver.utils.auth.JwtUtils;
-import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,7 +18,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -65,7 +63,7 @@ public class LoginServiceImpl implements LoginService {
 
             UserDetails userDetails = accountService.loadUserByUsername(requestDto.getEmail());
 
-            UserDetailsRespond userDetailsRespond = new UserDetailsRespond(accountExist.get(), accountExist.get().getUserProfileId());
+            UserDetailsRespond userDetailsRespond = new UserDetailsRespond(accountExist.get(), accountExist.get().getUserProfile());
 
             String jwtToken = jwtUtils.generateToken(userDetails);
 

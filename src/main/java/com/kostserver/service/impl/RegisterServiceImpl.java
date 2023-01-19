@@ -1,19 +1,14 @@
 package com.kostserver.service.impl;
 
-import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.google.i18n.phonenumbers.Phonenumber;
 import com.kostserver.dto.RegisterRequestDto;
+import com.kostserver.model.EnumRole;
 import com.kostserver.model.entity.*;
 import com.kostserver.model.response.UserDetailsRespond;
-import com.kostserver.repository.AccountRepository;
-import com.kostserver.repository.ConfirmationTokenRepository;
-import com.kostserver.repository.RoleRepository;
-import com.kostserver.repository.UserProfileRepository;
+import com.kostserver.repository.*;
+import com.kostserver.repository.test.UserValidationRepo;
 import com.kostserver.service.OtpService;
 import com.kostserver.service.RegisterService;
 import com.kostserver.service.auth.AccountService;
-import com.kostserver.utils.EmailSender;
-import com.kostserver.utils.PhoneNumberValidator;
 import com.kostserver.utils.auth.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -24,7 +19,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Slf4j
@@ -52,6 +46,12 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Autowired
     private UserProfileRepository userProfileRepository;
+
+    @Autowired
+    private UserValidationRepo userValidationRepo;
+
+    @Autowired
+    private UserBankRepo userBankRepo;
 
 
     @Override
@@ -90,6 +90,8 @@ public class RegisterServiceImpl implements RegisterService {
                 roleSet.add(role);
 
                 UserProfile userProfile = new UserProfile();
+                UserBank userBank = new UserBank();
+                UserValidation userValidation= new UserValidation();
 
                 Account account = new Account();
                 account.setEmail(request.getEmail());
@@ -97,11 +99,19 @@ public class RegisterServiceImpl implements RegisterService {
                 account.setVerified(false);
                 account.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
                 account.setRoles(roleSet);
-                account.setUserProfileId(userProfile);
 
-                userProfile.setAccountId(account);
+                userProfile.setAccount(account);
+                userBank.setAccount(account);
+                userValidation.setAccount(account);
 
                 userProfileRepository.save(userProfile);
+                userBankRepo.save(userBank);
+                userValidationRepo.save(userValidation);
+
+                account.setUserProfile(userProfile);
+                account.setUserValidation(userValidation);
+                account.setUserBank(userBank);
+
                 accountRepository.save(account);
 //                otpService.sentOtp(account);
 
@@ -111,7 +121,7 @@ public class RegisterServiceImpl implements RegisterService {
             userDetails = accountService.loadUserByUsername(request.getEmail());
 //            UserProfile userProfile1 = accountResponse.getUserProfileId();
 
-            UserDetailsRespond udr = new UserDetailsRespond(accountResponse,accountResponse.getUserProfileId());
+            UserDetailsRespond udr = new UserDetailsRespond(accountResponse,accountResponse.getUserProfile());
 
             String jwt = jwtUtils.generateToken(userDetails);
             data.put("access_token",jwt);

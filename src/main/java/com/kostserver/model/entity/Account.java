@@ -18,6 +18,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String email;
     private String password;
     private String phone;
@@ -29,17 +30,20 @@ public class Account {
     private Set<Role> roles = new HashSet<>();
 
 
-    @OneToOne(mappedBy = "accountId")
-    private UserProfile userProfileId;
+    @OneToOne(mappedBy = "account")
+    private UserProfile userProfile;
+    @OneToOne(mappedBy = "account")
+    private UserValidation userValidation;
+    @OneToOne(mappedBy = "account")
+    private UserBank userBank;
 
-    @OneToOne
-    private UserValidation userValidationId;
-
-    @OneToOne
-    private UserBank userBankId;
-
-    @OneToMany(mappedBy = "accountId")
+    @OneToMany(mappedBy = "account")
     private Set<Transaction> transactions;
 
+    @OneToMany(mappedBy = "owner")
+    private Set<Kost> kosts = new HashSet<>();
+
+    @OneToMany(mappedBy = "account")
+    private Set<Rating> ratings = new HashSet<>();
 
 }

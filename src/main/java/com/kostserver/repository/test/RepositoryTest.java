@@ -27,7 +27,7 @@ public class RepositoryTest {
         accountRepository.save(account);
 
         UserProfile userProfile = new UserProfile();
-        userProfile.setAccountId(account);
+//        userProfile.setAccountId(account);
 
         userProfileRepository.save(userProfile);
         System.out.println(userProfile.getCreatedDate());

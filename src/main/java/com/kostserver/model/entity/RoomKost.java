@@ -12,38 +12,34 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "tbl_rooms")
+@Entity(name = "tbl_room")
 public class RoomKost extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean bathroom;
+    private Double price;
+    private boolean indoorBathroom;
     private Integer roomNumber;
     private Boolean isAvailable;
     private String description;
     private Integer capacity;
-    private Double pricePerCategory;
     private String name;
-
     private Double width;
-    private Double width2;
+    private Double length;
+    private int quantity;
+    private int availableRoom;
 
-    @ManyToOne
-    private RoomPriceCategory roomPriceCategory;
-
-    @OneToOne
-    private RoomImage roomImage;
-
-    @ManyToOne
-    private RoomType roomType;
+    @ElementCollection(targetClass = String.class)
+    @CollectionTable(name = "room_image",joinColumns = @JoinColumn(name = "room_id"))
+    private List<String> imageUrl;
 
     @OneToOne
     private Thumbnail thumbnail;
 
     @ManyToMany
     @JoinTable(
-            name = "room_kostxfacility",
+            name = "room_kost_facilities",
             joinColumns = @JoinColumn(name ="room_kost_id"),
             inverseJoinColumns = @JoinColumn(name = "facilities_id")
     )
@@ -53,11 +49,14 @@ public class RoomKost extends BaseEntity{
     private Kost kost;
 
     @ManyToOne
-    private Account ownerId;
+    private Account owner;
 
-    @OneToMany
+    @OneToMany(mappedBy = "roomKost")
     private Set<Rating> ratings = new HashSet<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "roomKost")
     private Set<AdditionalRoomFacility> additionalRoomFacilities = new HashSet<>();
+
+    @OneToMany(mappedBy = "roomKost")
+    private Set<Transaction> transactions = new HashSet<>();
 }

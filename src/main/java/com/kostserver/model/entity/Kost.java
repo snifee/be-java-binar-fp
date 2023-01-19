@@ -1,5 +1,6 @@
 package com.kostserver.model.entity;
 
+import com.kostserver.model.EnumKostType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "kost")
+@Table(name = "tbl_kost")
 public class Kost implements Serializable {
 
     @Id
@@ -24,22 +25,33 @@ public class Kost implements Serializable {
 
     @Column(nullable = false)
     private String kostName;
-    private String additionalKostRule;
     private String frontPhotoUrl;
     private String backPhotoUrl;
+    @Enumerated(EnumType.STRING)
+    private EnumKostType kostType;
+
+    private String description;
+    private String address;
+    private String city;
+    private String province;
+    private String district;
+    private Double latitude;
+    private Double longitude;
+    private String addressNote;
+    private String additionalKostRule;
+
+    @ManyToMany
+    @JoinTable(name = "kost_payment_schemes",
+            joinColumns = @JoinColumn(name = "kost_id"),
+            inverseJoinColumns = @JoinColumn(name = "payment_scheme_id"))
+    private Set<KostPaymentScheme> kostPaymentScheme = new HashSet<>();
 
 
     @ManyToOne
-    private Account ownerId;
+    private Account owner;
 
-    @OneToMany
+    @OneToMany(mappedBy = "kost")
     private Set<RoomKost> roomKosts = new HashSet<>();
-
-    @OneToOne
-    private KostLocation kostLocation;
-
-    @OneToOne
-    private Thumbnail thumbnail;
 
     @ManyToMany
     @JoinTable(name = "kost_rules",
