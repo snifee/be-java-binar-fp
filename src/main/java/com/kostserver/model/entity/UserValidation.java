@@ -1,6 +1,7 @@
 package com.kostserver.model.entity;
 
 
+import com.kostserver.model.EnumIdCardType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +18,9 @@ public class UserValidation extends BaseEntity{
     private Long id;
 
     private String idCardUrl;
-    private String type;
+
+    @Enumerated(EnumType.STRING)
+    private EnumIdCardType type;
 
     @OneToOne
     private Account account;

@@ -1,5 +1,6 @@
 package com.kostserver.model.entity;
 
+import com.kostserver.model.EnumKostPaymentScheme;
 import com.kostserver.model.EnumKostType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,7 +9,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -35,10 +38,11 @@ public class Kost implements Serializable {
     private String city;
     private String province;
     private String district;
-    private Double latitude;
-    private Double longitude;
+    private String latitude;
+    private String longitude;
     private String addressNote;
     private String additionalKostRule;
+
 
     @ManyToMany
     @JoinTable(name = "kost_payment_schemes",
@@ -57,11 +61,6 @@ public class Kost implements Serializable {
     @JoinTable(name = "kost_rules",
             joinColumns = @JoinColumn(name = "kost_id"),
             inverseJoinColumns = @JoinColumn(name = "rule_id"))
-    private Set<KostRule> kostRuleId= new HashSet<>();
+    private Set<KostRule> kostRule= new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "kost_facilities",
-            joinColumns = @JoinColumn(name = "kost_id"),
-            inverseJoinColumns = @JoinColumn(name = "kost_facility_id"))
-    private Set<KostFacility> kostFacilities = new HashSet<>();
 }

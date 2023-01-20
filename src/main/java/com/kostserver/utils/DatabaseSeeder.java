@@ -13,17 +13,21 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
 @Component
 @Service
 public class DatabaseSeeder implements ApplicationRunner {
+    @Autowired
+    private KostPaymentSchemeRepository kostPaymentSchemeRepository;
+
+    @Autowired
+    private  KostRuleRepo  kostRuleRepo;
+
     @Autowired
     private RoomKostRepository roomKostRepository;
     @Autowired
@@ -152,10 +156,34 @@ public class DatabaseSeeder implements ApplicationRunner {
         });
     }
 
+    private void insertToKostRuleTable(){
+        KostRule rule1 = new KostRule();
+        rule1.setRule("rule");
+        KostRule rule2 = new KostRule();
+        rule2.setRule("rule2");
+        KostRule rule3 = new KostRule();
+        rule3.setRule("rule3");
+        KostRule rule4 = new KostRule();
+        rule4.setRule("rule4");
+
+        kostRuleRepo.save(rule1);
+        kostRuleRepo.save(rule2);
+        kostRuleRepo.save(rule3);
+        kostRuleRepo.save(rule4);
+    }
+
+    private void insertToKostPaymentScheme(){
+        KostPaymentScheme kostPaymentScheme = new KostPaymentScheme();
+        kostPaymentScheme.setPayment_scheme("MINGGUAN");
+        kostPaymentSchemeRepository.save(kostPaymentScheme);
+    }
+
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         insertToRoleTable();
         insertToAccountTable();
+        insertToKostRuleTable();
+        insertToKostPaymentScheme();
     }
 }

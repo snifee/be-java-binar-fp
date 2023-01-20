@@ -16,9 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @RestController
@@ -36,6 +34,10 @@ public class AuthController {
 
     @Autowired
     private OtpService otpService;
+
+    private List<String> coffee = new ArrayList<>();
+
+
 
     @PostMapping("/pemilik/register")
     ResponseEntity<Map> registerPenyedia(@Valid @RequestBody RegisterRequestDto request){
