@@ -19,6 +19,18 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/profile")
+    ResponseEntity<Map> getCurrentUser(){
+        try {
+            return new ResponseEntity<>(userService.getCurrentUser(),HttpStatus.OK);
+        }catch (Exception e){
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("status",HttpStatus.BAD_REQUEST);
+            response.put("message",e.getMessage());
+            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping("/bank")
     ResponseEntity<Map> updateUserBank(@Valid @RequestBody UpdateBankAccountDto request){
         try {

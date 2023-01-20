@@ -6,9 +6,10 @@ import com.kostserver.dto.LoginRequestDto;
 import com.kostserver.dto.RegisterRequestDto;
 import com.kostserver.model.EnumRole;
 import com.kostserver.service.ChangePasswordService;
-import com.kostserver.service.LoginService;
+import com.kostserver.service.UserService;
+import com.kostserver.service.auth.LoginService;
 import com.kostserver.service.OtpService;
-import com.kostserver.service.RegisterService;
+import com.kostserver.service.auth.RegisterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ public class AuthController {
     @Autowired
     private RegisterService registerService;
 
+
     @Autowired
     private LoginService loginService;
 
@@ -34,8 +36,6 @@ public class AuthController {
 
     @Autowired
     private OtpService otpService;
-
-    private List<String> coffee = new ArrayList<>();
 
 
 
@@ -66,7 +66,7 @@ public class AuthController {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("status",HttpStatus.BAD_REQUEST);
             response.put("message",e.getMessage());
-            return new ResponseEntity<>(response,HttpStatus.OK);
+            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
         }
     }
 

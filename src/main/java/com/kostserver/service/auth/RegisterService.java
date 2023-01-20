@@ -1,4 +1,4 @@
-package com.kostserver.service;
+package com.kostserver.service.auth;
 
 import com.kostserver.dto.RegisterRequestDto;
 import com.kostserver.model.EnumRole;
