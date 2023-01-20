@@ -34,9 +34,6 @@ public class RoomKost extends BaseEntity{
     @CollectionTable(name = "room_image",joinColumns = @JoinColumn(name = "room_id"))
     private List<String> imageUrl;
 
-    @OneToOne
-    private Thumbnail thumbnail;
-
     @ManyToMany
     @JoinTable(
             name = "room_kost_facilities",
