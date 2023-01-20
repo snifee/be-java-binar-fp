@@ -7,7 +7,7 @@ import com.kostserver.model.response.UserDetailsRespond;
 import com.kostserver.repository.*;
 import com.kostserver.repository.test.UserValidationRepo;
 import com.kostserver.service.OtpService;
-import com.kostserver.service.RegisterService;
+import com.kostserver.service.auth.RegisterService;
 import com.kostserver.service.auth.AccountService;
 import com.kostserver.utils.auth.JwtUtils;
 import lombok.extern.slf4j.Slf4j;

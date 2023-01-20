@@ -2,10 +2,12 @@ package com.kostserver.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kostserver.dto.UpdateBankAccountDto;
 import com.kostserver.dto.UserVerificationDto;
 import com.kostserver.model.entity.Account;
 import com.kostserver.model.entity.UserBank;
+import com.kostserver.model.entity.UserProfile;
 import com.kostserver.model.entity.UserValidation;
 import com.kostserver.repository.AccountRepository;
 import com.kostserver.repository.UserBankRepo;
@@ -18,7 +20,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -110,6 +111,50 @@ public class UserServiceImpl implements UserService {
 
         response.put("status",HttpStatus.OK);
         response.put("message","user verification updated");
+
+        return response;
+    }
+
+    @Override
+    public Map getCurrentUser() throws Exception {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Optional<Account> account = accountRepository.findByEmail(email);
+
+        UserBank userBank = account.get().getUserBank();
+        UserValidation userValidation = account.get().getUserValidation();
+        UserProfile userProfile = account.get().getUserProfile();
+
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("status",HttpStatus.OK);
+        response.put("message","current user");
+
+
+        Map<String, Object> data = new LinkedHashMap<>();
+        data.put("id",account.get().getId());
+        data.put("email",account.get().getEmail());
+        data.put("phone",account.get().getPhone());
+        data.put("role",account.get().getRoles().iterator().next().getName());
+        data.put("verified",account.get().getVerified());
+        data.put("fullname",userProfile.getFullname());
+        data.put("birthdate",userProfile.getBirthDate());
+        data.put("gender",userProfile.getGender());
+        data.put("occupation",userProfile.getOccupation());
+        data.put("photo",userProfile.getPhotoUrl());
+
+        Map<String, Object> verification = new LinkedHashMap<>();
+        verification.put("type",userValidation.getType());
+        verification.put("photo",userValidation.getIdCardUrl());
+
+        Map<String, Object> bank = new LinkedHashMap<>();
+        bank.put("bank_name", userBank.getBankName());
+        bank.put("account_number", userBank.getAccountNumber());
+        bank.put("account_name", userBank.getAccountName());
+
+        data.put("verification",verification);
+        data.put("bank",bank);
+
+        response.put("data",data);
 
         return response;
     }

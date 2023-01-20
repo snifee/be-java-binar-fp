@@ -12,4 +12,6 @@ public interface UserService {
 
     Map updateUserVerification(UserVerificationDto request) throws Exception;
 
+    Map getCurrentUser()throws Exception;
+
 }

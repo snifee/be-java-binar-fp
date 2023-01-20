@@ -4,7 +4,7 @@ import com.kostserver.dto.LoginRequestDto;
 import com.kostserver.model.entity.Account;
 import com.kostserver.model.response.UserDetailsRespond;
 import com.kostserver.repository.AccountRepository;
-import com.kostserver.service.LoginService;
+import com.kostserver.service.auth.LoginService;
 import com.kostserver.service.auth.AccountService;
 import com.kostserver.utils.auth.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
