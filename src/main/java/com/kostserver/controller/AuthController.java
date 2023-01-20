@@ -45,6 +45,7 @@ public class AuthController {
         return new ResponseEntity<Map>(response, (HttpStatus) response.get("status"));
     }
 
+
     @PostMapping("/pencari/register")
     ResponseEntity<Map> registerPenyewa(@Valid @RequestBody RegisterRequestDto request){
         Map response = registerService.register(request, EnumRole.ROLE_USER_PENCARI);
@@ -84,5 +85,13 @@ public class AuthController {
         }
 
         return new ResponseEntity<Map>(response, (HttpStatus) response.get("status"));
+    }
+
+    @GetMapping("/test")
+    ResponseEntity<List> test(){
+        List<String> list = new ArrayList<>();
+        list.add("hay");
+        list.add("hello");
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }
