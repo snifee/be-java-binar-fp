@@ -11,16 +11,19 @@ import com.kostserver.repository.AccountRepository;
 import com.kostserver.repository.UserBankRepo;
 import com.kostserver.repository.test.UserValidationRepo;
 import com.kostserver.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -73,6 +76,18 @@ public class UserServiceImpl implements UserService {
 
         if (emailHasUsed.isPresent()){
             throw  new IllegalStateException("Email has used by another account");
+        }
+
+        String imageType = request.getPhoto().getContentType();
+
+        log.info(imageType);
+
+        if (!(imageType.equals("image/jpeg")||imageType.equals("image/png"))){
+            throw  new IllegalStateException("must use jpg or png image");
+        }
+
+        if (request.getPhoto().getSize()>20000000){
+            throw  new IllegalStateException("image size too large");
         }
 
         account.get().setEmail(request.getEmail());
