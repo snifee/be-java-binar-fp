@@ -72,11 +72,14 @@ public class UserServiceImpl implements UserService {
 
         Optional<Account> account = accountRepository.findByEmail(email);
 
-        Optional<Account> emailHasUsed = accountRepository.findByEmail(request.getEmail());
-
-        if (emailHasUsed.isPresent()){
-            throw  new IllegalStateException("Email has used by another account");
+        if (!account.get().getEmail().equals(request.getEmail())){
+            Optional<Account> emailHasUsed = accountRepository.findByEmail(request.getEmail());
+            if (emailHasUsed.isPresent()){
+                throw  new IllegalStateException("Email has used by another account");
+            }
         }
+
+
 
         String imageType = request.getPhoto().getContentType();
 
