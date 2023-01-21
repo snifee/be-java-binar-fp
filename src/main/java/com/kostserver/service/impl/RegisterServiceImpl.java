@@ -1,6 +1,6 @@
 package com.kostserver.service.impl;
 
-import com.kostserver.dto.RegisterRequestDto;
+import com.kostserver.dto.request.RegisterRequestDto;
 import com.kostserver.model.EnumRole;
 import com.kostserver.model.entity.*;
 import com.kostserver.model.response.UserDetailsRespond;

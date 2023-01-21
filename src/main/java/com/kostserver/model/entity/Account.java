@@ -22,7 +22,7 @@ public class Account {
     private String email;
     private String password;
     private String phone;
-    private Boolean verified;
+    private Boolean verified = false;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "account_roles",
             joinColumns = @JoinColumn(name = "account_id"),

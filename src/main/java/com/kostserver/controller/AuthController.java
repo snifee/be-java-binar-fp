@@ -1,12 +1,11 @@
 package com.kostserver.controller;
 
 
-import com.kostserver.dto.ChangePasswordDto;
-import com.kostserver.dto.LoginRequestDto;
-import com.kostserver.dto.RegisterRequestDto;
+import com.kostserver.dto.request.ChangePasswordDto;
+import com.kostserver.dto.request.LoginRequestDto;
+import com.kostserver.dto.request.RegisterRequestDto;
 import com.kostserver.model.EnumRole;
 import com.kostserver.service.ChangePasswordService;
-import com.kostserver.service.UserService;
 import com.kostserver.service.auth.LoginService;
 import com.kostserver.service.OtpService;
 import com.kostserver.service.auth.RegisterService;
@@ -87,11 +86,12 @@ public class AuthController {
         return new ResponseEntity<Map>(response, (HttpStatus) response.get("status"));
     }
 
-    @GetMapping("/test")
-    ResponseEntity<List> test(){
-        List<String> list = new ArrayList<>();
-        list.add("hay");
-        list.add("hello");
-        return new ResponseEntity<>(list, HttpStatus.OK);
-    }
+    //CORS TEST
+//    @GetMapping("/test")
+//    ResponseEntity<List> test(){
+//        List<String> list = new ArrayList<>();
+//        list.add("hay");
+//        list.add("hello");
+//        return new ResponseEntity<>(list, HttpStatus.OK);
+//    }
 }

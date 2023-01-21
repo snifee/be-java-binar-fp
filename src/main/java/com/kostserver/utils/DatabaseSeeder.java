@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -48,6 +49,31 @@ public class DatabaseSeeder implements ApplicationRunner {
     Faker faker = new Faker();
 
     private void insertToAccountTable(){
+        //SUPERADMIN
+        Role roleAdmin = roleRepository.findByName(EnumRole.ROLE_SUPERUSER).get();
+        Set<Role> rolesAdmin = new HashSet<>();
+        rolesAdmin.add(roleAdmin);
+
+        Account account0 = new Account();
+        account0.setEmail("super@admin.com");
+        account0.setPassword(passwordEncoder.encode(defaultPassword));
+        account0.setPhone(faker.phoneNumber().phoneNumber());
+        account0.setRoles(rolesAdmin);
+        accountRepository.save(account0);
+        UserProfile userProfile0 = new UserProfile();
+        userProfile0.setAccount(account0);
+        userProfile0.setFullname("ADMIN");
+        userProfile0.setAddress("ADMIN");
+        userProfile0.setGender(EnumGender.MALE);
+        userProfile0.setOccupation("ADMIN");
+        userProfile0.setPhotoUrl("http://res.cloudinary.com/dkmgqnqnw/image/upload/v1674291650/ra23gljkpqxyrsly2d0m.webp");
+
+        userProfileRepository.save(userProfile0);
+        account0.setUserProfile(userProfile0);
+        accountRepository.save(account0);
+
+
+        //========================================================================
         Role role1 = roleRepository.findByName(EnumRole.ROLE_USER_PEMILIK).get();
         Set<Role> roles1 = new HashSet<>();
         roles1.add(role1);
@@ -158,13 +184,13 @@ public class DatabaseSeeder implements ApplicationRunner {
 
     private void insertToKostRuleTable(){
         KostRule rule1 = new KostRule();
-        rule1.setRule("rule");
+        rule1.setRule("Dilarang membawa binatang");
         KostRule rule2 = new KostRule();
-        rule2.setRule("rule2");
+        rule2.setRule("Dilarang membawa narkoba");
         KostRule rule3 = new KostRule();
-        rule3.setRule("rule3");
+        rule3.setRule("Kost tutup jam 10 malam");
         KostRule rule4 = new KostRule();
-        rule4.setRule("rule4");
+        rule4.setRule("Wajib lapor jika membawa teman");
 
         kostRuleRepo.save(rule1);
         kostRuleRepo.save(rule2);
@@ -174,16 +200,26 @@ public class DatabaseSeeder implements ApplicationRunner {
 
     private void insertToKostPaymentScheme(){
         KostPaymentScheme kostPaymentScheme = new KostPaymentScheme();
-        kostPaymentScheme.setPayment_scheme("MINGGUAN");
+        kostPaymentScheme.setPayment_scheme("HARIAN");
         kostPaymentSchemeRepository.save(kostPaymentScheme);
+        KostPaymentScheme kostPaymentScheme2 = new KostPaymentScheme();
+        kostPaymentScheme2.setPayment_scheme("MINGGUAN");
+        kostPaymentSchemeRepository.save(kostPaymentScheme2);
+        KostPaymentScheme kostPaymentScheme3 = new KostPaymentScheme();
+        kostPaymentScheme3.setPayment_scheme("BULANAN");
+        kostPaymentSchemeRepository.save(kostPaymentScheme3);
     }
 
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        insertToRoleTable();
-        insertToAccountTable();
-        insertToKostRuleTable();
-        insertToKostPaymentScheme();
+        Optional<Account> superuser = accountRepository.findByEmail("super@admin.com");
+
+        if (!superuser.isPresent()){
+            insertToRoleTable();
+            insertToAccountTable();
+            insertToKostRuleTable();
+            insertToKostPaymentScheme();
+        }
     }
 }

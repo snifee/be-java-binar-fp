@@ -1,20 +1,17 @@
 package com.kostserver.service.impl;
 
-import com.kostserver.dto.ChangePasswordDto;
+import com.kostserver.dto.request.ChangePasswordDto;
 import com.kostserver.model.entity.Account;
 import com.kostserver.repository.AccountRepository;
 import com.kostserver.service.ChangePasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
-import java.lang.reflect.Parameter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;

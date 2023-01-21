@@ -28,8 +28,8 @@ public class Kost implements Serializable {
 
     @Column(nullable = false)
     private String kostName;
-    private String frontPhotoUrl;
-    private String backPhotoUrl;
+    private String indoorPhotoUrl;
+    private String outdoorPhotoUrl;
     @Enumerated(EnumType.STRING)
     private EnumKostType kostType;
 

@@ -1,7 +1,9 @@
 package com.kostserver.config.security;
 
+import com.kostserver.model.EnumRole;
 import com.kostserver.service.auth.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Configuration
 @EnableWebSecurity
@@ -42,6 +45,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/swagger-ui.html",
                         "/swagger/**",
                         "/webjars/**").permitAll()
+                .antMatchers("/v1/kost/**").hasAuthority(EnumRole.ROLE_USER_PEMILIK.name())
                 .anyRequest()
                 .authenticated()
                 .and()

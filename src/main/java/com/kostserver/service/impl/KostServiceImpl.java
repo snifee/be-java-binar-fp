@@ -2,11 +2,12 @@ package com.kostserver.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.kostserver.dto.AddKostDto;
-import com.kostserver.model.EnumKostPaymentScheme;
+import com.kostserver.dto.request.AddKostDto;
+import com.kostserver.dto.request.UpdateKostDto;
 import com.kostserver.model.entity.Account;
 import com.kostserver.model.entity.Kost;
 import com.kostserver.model.entity.KostPaymentScheme;
+import com.kostserver.model.entity.KostRule;
 import com.kostserver.repository.AccountRepository;
 import com.kostserver.repository.KostPaymentSchemeRepository;
 import com.kostserver.repository.KostRepository;
@@ -18,7 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Access;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -48,43 +49,54 @@ public class KostServiceImpl implements KostService {
         Optional<Account> account = accountRepository.findByEmail(email);
 
         Kost kost = new Kost();
-
         kost.setOwner(account.get());
         kost.setKostName(request.getName());
         kost.setKostType(request.getType());
         kost.setDescription(request.getDescription());
-        kost.setLongitude(request.getLocation().getLongitude());
-        kost.setLatitude(request.getLocation().getLatitude());
-        kost.setAddress(request.getLocation().getAddress());
-        kost.setDistrict(request.getLocation().getDistrict());
-        kost.setAddressNote(request.getLocation().getNote());
+        kost.setLongitude(request.getLongitude());
+        kost.setLatitude(request.getLatitude());
+        kost.setAddress(request.getAddress());
+        kost.setDistrict(request.getDistrict());
+        kost.setAddressNote(request.getAdress_note());
         kost.setAdditionalKostRule(request.getAdditional_rule());
-        kost.setCity(request.getLocation().getCity());
-        kost.setProvince(request.getLocation().getProvince());
+        kost.setCity(request.getCity());
+        kost.setProvince(request.getProvince());
 
         if (request.getPayment_scheme() != null){
             request.getPayment_scheme().forEach((scheme)->{
-                kost.getKostPaymentScheme().add(kostPaymentSchemeRepository.getOne(scheme.getId()));
+                Optional<KostPaymentScheme> paymentScheme = kostPaymentSchemeRepository.findById(scheme.getId());
+                if (paymentScheme.isPresent()){
+                    kost.getKostPaymentScheme().add(paymentScheme.get());
+                }
             });
         }
 
         if (request.getRules()!=null){
             request.getRules().forEach(rule ->{
-                kost.getKostRule().add(kostRuleRepo.getOne(rule.getId()));
+                Optional<KostRule> rule1 = kostRuleRepo.findById(rule.getId());
+                if (rule1.isPresent()){
+                    kost.getKostRule().add(rule1.get());
+                }
             });
         }
 
         log.info(request.getName());
 
-        if (request.getImage_1() != null){
-            Map img1 = cloudinary.uploader().upload(request.getImage_1().getBytes(), ObjectUtils.emptyMap());
-            kost.setFrontPhotoUrl(String.valueOf(img1.get("url")));
-            log.info(String.valueOf(img1.get("url")));
+        if (request.getIndoor_photo()!= null && request.getIndoor_photo().startsWith("data:image/jpeg;base64,")){
+            String imageString = request.getIndoor_photo();
+            byte[] imageByte = imageString.getBytes();
+
+            Map imgMap = cloudinary.uploader().upload(imageByte,ObjectUtils.emptyMap());
+            kost.setIndoorPhotoUrl(String.valueOf(imgMap.get("url")));
+            log.info(String.valueOf(imgMap.get("url")));
         }
 
-        if (request.getImage_2() != null){
-            Map img2 = cloudinary.uploader().upload(request.getImage_2().getBytes(), ObjectUtils.emptyMap());
-            kost.setBackPhotoUrl(String.valueOf(img2.get("url")));
+        if (request.getOutdoor_photo() != null && request.getOutdoor_photo().startsWith("data:image/jpeg;base64,")){
+            String imageString2 = request.getOutdoor_photo();
+            byte[] imageByte2 = imageString2.getBytes();
+
+            Map imgMap = cloudinary.uploader().upload(imageByte2, ObjectUtils.emptyMap());
+            kost.setOutdoorPhotoUrl(String.valueOf(imgMap.get("url")));
         }
 
         kostRepository.save(kost);
@@ -96,6 +108,96 @@ public class KostServiceImpl implements KostService {
 
         response.put("status", HttpStatus.OK);
         response.put("message","kost saved");
+
+        return response;
+    }
+
+    @Override
+    public Map updateKost(UpdateKostDto request) throws Exception {
+        Optional<Kost> kost = kostRepository.findById(request.getId());
+        if (!kost.isPresent()){
+            throw new IllegalStateException("kost with id="+request.getId()+" not found");
+        }
+
+        if (request.getName()!=null){
+            kost.get().setKostName(request.getName());
+        }
+
+        if (request.getIndoor_photo()!=null){
+            Map img = cloudinary.uploader().upload(request.getIndoor_photo().getBytes(),ObjectUtils.emptyMap());
+            kost.get().setIndoorPhotoUrl(String.valueOf(img.get("url")));
+        }
+
+        if (request.getOutdoor_photo()!=null){
+            Map img = cloudinary.uploader().upload(request.getOutdoor_photo().getBytes(),ObjectUtils.emptyMap());
+            kost.get().setOutdoorPhotoUrl(String.valueOf(img.get("url")));
+        }
+
+        if (request.getType()!=null){
+            kost.get().setKostType(request.getType());
+        }
+
+        if (request.getDescription()!=null){
+            kost.get().setDescription(request.getDescription());
+        }
+
+        if (request.getLongitude()!=null){
+            kost.get().setLatitude(request.getLatitude());
+        }
+
+        if (request.getLatitude()!=null){
+            kost.get().setLatitude(request.getLatitude());
+        }
+
+        if (request.getAddress()!=null){
+            kost.get().setAddress(request.getAddress());
+        }
+
+        if (request.getProvince()!=null){
+            kost.get().setProvince(request.getProvince());
+        }
+
+        if (request.getCity()!=null){
+            kost.get().setCity(request.getCity());
+        }
+
+        if (request.getDistrict()!=null){
+            kost.get().setDistrict(request.getDistrict());
+        }
+
+        if (request.getAdress_note()!=null){
+            kost.get().setAddressNote(request.getAdress_note());
+        }
+
+        if (request.getAdditional_rule()!=null){
+            kost.get().setAdditionalKostRule(request.getAdditional_rule());
+        }
+
+        if (request.getPayment_scheme() != null){
+            request.getPayment_scheme().forEach((scheme)->{
+                Optional<KostPaymentScheme> paymentScheme = kostPaymentSchemeRepository.findById(scheme.getId());
+                if (paymentScheme.isPresent()){
+                    kost.get().setKostPaymentScheme(new HashSet<KostPaymentScheme>());
+                    kost.get().getKostPaymentScheme().add(paymentScheme.get());
+                }
+            });
+        }
+
+        if (request.getRules()!=null){
+            request.getRules().forEach(rule ->{
+                Optional<KostRule> rule1 = kostRuleRepo.findById(rule.getId());
+                if (rule1.isPresent()){
+                    kost.get().setKostRule(new HashSet<KostRule>());
+                    kost.get().getKostRule().add(rule1.get());
+                }
+            });
+        }
+
+        kostRepository.save(kost.get());
+
+        Map<String ,Object> response = new LinkedHashMap<>();
+        response.put("status",HttpStatus.OK);
+        response.put("message","kost with id="+request.getId()+"updated");
 
         return response;
     }
