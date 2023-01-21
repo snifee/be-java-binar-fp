@@ -1,8 +1,8 @@
 package com.kostserver.controller;
 
 
-import com.kostserver.dto.UpdateBankAccountDto;
-import com.kostserver.dto.UserVerificationDto;
+import com.kostserver.dto.request.UpdateBankAccountDto;
+import com.kostserver.dto.request.UserVerificationDto;
 import com.kostserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.kostserver.dto;
+package com.kostserver.dto.request;
 
 import lombok.Data;
 import lombok.Getter;

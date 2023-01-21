@@ -1,6 +1,6 @@
 package com.kostserver.service;
 
-import com.kostserver.dto.AddKostDto;
+import com.kostserver.dto.request.AddKostDto;
 
 import java.util.Map;
 

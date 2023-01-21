@@ -2,9 +2,8 @@ package com.kostserver.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kostserver.dto.UpdateBankAccountDto;
-import com.kostserver.dto.UserVerificationDto;
+import com.kostserver.dto.request.UpdateBankAccountDto;
+import com.kostserver.dto.request.UserVerificationDto;
 import com.kostserver.model.entity.Account;
 import com.kostserver.model.entity.UserBank;
 import com.kostserver.model.entity.UserProfile;

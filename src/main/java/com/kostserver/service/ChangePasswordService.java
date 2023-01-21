@@ -1,6 +1,6 @@
 package com.kostserver.service;
 
-import com.kostserver.dto.ChangePasswordDto;
+import com.kostserver.dto.request.ChangePasswordDto;
 
 import java.util.Map;
 

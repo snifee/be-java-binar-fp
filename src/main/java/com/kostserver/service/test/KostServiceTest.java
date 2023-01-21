@@ -1,12 +1,8 @@
 package com.kostserver.service.test;
 
-import com.kostserver.dto.AddKostDto;
-import com.kostserver.dto.LocationDto;
-import com.kostserver.model.entity.Account;
-import com.kostserver.model.entity.UserProfile;
-import com.kostserver.repository.AccountRepository;
+import com.kostserver.dto.request.AddKostDto;
+import com.kostserver.dto.request.LocationDto;
 import com.kostserver.repository.KostRepository;
-import com.kostserver.repository.UserProfileRepository;
 import com.kostserver.service.KostService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
