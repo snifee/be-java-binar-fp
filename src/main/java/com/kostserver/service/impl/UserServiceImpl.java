@@ -51,6 +51,7 @@ public class UserServiceImpl implements UserService {
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     @Override
+    @Transactional
     public Map updateUserBank(UpdateBankAccountDto request) throws Exception{
 
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -59,11 +60,17 @@ public class UserServiceImpl implements UserService {
 
         UserBank userBank = account.get().getUserBank();
 
-        userBank.setBankName(request.getBank_name());
+        if (request.getBank_name()!=null){
+            userBank.setBankName(request.getBank_name());
+        }
 
-        userBank.setAccountName(request.getAccount_name());
+        if (request.getAccount_number()!=null){
+            userBank.setAccountNumber(request.getAccount_number());
+        }
 
-        userBank.setAccountNumber(request.getAccount_number());
+        if (request.getAccount_name()!=null){
+            userBank.setAccountName(request.getAccount_name());
+        }
 
         userBankRepo.save(userBank);
 
@@ -83,37 +90,39 @@ public class UserServiceImpl implements UserService {
 
         Optional<Account> account = accountRepository.findByEmail(email);
 
+        UserValidation userValidation = account.get().getUserValidation();
+
         if (!account.get().getEmail().equals(request.getEmail())){
             Optional<Account> emailHasUsed = accountRepository.findByEmail(request.getEmail());
             if (emailHasUsed.isPresent()){
                 throw  new IllegalStateException("Email has used by another account");
             }
+
+            account.get().setEmail(request.getEmail());
         }
 
+        if (request.getPhoto()!=null){
+            String imageType = request.getPhoto().getContentType();
 
+            if (!(imageType.equals("image/jpeg")||imageType.equals("image/png"))){
+                throw  new IllegalStateException("must use jpg or png image");
+            }
 
-        String imageType = request.getPhoto().getContentType();
+            if (request.getPhoto().getSize()>20000000){
+                throw  new IllegalStateException("image size too large");
+            }
 
-        log.info(imageType);
-
-        if (!(imageType.equals("image/jpeg")||imageType.equals("image/png"))){
-            throw  new IllegalStateException("must use jpg or png image");
+            Map img = cloudinary.uploader().upload(request.getPhoto().getBytes(), ObjectUtils.emptyMap());
+            userValidation.setIdCardUrl(String.valueOf(img.get("url")));
         }
 
-        if (request.getPhoto().getSize()>20000000){
-            throw  new IllegalStateException("image size too large");
+        if (request.getPhone()!=null){
+            account.get().setPhone(request.getPhone());
         }
 
-        account.get().setEmail(request.getEmail());
-
-        account.get().setPhone(request.getPhone());
-
-        UserValidation userValidation = account.get().getUserValidation();
-
-        Map img = cloudinary.uploader().upload(request.getPhoto().getBytes(), ObjectUtils.emptyMap());
-        userValidation.setIdCardUrl(String.valueOf(img.get("url")));
-
-        userValidation.setType(request.getType());
+        if (request.getType()!=null){
+            userValidation.setType(request.getType());
+        }
 
         userValidationRepo.save(userValidation);
 
@@ -177,24 +186,34 @@ public class UserServiceImpl implements UserService {
 
         UserProfile userProfile = account.get().getUserProfile();
 
-        userProfile.setFullname(request.getFullname());
-        userProfile.setOccupation(request.getOccupation());
-        userProfile.setGender(request.getGender());
-        userProfile.setBirthDate(simpleDateFormat.parse(request.getBirthdate()));
+        if (request.getFullname()!=null){
+            userProfile.setFullname(request.getFullname());
+        }
 
-        log.info(simpleDateFormat.parse(request.getBirthdate()).toString());
+        if (request.getOccupation()!=null){
+            userProfile.setOccupation(request.getOccupation());
+        }
+
+        if (request.getGender()!=null){
+            userProfile.setGender(request.getGender());
+        }
+
+        if (request.getBirthdate()!=null){
+            userProfile.setBirthDate(simpleDateFormat.parse(request.getBirthdate()));
+        }
 
         if (request.getPhoto()!=null){
-            if (request.getPhoto().getContentType().equals("image/jpeg")){
-                if (request.getPhoto().getSize()<200000000){
-                    Map img = cloudinary.uploader().upload(request.getPhoto().getBytes(),ObjectUtils.emptyMap());
-                    userProfile.setPhotoUrl(String.valueOf(img.get("url")));
-                }else {
-                    throw new IllegalStateException("photo size to large");
-                }
-            }else {
+            if (!request.getPhoto().getContentType().equals("image/jpeg")){
+
                 throw new IllegalStateException("photo must jpeg format");
             }
+
+            if (request.getPhoto().getSize()>200000000){
+                throw new IllegalStateException("photo size to large");
+            }
+
+            Map img = cloudinary.uploader().upload(request.getPhoto().getBytes(),ObjectUtils.emptyMap());
+            userProfile.setPhotoUrl(String.valueOf(img.get("url")));
         }
 
         userProfileRepository.save(userProfile);

@@ -12,30 +12,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class AddKostDto {
+public class UpdateKostDto {
 
-    @NotBlank
+    @NotNull
+    private Long id;
+
     private String name;
     @Pattern(regexp = "^data:image/jpeg;base64,.*\\B",message = "only accept jpeg image")
     private String outdoor_photo;
 
     @Pattern(regexp = "^data:image/jpeg;base64,.*\\B",message = "only accept jpeg image")
     private String indoor_photo;
-    @NotNull
+
     private EnumKostType type;
     private String description;
     private String longitude;
     private String latitude;
-    @NotBlank
     private String address;
-
-    @NotBlank
     private String province;
-
-    @NotBlank
     private String city;
-
-    @NotBlank
     private String district;
     private String adress_note;
 
@@ -44,5 +39,4 @@ public class AddKostDto {
     private List<KostRule> rules = new ArrayList<>();
 
     private String additional_rule;
-
 }

@@ -1,6 +1,7 @@
 package com.kostserver.controller;
 
 import com.kostserver.dto.request.AddKostDto;
+import com.kostserver.dto.request.UpdateKostDto;
 import com.kostserver.model.EnumRole;
 import com.kostserver.service.KostService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +25,19 @@ public class KostController {
     @PostMapping("/addkost")
     ResponseEntity<Map> addkost(@Valid @RequestBody AddKostDto request){
         try{
-            log.info(request.getIndoor_photo());
             return new ResponseEntity<>(kostService.saveKost(request), HttpStatus.OK);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            Map<String,Object> response = new LinkedHashMap<>();
+            response.put("message","gagal");
+            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/updatekost")
+    ResponseEntity<Map> updateKost(@Valid @RequestBody UpdateKostDto request){
+        try{
+            return new ResponseEntity<>(kostService.updateKost(request), HttpStatus.OK);
         }catch (Exception e){
             log.info(e.getMessage());
             Map<String,Object> response = new LinkedHashMap<>();
