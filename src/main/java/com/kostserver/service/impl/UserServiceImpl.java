@@ -3,6 +3,7 @@ package com.kostserver.service.impl;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.kostserver.dto.request.UpdateBankAccountDto;
+import com.kostserver.dto.request.UpdateUserProfileDto;
 import com.kostserver.dto.request.UserVerificationDto;
 import com.kostserver.model.entity.Account;
 import com.kostserver.model.entity.UserBank;
@@ -10,15 +11,20 @@ import com.kostserver.model.entity.UserProfile;
 import com.kostserver.model.entity.UserValidation;
 import com.kostserver.repository.AccountRepository;
 import com.kostserver.repository.UserBankRepo;
+import com.kostserver.repository.UserProfileRepository;
 import com.kostserver.repository.test.UserValidationRepo;
 import com.kostserver.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -37,7 +43,12 @@ public class UserServiceImpl implements UserService {
     private UserValidationRepo userValidationRepo;
 
     @Autowired
+    private UserProfileRepository userProfileRepository;
+
+    @Autowired
     private Cloudinary cloudinary;
+
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     @Override
     public Map updateUserBank(UpdateBankAccountDto request) throws Exception{
@@ -136,7 +147,7 @@ public class UserServiceImpl implements UserService {
         data.put("role",account.get().getRoles().iterator().next().getName());
         data.put("verified",account.get().getVerified());
         data.put("fullname",userProfile.getFullname());
-        data.put("birthdate",userProfile.getBirthDate());
+        data.put("birthdate",simpleDateFormat.format(userProfile.getBirthDate()));
         data.put("gender",userProfile.getGender());
         data.put("occupation",userProfile.getOccupation());
         data.put("photo",userProfile.getPhotoUrl());
@@ -154,6 +165,43 @@ public class UserServiceImpl implements UserService {
         data.put("bank",bank);
 
         response.put("data",data);
+
+        return response;
+    }
+
+    @Override
+    public Map updateUserProfile(UpdateUserProfileDto request) throws Exception {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Optional<Account> account = accountRepository.findByEmail(email);
+
+        UserProfile userProfile = account.get().getUserProfile();
+
+        userProfile.setFullname(request.getFullname());
+        userProfile.setOccupation(request.getOccupation());
+        userProfile.setGender(request.getGender());
+        userProfile.setBirthDate(simpleDateFormat.parse(request.getBirthdate()));
+
+        log.info(simpleDateFormat.parse(request.getBirthdate()).toString());
+
+        if (request.getPhoto()!=null){
+            if (request.getPhoto().getContentType().equals("image/jpeg")){
+                if (request.getPhoto().getSize()<200000000){
+                    Map img = cloudinary.uploader().upload(request.getPhoto().getBytes(),ObjectUtils.emptyMap());
+                    userProfile.setPhotoUrl(String.valueOf(img.get("url")));
+                }else {
+                    throw new IllegalStateException("photo size to large");
+                }
+            }else {
+                throw new IllegalStateException("photo must jpeg format");
+            }
+        }
+
+        userProfileRepository.save(userProfile);
+
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("status",HttpStatus.OK);
+        response.put("message", "profile success updated");
 
         return response;
     }

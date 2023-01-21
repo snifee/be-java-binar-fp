@@ -26,6 +26,6 @@ public class BaseEntity {
     @LastModifiedDate
     private Date updatedDate;
 
-    private boolean isDeleted;
+    private boolean isDeleted = false;
 
 }
