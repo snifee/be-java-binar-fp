@@ -1,5 +1,6 @@
 package com.kostserver.config.security;
 
+import com.kostserver.model.EnumRole;
 import com.kostserver.service.auth.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,6 +45,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/swagger-ui.html",
                         "/swagger/**",
                         "/webjars/**").permitAll()
+                .antMatchers("/v1/kost/**").hasAuthority(EnumRole.ROLE_USER_PEMILIK.name())
                 .anyRequest()
                 .authenticated()
                 .and()
