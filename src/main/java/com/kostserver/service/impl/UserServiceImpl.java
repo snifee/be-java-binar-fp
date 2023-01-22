@@ -156,7 +156,9 @@ public class UserServiceImpl implements UserService {
         data.put("role",account.get().getRoles().iterator().next().getName());
         data.put("verified",account.get().getVerified());
         data.put("fullname",userProfile.getFullname());
-        data.put("birthdate",simpleDateFormat.format(userProfile.getBirthDate()));
+        if (userProfile.getBirthDate()!=null){
+            data.put("birthdate",simpleDateFormat.format(userProfile.getBirthDate()));
+        }
         data.put("gender",userProfile.getGender());
         data.put("occupation",userProfile.getOccupation());
         data.put("photo",userProfile.getPhotoUrl());
