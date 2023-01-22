@@ -4,8 +4,7 @@
     "type": "maven",
     "goal": "-Pprod package -DskipTests"
   },
-  "deploy":
-  {
+  "deploy": {
     "jarName": "./target/kost-server-0.0.1-SNAPSHOT.jar"
   }
 }
