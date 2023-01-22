@@ -1,8 +1,0 @@
-spring:
-  datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://db.yglqqkallwiefkabpaor.supabase.co:5432/postgres?useUnicode=true&characterEncoding=utf8&useSSL=false
-    username: postgres
-    password: J3okesakV8WJWczo
-    hikari:
-      maximumPoolSize: 2
