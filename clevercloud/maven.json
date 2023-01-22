@@ -2,7 +2,7 @@
   "build":
   {
     "type": "maven",
-    "goal": "-Pprod package -DskipTests"
+    "goal": "build"
   },
   "deploy":
   {
