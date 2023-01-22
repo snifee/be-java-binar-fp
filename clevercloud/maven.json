@@ -6,6 +6,6 @@
   },
   "deploy":
   {
-    "jarName": "./target/binar-kosthub-server.jar"
+    "jarName": "./target/apps-0.0.1-SNAPSHOT.jar"
   }
 }
