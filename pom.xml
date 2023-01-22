@@ -179,7 +179,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>binar-kosthub-server</finalName>
 	</build>
 	<repositories>
 		<repository>
