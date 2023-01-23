@@ -1,6 +1,6 @@
 # Final Project Synrgy Batch 5
 
-https://be-java-binar-fp-staging.up.railway.app
+https://be-java-binar-fp-staging.up.railway.app <br>
 https://kosthub-server.cleverapps.io/
 
 ## Registration
