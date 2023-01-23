@@ -44,7 +44,7 @@ public class KostServiceImpl implements KostService {
 
 
     @Override
-    public Map saveKost(AddKostDto request) throws Exception {
+    public Map addKost(AddKostDto request) throws Exception {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Optional<Account> account = accountRepository.findByEmail(email);
 
