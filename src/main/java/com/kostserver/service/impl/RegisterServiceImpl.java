@@ -71,6 +71,11 @@ public class RegisterServiceImpl implements RegisterService {
             Optional<Account> accountExist =  accountRepository.findByEmail(request.getEmail());
             Account accountResponse = null;
             UserDetails userDetails = null;
+            Optional<Account> getAccountByPhone = accountRepository.findByPhone(request.getPhone());
+
+            if (getAccountByPhone.isPresent()){
+                throw new IllegalStateException("Phone Number Already Used");
+            }
 
             if (accountExist.isPresent()){
 

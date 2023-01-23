@@ -21,6 +21,7 @@ public class Account {
     @Column(unique = true)
     private String email;
     private String password;
+    @Column(unique = true)
     private String phone;
     private Boolean verified = false;
     @ManyToMany(fetch = FetchType.EAGER)

@@ -58,12 +58,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String username = null;
         String token = null;
         try{
+
             if (tokenBearer != null && tokenBearer.startsWith("Bearer ")){
                 token = tokenBearer.substring("Bearer ".length());
 
                 username = jwtUtils.extractUsername(token);
 
+                log.info("request from :"+username);
+
                 UserDetails userDetails = accountService.loadUserByUsername(username);
+
+                log.info("request from :"+userDetails.getUsername());
 
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null){
                     UsernamePasswordAuthenticationToken upat = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
@@ -77,7 +82,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             filterChain.doFilter(request,response);
         }catch (Exception e){
             resolver.resolveException(request,response,null,e);
-            log.info(e.getMessage());
+            log.info("jwtAuthFilter exception: "+e.getMessage());
         }
 
 
