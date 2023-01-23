@@ -24,7 +24,6 @@ public class ChangePasswordServiceImpl implements ChangePasswordService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-
     @Override
     public Map changePassword(@Valid @RequestBody ChangePasswordDto request) {
         Map<String ,Object> response = new LinkedHashMap<>();

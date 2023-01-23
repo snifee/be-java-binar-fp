@@ -6,6 +6,6 @@ import com.kostserver.dto.request.UpdateKostDto;
 import java.util.Map;
 
 public interface KostService {
-    Map saveKost(AddKostDto request) throws Exception;
+    Map addKost(AddKostDto request) throws Exception;
     Map updateKost(UpdateKostDto request) throws Exception;
 }

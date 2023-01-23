@@ -34,7 +34,7 @@ public class KostServiceTest {
         request.setName("UHUY");
 
         try {
-            kostService.saveKost(request);
+            kostService.addKost(request);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
