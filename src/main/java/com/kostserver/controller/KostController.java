@@ -20,7 +20,7 @@ public class KostController {
     @Autowired
     private KostService kostService;
 
-    @PostMapping("/addkost")
+    @PostMapping("/add")
     ResponseEntity<Map> addkost(@Valid @RequestBody AddKostDto request){
         try{
             return new ResponseEntity<>(kostService.addKost(request), HttpStatus.OK);
@@ -32,7 +32,7 @@ public class KostController {
         }
     }
 
-    @PutMapping("/updatekost")
+    @PutMapping("/update")
     ResponseEntity<Map> updateKost(@Valid @RequestBody UpdateKostDto request){
         try{
             return new ResponseEntity<>(kostService.updateKost(request), HttpStatus.OK);
