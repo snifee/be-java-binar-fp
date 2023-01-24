@@ -21,7 +21,9 @@ public class KostController {
     private KostService kostService;
 
     @PostMapping("/add")
-    ResponseEntity<Map> addkost(@Valid @RequestBody AddKostDto request){
+
+    ResponseEntity<Map> add(@Valid @RequestBody AddKostDto request){
+
         try{
             return new ResponseEntity<>(kostService.addKost(request), HttpStatus.OK);
         }catch (Exception e){
@@ -39,7 +41,7 @@ public class KostController {
         }catch (Exception e){
             log.info(e.getMessage());
             Map<String,Object> response = new LinkedHashMap<>();
-            response.put("message","gagal");
+            response.put("message",e.getMessage());
             return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
         }
     }

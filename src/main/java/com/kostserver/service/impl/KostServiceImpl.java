@@ -114,10 +114,20 @@ public class KostServiceImpl implements KostService {
 
     @Override
     public Map updateKost(UpdateKostDto request) throws Exception {
+        String requestEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
         Optional<Kost> kost = kostRepository.findById(request.getId());
         if (!kost.isPresent()){
             throw new IllegalStateException("kost with id="+request.getId()+" not found");
         }
+
+        Account accountOwner = kost.get().getOwner();
+
+        if (!accountOwner.getEmail().equals(requestEmail)){
+            throw new IllegalStateException("you cannot access this kost data");
+        }
+
+
 
         if (request.getName()!=null){
             kost.get().setKostName(request.getName());
@@ -197,7 +207,7 @@ public class KostServiceImpl implements KostService {
 
         Map<String ,Object> response = new LinkedHashMap<>();
         response.put("status",HttpStatus.OK);
-        response.put("message","kost with id="+request.getId()+"updated");
+        response.put("message","kost with id="+request.getId()+" UPDATED");
 
         return response;
     }
