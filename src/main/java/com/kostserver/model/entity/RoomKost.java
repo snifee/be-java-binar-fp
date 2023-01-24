@@ -29,6 +29,7 @@ public class RoomKost extends BaseEntity{
     private Double length;
     private int quantity;
     private int availableRoom;
+    private String label;
 
     @ElementCollection(targetClass = String.class)
     @CollectionTable(name = "room_image",joinColumns = @JoinColumn(name = "room_id"))
