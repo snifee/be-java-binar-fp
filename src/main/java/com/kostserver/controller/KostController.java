@@ -20,8 +20,8 @@ public class KostController {
     @Autowired
     private KostService kostService;
 
-    @PostMapping("/addkost")
-    ResponseEntity<Map> addkost(@Valid @RequestBody AddKostDto request){
+    @PostMapping("/add")
+    ResponseEntity<Map> add(@Valid @RequestBody AddKostDto request){
         try{
             return new ResponseEntity<>(kostService.addKost(request), HttpStatus.OK);
         }catch (Exception e){
@@ -32,14 +32,14 @@ public class KostController {
         }
     }
 
-    @PutMapping("/updatekost")
+    @PutMapping("/update")
     ResponseEntity<Map> updateKost(@Valid @RequestBody UpdateKostDto request){
         try{
             return new ResponseEntity<>(kostService.updateKost(request), HttpStatus.OK);
         }catch (Exception e){
             log.info(e.getMessage());
             Map<String,Object> response = new LinkedHashMap<>();
-            response.put("message","gagal");
+            response.put("message",e.getMessage());
             return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
         }
     }
