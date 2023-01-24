@@ -12,8 +12,8 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "tbl_room_facility")
-public class RoomFacility {
+@Entity(name = "tbl_bedroom_facility")
+public class BedroomFacility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,6 +21,7 @@ public class RoomFacility {
     private String facilityName;
     private Boolean isActive;
 
-    @ManyToMany(mappedBy = "roomFacilitiesId")
+    @ManyToMany(mappedBy = "bedroomFacilitiesId")
     private Set<RoomKost> roomKosts;
+
 }

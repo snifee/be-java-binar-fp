@@ -4,6 +4,7 @@ package com.kostserver.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,7 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Account {
+public class Account extends BaseEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,6 +22,7 @@ public class Account {
     @Column(unique = true)
     private String email;
     private String password;
+    private String name;
     private String phone;
     private Boolean verified = false;
     @ManyToMany(fetch = FetchType.EAGER)

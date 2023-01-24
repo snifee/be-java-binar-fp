@@ -1,19 +1,16 @@
 package com.kostserver.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "tbl_room_facility")
-public class RoomFacility {
+@Entity(name = "tbl_bathroom_facility")
+
+public class BathroomFacility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,6 +18,6 @@ public class RoomFacility {
     private String facilityName;
     private Boolean isActive;
 
-    @ManyToMany(mappedBy = "roomFacilitiesId")
+    @ManyToMany(mappedBy = "bathroomFacilitiesId")
     private Set<RoomKost> roomKosts;
 }
