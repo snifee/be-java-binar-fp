@@ -1,5 +1,6 @@
 package com.kostserver.repository.test;
 
+import com.kostserver.model.EnumKostType;
 import com.kostserver.model.entity.Account;
 import com.kostserver.model.entity.UserProfile;
 import com.kostserver.repository.AccountRepository;
@@ -22,15 +23,19 @@ public class RepositoryTest {
     private UserProfileRepository userProfileRepository;
     @Test
     public void test(){
-        Account account = new Account();
-        account.setEmail("mail@gmail.com");
-        accountRepository.save(account);
+//        Account account = new Account();
+//        account.setEmail("mail@gmail.com");
+//        accountRepository.save(account);
+//
+//        UserProfile userProfile = new UserProfile();
+////        userProfile.setAccountId(account);
+//
+//        userProfileRepository.save(userProfile);
+//        System.out.println(userProfile.getCreatedDate());
 
-        UserProfile userProfile = new UserProfile();
-//        userProfile.setAccountId(account);
+        EnumKostType enumKostType = EnumKostType.valueOf("PUTRA");
+        System.out.println(enumKostType);
 
-        userProfileRepository.save(userProfile);
-        System.out.println(userProfile.getCreatedDate());
 
 
     }
