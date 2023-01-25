@@ -27,7 +27,9 @@ public class DatabaseSeeder implements ApplicationRunner {
     private KostPaymentSchemeRepository kostPaymentSchemeRepository;
 
     @Autowired
-    private  KostRuleRepo  kostRuleRepo;
+    private KostRuleRepo kostRuleRepo;
+    @Autowired
+    private RatingRepository ratingRepository;
 
     @Autowired
     private RoomKostRepository roomKostRepository;
@@ -42,14 +44,14 @@ public class DatabaseSeeder implements ApplicationRunner {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    String[] emails = {"admin@mail.com", "user1@mail.com", "user2@mail.com"};
-    EnumRole[] roles = {EnumRole.ROLE_USER_PEMILIK,EnumRole.ROLE_USER_PENCARI,EnumRole.ROLE_SUPERUSER};
+    String[] emails = { "admin@mail.com", "user1@mail.com", "user2@mail.com" };
+    EnumRole[] roles = { EnumRole.ROLE_USER_PEMILIK, EnumRole.ROLE_USER_PENCARI, EnumRole.ROLE_SUPERUSER };
     String defaultPassword = "password";
 
     Faker faker = new Faker();
 
-    private void insertToAccountTable(){
-        //SUPERADMIN
+    private void insertToAccountTable() {
+        // SUPERADMIN
         Role roleAdmin = roleRepository.findByName(EnumRole.ROLE_SUPERUSER).get();
         Set<Role> rolesAdmin = new HashSet<>();
         rolesAdmin.add(roleAdmin);
@@ -66,14 +68,14 @@ public class DatabaseSeeder implements ApplicationRunner {
         userProfile0.setAddress("ADMIN");
         userProfile0.setGender(EnumGender.MALE);
         userProfile0.setOccupation("ADMIN");
-        userProfile0.setPhotoUrl("http://res.cloudinary.com/dkmgqnqnw/image/upload/v1674291650/ra23gljkpqxyrsly2d0m.webp");
+        userProfile0
+                .setPhotoUrl("http://res.cloudinary.com/dkmgqnqnw/image/upload/v1674291650/ra23gljkpqxyrsly2d0m.webp");
 
         userProfileRepository.save(userProfile0);
         account0.setUserProfile(userProfile0);
         accountRepository.save(account0);
 
-
-        //========================================================================
+        // ========================================================================
         Role role1 = roleRepository.findByName(EnumRole.ROLE_USER_PEMILIK).get();
         Set<Role> roles1 = new HashSet<>();
         roles1.add(role1);
@@ -142,6 +144,8 @@ public class DatabaseSeeder implements ApplicationRunner {
         RoomKost roomKost11 = new RoomKost();
         roomKost11.setIsAvailable(true);
         roomKost11.setQuantity(2);
+        roomKost11.setLabel("kost terbaru");
+        roomKost11.setPrice(500000D);
         roomKost11.setName("Kamar AC");
         roomKost11.setKost(kost1);
         roomKostRepository.save(roomKost11);
@@ -151,6 +155,8 @@ public class DatabaseSeeder implements ApplicationRunner {
         RoomKost roomKost12 = new RoomKost();
         roomKost12.setIsAvailable(true);
         roomKost12.setQuantity(2);
+        roomKost12.setLabel("kost terhot");
+        roomKost12.setPrice(200000D);
         roomKost12.setName("Kamar Punya Helikopter");
         roomKost12.setKost(kost1);
         roomKostRepository.save(roomKost12);
@@ -161,19 +167,41 @@ public class DatabaseSeeder implements ApplicationRunner {
 
         Kost kost2 = new Kost();
         kost2.setAddress(userProfile3.getAddress());
-        kost2.setKostName("Kost " + userProfile3.getFullname()+ " 2");
+        kost2.setKostName("Kost " + userProfile3.getFullname() + " 2");
         kost2.setOwner(account3);
         kost2.setKostType(EnumKostType.PUTRI);
         kostRepository.save(kost2);
 
         account3.getKosts().add(kost2);
         accountRepository.save(account3);
+
+        Rating rating1 = new Rating();
+        rating1.setRating(4);
+        rating1.setRoomKost(roomKost11);
+        rating1.setAccount(account1);
+        rating1.setUlasan("keren");
+        ratingRepository.save(rating1);
+
+        Rating rating2 = new Rating();
+        rating2.setRating(5);
+        rating2.setRoomKost(roomKost12);
+        rating2.setAccount(account2);
+        rating2.setUlasan("mantulity");
+        ratingRepository.save(rating2);
+
+        Rating rating3 = new Rating();
+        rating3.setRating(2);
+        rating3.setRoomKost(roomKost12);
+        rating3.setAccount(account3);
+        rating3.setUlasan("mantulity");
+        ratingRepository.save(rating3);
+
     }
 
-    private void insertToRoleTable(){
-        Arrays.asList(roles).forEach((role)->{
+    private void insertToRoleTable() {
+        Arrays.asList(roles).forEach((role) -> {
             Boolean existRole = roleRepository.existsByName(role);
-            if (!existRole){
+            if (!existRole) {
                 Role newRole = new Role();
                 newRole.setName(role);
 
@@ -182,7 +210,7 @@ public class DatabaseSeeder implements ApplicationRunner {
         });
     }
 
-    private void insertToKostRuleTable(){
+    private void insertToKostRuleTable() {
         KostRule rule1 = new KostRule();
         rule1.setRule("Dilarang membawa binatang");
         KostRule rule2 = new KostRule();
@@ -198,7 +226,7 @@ public class DatabaseSeeder implements ApplicationRunner {
         kostRuleRepo.save(rule4);
     }
 
-    private void insertToKostPaymentScheme(){
+    private void insertToKostPaymentScheme() {
         KostPaymentScheme kostPaymentScheme = new KostPaymentScheme();
         kostPaymentScheme.setPayment_scheme("HARIAN");
         kostPaymentSchemeRepository.save(kostPaymentScheme);
@@ -210,12 +238,11 @@ public class DatabaseSeeder implements ApplicationRunner {
         kostPaymentSchemeRepository.save(kostPaymentScheme3);
     }
 
-
     @Override
     public void run(ApplicationArguments args) throws Exception {
         Optional<Account> superuser = accountRepository.findByEmail("super@admin.com");
 
-        if (!superuser.isPresent()){
+        if (!superuser.isPresent()) {
             insertToRoleTable();
             insertToAccountTable();
             insertToKostRuleTable();

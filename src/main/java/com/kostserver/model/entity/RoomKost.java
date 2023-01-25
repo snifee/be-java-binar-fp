@@ -1,6 +1,5 @@
 package com.kostserver.model.entity;
 
-
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,7 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "tbl_room")
-public class RoomKost extends BaseEntity{
+public class RoomKost extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,17 +28,14 @@ public class RoomKost extends BaseEntity{
     private Double length;
     private int quantity;
     private int availableRoom;
+    private String label;
 
     @ElementCollection(targetClass = String.class)
-    @CollectionTable(name = "room_image",joinColumns = @JoinColumn(name = "room_id"))
+    @CollectionTable(name = "room_image", joinColumns = @JoinColumn(name = "room_id"))
     private List<String> imageUrl;
 
     @ManyToMany
-    @JoinTable(
-            name = "room_kost_facilities",
-            joinColumns = @JoinColumn(name ="room_kost_id"),
-            inverseJoinColumns = @JoinColumn(name = "facilities_id")
-    )
+    @JoinTable(name = "room_kost_facilities", joinColumns = @JoinColumn(name = "room_kost_id"), inverseJoinColumns = @JoinColumn(name = "facilities_id"))
     private Set<RoomFacility> roomFacilities;
 
     @ManyToOne
