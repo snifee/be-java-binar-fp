@@ -15,18 +15,30 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface RoomKostRepository extends JpaRepository<RoomKost, Long> {
-        @Query(value = "SELECT new com.kostserver.dto.RoomDto(rm.id, rm.name, rm.label, rm.price, ks.address, ks.kostType,avg(rt.rating))"
-                        +
-                        "FROM tbl_room rm " +
-                        "JOIN tbl_rating rt on rt.roomKost = rm.id " +
-                        "JOIN tbl_kost ks on rm.kost = ks.id " +
-                        "WHERE lower(rm.name) LIKE %:keyword% " +
-                        "AND (rm.price>=:minPrice AND rm.price <=:maxPrice)" +
-                        "AND lower(rm.label) LIKE %:label% " +
-                        "AND lower(ks.kostType) LIKE %:type% " +
-                        "group by rm.id, ks.id")
-        List<RoomDto> searchRoom(@Param("keyword") String keyword, @Param("label") String label,
-                        @Param("type") String type, @Param("minPrice") Double minPrice,
-                        @Param("maxPrice") Double maxPrice, Pageable pageable);
+//        @Query(value = "SELECT new RoomDto(rm.id, rm.name, rm.label, rm.price, rm.image_url,ks.address, ks.kostType,avg(rt.rating))"
+//                        +
+//                        "FROM RoomKost rm " +
+//                        "JOIN room_image ri on ri.room_id = rm,id"+
+//                        "JOIN Rating rt on rt.roomKost = rm.id " +
+//                        "JOIN RoomKost ks on rm.kost = ks.id " +
+//                        "WHERE lower(rm.name) LIKE %:keyword% " +
+//                        "AND (rm.price>=:minPrice AND rm.price <=:maxPrice)" +
+//                        "AND lower(rm.label) LIKE %:label% " +
+//                        "AND lower(ks.kostType) LIKE %:type% " +
+//                        "group by rm.id, ks.id",nativeQuery = false)
+//        List<RoomDto> searchRoom(@Param("keyword") String keyword, @Param("label") String label,
+//                        @Param("type") String type, @Param("minPrice") Double minPrice,
+//                        @Param("maxPrice") Double maxPrice, Pageable pageable);
+
+        @Query(value = "SELECT rm " +
+                "FROM tbl_room rm " +
+                "JOIN tbl_kost ks on ks.id = rm.kost " +
+                "WHERE lower(rm.name) LIKE %:keyword% " +
+                "AND (rm.price>=:minPrice AND rm.price <=:maxPrice)" +
+                "AND lower(rm.label) LIKE %:label% " +
+                "AND ks.kostType = :type ",nativeQuery = false)
+        List<RoomKost> searchRoom(@Param("keyword") String keyword, @Param("label") String label,
+                                 @Param("type") EnumKostType type, @Param("minPrice") Double minPrice,
+                                 @Param("maxPrice") Double maxPrice, Pageable pageable);
 
 }

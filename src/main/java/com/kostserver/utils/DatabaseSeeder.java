@@ -14,10 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -148,6 +145,11 @@ public class DatabaseSeeder implements ApplicationRunner {
         roomKost11.setPrice(500000D);
         roomKost11.setName("Kamar AC");
         roomKost11.setKost(kost1);
+        List<String> url = new ArrayList<>();
+        url.add("hello1");
+        url.add("hello2");
+        url.add("hello3");
+        roomKost11.setImageUrl(url);
         roomKostRepository.save(roomKost11);
 
         kost1.getRoomKosts().add(roomKost11);
@@ -159,6 +161,11 @@ public class DatabaseSeeder implements ApplicationRunner {
         roomKost12.setPrice(200000D);
         roomKost12.setName("Kamar Punya Helikopter");
         roomKost12.setKost(kost1);
+        List<String> url1 = new ArrayList<>();
+        url1.add("hello1");
+        url1.add("hello2");
+        url1.add("hello3");
+        roomKost12.setImageUrl(url1);
         roomKostRepository.save(roomKost12);
 
         kost1.getRoomKosts().add(roomKost12);
