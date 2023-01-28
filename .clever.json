@@ -1,0 +1,18 @@
+{
+  "apps": [
+    {
+      "app_id": "app_cd269f25-b1c0-4984-a8b6-1e8c9e53557e",
+      "org_id": "user_cb3dc3e7-1869-4cd6-9712-8366f1acdeb3",
+      "deploy_url": "https://github.com/snifee/be-java-binar-fp.git",
+      "name": "be-java-binar-fp",
+      "alias": "be-java-binar-fp"
+    },
+    {
+      "app_id": "app_1461a4a7-0f6e-4ebe-9801-2290fa2133de",
+      "org_id": "user_cb3dc3e7-1869-4cd6-9712-8366f1acdeb3",
+      "deploy_url": "https://push-n2-par-clevercloud-customers.services.clever-cloud.com/app_1461a4a7-0f6e-4ebe-9801-2290fa2133de.git",
+      "name": "binar1",
+      "alias": "binar1"
+    }
+  ]
+}
