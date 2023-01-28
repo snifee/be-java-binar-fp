@@ -15,7 +15,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface RoomKostRepository extends JpaRepository<RoomKost, Long> {
-        @Query(value = "SELECT new com.kostserver.dto.RoomDto(rm.id, rm.name, rm.label, rm.price, ks.address, ks.kostType,avg(rt.rating))"
+        @Query(value = "SELECT new com.kostserver.dto.RoomDto(rm.id, rm.name, rm.label,rm.price,ks.address, ks.kostType,avg(rt.rating), 'null')"
                         +
                         "FROM tbl_room rm " +
                         "JOIN tbl_rating rt on rt.roomKost = rm.id " +
@@ -23,10 +23,14 @@ public interface RoomKostRepository extends JpaRepository<RoomKost, Long> {
                         "WHERE lower(rm.name) LIKE %:keyword% " +
                         "AND (rm.price>=:minPrice AND rm.price <=:maxPrice)" +
                         "AND lower(rm.label) LIKE %:label% " +
-                        "AND lower(ks.kostType) LIKE %:type% " +
+                        "AND (ks.kostType = :type OR :type is null)" +
                         "group by rm.id, ks.id")
+
         List<RoomDto> searchRoom(@Param("keyword") String keyword, @Param("label") String label,
-                        @Param("type") String type, @Param("minPrice") Double minPrice,
+                        @Param("type") EnumKostType type, @Param("minPrice") Double minPrice,
                         @Param("maxPrice") Double maxPrice, Pageable pageable);
+
+        @Query(value = "select rm from tbl_room rm where rm.id=:id")
+        RoomKost getRoom(@Param("id") Long id);
 
 }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -147,6 +148,8 @@ public class DatabaseSeeder implements ApplicationRunner {
         roomKost11.setLabel("kost terbaru");
         roomKost11.setPrice(500000D);
         roomKost11.setName("Kamar AC");
+        List<String> images = Arrays.asList("image1", "image2", "image3");
+        roomKost11.setImageUrl(images);
         roomKost11.setKost(kost1);
         roomKostRepository.save(roomKost11);
 
@@ -159,6 +162,7 @@ public class DatabaseSeeder implements ApplicationRunner {
         roomKost12.setPrice(200000D);
         roomKost12.setName("Kamar Punya Helikopter");
         roomKost12.setKost(kost1);
+        roomKost12.setImageUrl(images);
         roomKostRepository.save(roomKost12);
 
         kost1.getRoomKosts().add(roomKost12);
@@ -171,6 +175,19 @@ public class DatabaseSeeder implements ApplicationRunner {
         kost2.setOwner(account3);
         kost2.setKostType(EnumKostType.PUTRI);
         kostRepository.save(kost2);
+
+        RoomKost roomKost13 = new RoomKost();
+        roomKost13.setIsAvailable(true);
+        roomKost13.setQuantity(2);
+        roomKost13.setLabel("kost tehit");
+        roomKost13.setPrice(900000D);
+        roomKost13.setName("Kamar Macan");
+        roomKost13.setKost(kost2);
+        roomKostRepository.save(roomKost13);
+
+        kost2.getRoomKosts().add(roomKost13);
+
+        kostRepository.save(kost1);
 
         account3.getKosts().add(kost2);
         accountRepository.save(account3);
@@ -195,6 +212,13 @@ public class DatabaseSeeder implements ApplicationRunner {
         rating3.setAccount(account3);
         rating3.setUlasan("mantulity");
         ratingRepository.save(rating3);
+
+        Rating rating4 = new Rating();
+        rating4.setRating(2);
+        rating4.setRoomKost(roomKost13);
+        rating4.setAccount(account3);
+        rating4.setUlasan("mantulity");
+        ratingRepository.save(rating4);
 
     }
 

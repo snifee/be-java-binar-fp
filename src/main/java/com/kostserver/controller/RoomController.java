@@ -28,15 +28,15 @@ public class RoomController {
     @GetMapping("/search")
     ResponseEntity<Map> searchRoom(@RequestParam(value = "keyword", required = true) String keyword,
             @RequestParam(value = "label", required = false, defaultValue = "") String label,
-            @RequestParam(value = "type", required = false, defaultValue = "") String type,
+            @RequestParam(value = "type", required = false) String type,
             @RequestParam(value = "price_min", required = false, defaultValue = "0") Double price_min,
             @RequestParam(value = "price_max", required = false, defaultValue = "9999999999") Double price_max,
-            @RequestParam(value = "size", required = false, defaultValue = "0") int size) {
+            @RequestParam(value = "size", required = false, defaultValue = "1") int size) {
         try {
-            // EnumKostType kostType = EnumKostType.valueOf(type);
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("status", HttpStatus.OK);
-            response.put("data", roomService.searchRoom(keyword, label, type, price_min, price_max, size));
+            response.put("data", roomService.searchRoom(keyword, label, type, price_min,
+                    price_max, size));
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             Map<String, Object> response = new LinkedHashMap<>();
@@ -46,4 +46,5 @@ public class RoomController {
         }
 
     }
+
 }

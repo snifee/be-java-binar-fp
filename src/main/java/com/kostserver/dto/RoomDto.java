@@ -16,9 +16,9 @@ public class RoomDto {
     private String name;
     private String label;
     private Double price;
-    // private List<String> imageUrl;
     private String address;
     private EnumKostType type;
     private Double rating;
+    private String thumbnail;
 
 }
