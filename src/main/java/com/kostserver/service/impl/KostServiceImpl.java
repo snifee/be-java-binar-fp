@@ -46,7 +46,7 @@ public class KostServiceImpl implements KostService {
 
     @Transactional
     @Override
-    public Map addKost(AddKostDto request) throws Exception {
+    public Kost addKost(AddKostDto request) throws Exception {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Optional<Account> account = accountRepository.findByEmail(email);
 
@@ -105,17 +105,12 @@ public class KostServiceImpl implements KostService {
 
         accountRepository.save(account.get());
 
-        Map<String,Object> response = new LinkedHashMap<>();
-
-        response.put("status", HttpStatus.OK);
-        response.put("message","kost saved");
-
-        return response;
+        return kost;
     }
 
     @Transactional
     @Override
-    public Map updateKost(UpdateKostDto request) throws Exception {
+    public Kost updateKost(UpdateKostDto request) throws Exception {
         String requestEmail = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Optional<Kost> kost = kostRepository.findById(request.getId());
@@ -207,10 +202,6 @@ public class KostServiceImpl implements KostService {
 
         kostRepository.save(kost.get());
 
-        Map<String ,Object> response = new LinkedHashMap<>();
-        response.put("status",HttpStatus.OK);
-        response.put("message","kost with id="+request.getId()+" UPDATED");
-
-        return response;
+        return kost.get();
     }
 }

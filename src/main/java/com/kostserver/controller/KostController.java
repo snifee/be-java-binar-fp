@@ -2,6 +2,8 @@ package com.kostserver.controller;
 
 import com.kostserver.dto.request.AddKostDto;
 import com.kostserver.dto.request.UpdateKostDto;
+import com.kostserver.model.entity.Kost;
+import com.kostserver.model.response.Response;
 import com.kostserver.service.KostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,25 +23,33 @@ public class KostController {
     private KostService kostService;
 
     @PostMapping("/add")
-    ResponseEntity<Map> add(@Valid @RequestBody AddKostDto request){
+    ResponseEntity<Response> add(@Valid @RequestBody AddKostDto request){
         try{
-            return new ResponseEntity<>(kostService.addKost(request), HttpStatus.OK);
+            Kost data = kostService.addKost(request);
+            Response response = new Response();
+            response.setStatus(HttpStatus.OK.value());
+            response.setData(data);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }catch (Exception e){
-            log.info(e.getMessage());
-            Map<String,Object> response = new LinkedHashMap<>();
-            response.put("message","gagal");
+            Response response = new Response();
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            response.setError(e.getMessage());
             return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("/update")
-    ResponseEntity<Map> updateKost(@Valid @RequestBody UpdateKostDto request){
+    ResponseEntity<Response> updateKost(@Valid @RequestBody UpdateKostDto request){
         try{
-            return new ResponseEntity<>(kostService.updateKost(request), HttpStatus.OK);
+            Kost data = kostService.updateKost(request);
+            Response response = new Response();
+            response.setStatus(HttpStatus.OK.value());
+            response.setData(data);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }catch (Exception e){
-            log.info(e.getMessage());
-            Map<String,Object> response = new LinkedHashMap<>();
-            response.put("message",e.getMessage());
+            Response response = new Response();
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            response.setError(e.getMessage());
             return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
         }
     }
