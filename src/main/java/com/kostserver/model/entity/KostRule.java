@@ -15,5 +15,4 @@ public class KostRule {
     private Long id;
 
     private String rule;
-    private String description;
 }

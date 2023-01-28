@@ -1,11 +1,14 @@
 package com.kostserver.model.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -20,7 +23,7 @@ public class RoomKost extends BaseEntity implements Serializable {
 
     private Double price;
     private String label;
-    private Integer roomNumber;
+    private Boolean indoorBathroom;
     private Boolean isAvailable;
     private String description;
     private Integer maxPerson;
@@ -29,44 +32,37 @@ public class RoomKost extends BaseEntity implements Serializable {
     private Double length;
     private Integer quantity;
     private Integer availableRoom;
-    private String[] images;
-    private Boolean indoorBathroom;
 
-    @ManyToMany
+
+    @ElementCollection(targetClass = String.class,fetch = FetchType.LAZY)
+    @CollectionTable(name = "room_image",joinColumns = @JoinColumn(name = "room_id"))
+    private List<String> imageUrl = new ArrayList<>();
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "room_kost_facilities",
             joinColumns = @JoinColumn(name ="room_kost_id"),
             inverseJoinColumns = @JoinColumn(name = "room_facilities_id")
     )
-    private Set<RoomFacility> roomFacilitiesId;
-    @ManyToMany
-    @JoinTable(
-            name = "bathroom_kost_facilities",
-            joinColumns = @JoinColumn(name ="room_kost_id"),
-            inverseJoinColumns = @JoinColumn(name = "bathroom_facilities_id")
-    )
-    private Set<BathroomFacility> bathroomFacilitiesId;
+    private Set<RoomFacility> roomFacilitiesId = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "bedroom_kost_facilities",
-            joinColumns = @JoinColumn(name ="room_kost_id"),
-            inverseJoinColumns = @JoinColumn(name = "bedroom_facilities_id")
-    )
-    private Set<BedroomFacility> bedroomFacilitiesId;
-
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     private Kost kost;
 
+    @JsonIgnore
     @ManyToOne
     private Account owner;
 
-    @OneToMany(mappedBy = "roomKost")
+    @JsonIgnore
+    @OneToMany(mappedBy = "roomKost",fetch = FetchType.EAGER)
     private Set<Rating> rating = new HashSet<>();
 
-    @OneToMany(mappedBy = "roomKost")
+    @OneToMany(mappedBy = "roomKost",fetch = FetchType.EAGER)
     private Set<AdditionalRoomFacility> additionalRoomFacilities = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "roomKost")
     private Set<Transaction> transactions = new HashSet<>();
 }

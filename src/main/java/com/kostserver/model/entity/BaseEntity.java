@@ -1,5 +1,6 @@
 package com.kostserver.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,14 +23,17 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
 
+    @JsonIgnore
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date createdDate;
 
+    @JsonIgnore
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date updatedDate;
 
+    @JsonIgnore
     private boolean isDeleted = false;
 
 }

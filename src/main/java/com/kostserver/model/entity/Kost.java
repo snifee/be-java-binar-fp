@@ -1,5 +1,6 @@
 package com.kostserver.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kostserver.model.EnumKostPaymentScheme;
 import com.kostserver.model.EnumKostType;
 import lombok.AllArgsConstructor;
@@ -44,20 +45,21 @@ public class Kost implements Serializable {
     private String additionalKostRule;
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "kost_payment_schemes",
             joinColumns = @JoinColumn(name = "kost_id"),
             inverseJoinColumns = @JoinColumn(name = "payment_scheme_id"))
     private Set<KostPaymentScheme> kostPaymentScheme = new HashSet<>();
 
-
+    @JsonIgnore
     @ManyToOne
     private Account owner;
 
-    @OneToMany(mappedBy = "kost")
+    @JsonIgnore
+    @OneToMany(mappedBy = "kost",fetch = FetchType.EAGER)
     private Set<RoomKost> roomKosts = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "kost_rules",
             joinColumns = @JoinColumn(name = "kost_id"),
             inverseJoinColumns = @JoinColumn(name = "rule_id"))

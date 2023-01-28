@@ -1,6 +1,7 @@
 package com.kostserver.model.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,7 +23,6 @@ public class Account extends BaseEntity implements Serializable {
     @Column(unique = true)
     private String email;
     private String password;
-    private String name;
     private String phone;
     private Boolean verified = false;
     @ManyToMany(fetch = FetchType.EAGER)
@@ -32,20 +32,16 @@ public class Account extends BaseEntity implements Serializable {
     private Set<Role> roles = new HashSet<>();
 
 
+    @JsonIgnore
     @OneToOne(mappedBy = "account")
     private UserProfile userProfile;
+
+    @JsonIgnore
     @OneToOne(mappedBy = "account")
     private UserValidation userValidation;
+
+    @JsonIgnore
     @OneToOne(mappedBy = "account")
     private UserBank userBank;
-
-    @OneToMany(mappedBy = "account")
-    private Set<Transaction> transactions;
-
-    @OneToMany(mappedBy = "owner")
-    private Set<Kost> kosts = new HashSet<>();
-
-    @OneToMany(mappedBy = "account")
-    private Set<Rating> ratings = new HashSet<>();
 
 }

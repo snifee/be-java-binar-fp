@@ -1,5 +1,6 @@
 package com.kostserver.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,9 +16,10 @@ public class AdditionalRoomFacility {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String facilityName;
+    private String name;
     private Double price;
 
+    @JsonIgnore
     @ManyToOne
     private RoomKost roomKost;
 }

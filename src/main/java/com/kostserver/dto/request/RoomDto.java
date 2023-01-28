@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -12,16 +15,18 @@ import java.util.Set;
 @NoArgsConstructor
 public class RoomDto {
 
+    private Long kost_id;
+
     private Double price;
-    private Boolean isAvailable;
-    private Integer maxPerson;
+    private Boolean is_available;
+    private Integer max_person;
     private String name;
     private Double width;
     private Double length;
     private Integer quantity;
-    private String[] images;
-    private Boolean indoorBathroom;
-    private Set<BathroomFacility> bathroomFacilitiesId;
-    private Set<BedroomFacility> bedroomFacilitiesId;
-    private Set<AdditionalRoomFacility> additionalRoomFacilities;
+    private List<String> images = new ArrayList<>();
+    private Boolean indoor_bathroom;
+    private Set<RoomFacility> bathroom_facilities = new HashSet<>();
+    private Set<RoomFacility> bedroom_facilities = new HashSet<>();
+    private Set<AdditionalRoomFacility> addons_facilities = new HashSet<>();
 }

@@ -14,6 +14,9 @@ import java.util.Optional;
 @Repository
 public interface RoomKostRepository extends JpaRepository<RoomKost, Long> {
 
+
+    Optional<RoomKost> findById(Long id);
+
     @Query(value = "SELECT rk " + "FROM RoomKost rk " + "join Kost k " + "on rk.kost = k.id " +
             "join RoomFacilityRepository rf " + "on rk.roomFacilitiesId = rf.id " +
             "join BathroomFacility bf " + "on rk.bathroomFacilitiesId = bf.id " +

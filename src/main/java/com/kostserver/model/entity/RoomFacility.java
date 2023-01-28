@@ -1,5 +1,6 @@
 package com.kostserver.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,5 @@ public class RoomFacility {
     private String facilityName;
     private Boolean isActive;
 
-    @ManyToMany(mappedBy = "roomFacilitiesId")
-    private Set<RoomKost> roomKosts;
+    private String type;
 }

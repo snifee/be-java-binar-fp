@@ -101,7 +101,6 @@ public class KostServiceImpl implements KostService {
 
         kostRepository.save(kost);
 
-        account.get().getKosts().add(kost);
         accountRepository.save(account.get());
 
         Map<String,Object> response = new LinkedHashMap<>();
