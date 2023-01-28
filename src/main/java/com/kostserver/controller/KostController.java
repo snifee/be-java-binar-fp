@@ -21,9 +21,7 @@ public class KostController {
     private KostService kostService;
 
     @PostMapping("/add")
-
     ResponseEntity<Map> add(@Valid @RequestBody AddKostDto request){
-
         try{
             return new ResponseEntity<>(kostService.addKost(request), HttpStatus.OK);
         }catch (Exception e){

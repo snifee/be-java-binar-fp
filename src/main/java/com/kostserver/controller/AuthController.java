@@ -31,9 +31,6 @@ public class AuthController {
     private LoginService loginService;
 
     @Autowired
-    private ChangePasswordService changePasswordService;
-
-    @Autowired
     private OtpService otpService;
 
 
@@ -55,18 +52,6 @@ public class AuthController {
     ResponseEntity<Map> login(@Valid @RequestBody LoginRequestDto request){
         Map response = loginService.login(request);
         return new ResponseEntity<Map>(response, (HttpStatus) response.get("status"));
-    }
-
-    @PutMapping("/password")
-    ResponseEntity<Map> changePassword(@Valid @RequestBody ChangePasswordDto request){
-        try{
-            return new ResponseEntity<>(changePasswordService.changePassword(request),HttpStatus.OK);
-        }catch (Exception e){
-            Map<String, Object> response = new LinkedHashMap<>();
-            response.put("status",HttpStatus.BAD_REQUEST);
-            response.put("message",e.getMessage());
-            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
-        }
     }
 
 

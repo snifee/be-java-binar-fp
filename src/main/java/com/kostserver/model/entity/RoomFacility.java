@@ -1,6 +1,10 @@
 package com.kostserver.model.entity;
 
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -9,7 +13,6 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
 @Entity(name = "tbl_room_facility")
 public class RoomFacility {
     @Id
@@ -19,6 +22,5 @@ public class RoomFacility {
     private String facilityName;
     private Boolean isActive;
 
-    @ManyToMany(mappedBy = "roomFacilities")
-    private Set<RoomKost> roomKosts;
+    private String type;
 }

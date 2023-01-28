@@ -1,9 +1,11 @@
 package com.kostserver.model.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Account {
+public class Account extends BaseEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,20 +33,16 @@ public class Account {
     private Set<Role> roles = new HashSet<>();
 
 
+    @JsonIgnore
     @OneToOne(mappedBy = "account")
     private UserProfile userProfile;
+
+    @JsonIgnore
     @OneToOne(mappedBy = "account")
     private UserValidation userValidation;
+
+    @JsonIgnore
     @OneToOne(mappedBy = "account")
     private UserBank userBank;
-
-    @OneToMany(mappedBy = "account")
-    private Set<Transaction> transactions;
-
-    @OneToMany(mappedBy = "owner")
-    private Set<Kost> kosts = new HashSet<>();
-
-    @OneToMany(mappedBy = "account")
-    private Set<Rating> ratings = new HashSet<>();
 
 }

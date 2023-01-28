@@ -1,11 +1,15 @@
 package com.kostserver.utils;
 
 import com.github.javafaker.Faker;
+import com.github.javafaker.service.FakeValuesService;
+import com.github.javafaker.service.RandomService;
 import com.kostserver.model.EnumGender;
+import com.kostserver.model.EnumIdCardType;
 import com.kostserver.model.EnumKostType;
 import com.kostserver.model.entity.*;
 import com.kostserver.model.EnumRole;
 import com.kostserver.repository.*;
+import com.kostserver.repository.test.UserValidationRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -14,10 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -25,6 +26,9 @@ import java.util.Set;
 public class DatabaseSeeder implements ApplicationRunner {
     @Autowired
     private KostPaymentSchemeRepository kostPaymentSchemeRepository;
+
+    @Autowired
+    private AdditionalRoomFacilityRepo additionalRoomFacilityRepo;
 
     @Autowired
     private  KostRuleRepo  kostRuleRepo;
@@ -37,18 +41,31 @@ public class DatabaseSeeder implements ApplicationRunner {
     private RoleRepository roleRepository;
     @Autowired
     private UserProfileRepository userProfileRepository;
+
+    @Autowired
+    private UserBankRepo userBankRepo;
+
+    @Autowired
+    private UserValidationRepo userValidationRepo;
+
     @Autowired
     private KostRepository kostRepository;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    @Autowired
+    private RoomFacilityRepo roomFacilityRepo;
+
     String[] emails = {"admin@mail.com", "user1@mail.com", "user2@mail.com"};
     EnumRole[] roles = {EnumRole.ROLE_USER_PEMILIK,EnumRole.ROLE_USER_PENCARI,EnumRole.ROLE_SUPERUSER};
     String defaultPassword = "password";
 
-    Faker faker = new Faker();
 
-    private void insertToAccountTable(){
+
+    Random random = new Random();
+
+    private void insertToAccountTableSuperadmin(){
+        Faker faker = new Faker(new Random(24));
         //SUPERADMIN
         Role roleAdmin = roleRepository.findByName(EnumRole.ROLE_SUPERUSER).get();
         Set<Role> rolesAdmin = new HashSet<>();
@@ -71,103 +88,177 @@ public class DatabaseSeeder implements ApplicationRunner {
         userProfileRepository.save(userProfile0);
         account0.setUserProfile(userProfile0);
         accountRepository.save(account0);
+    }
 
+    private void insertToAccountTablePemilik(){
+        Long randomId = (long)random.nextInt((5 - 1) + 1) + 1;
 
-        //========================================================================
         Role role1 = roleRepository.findByName(EnumRole.ROLE_USER_PEMILIK).get();
         Set<Role> roles1 = new HashSet<>();
         roles1.add(role1);
 
-        Role role2 = roleRepository.findByName(EnumRole.ROLE_USER_PENCARI).get();
-        Set<Role> roles2 = new HashSet<>();
-        roles2.add(role2);
+        for (int i=0;i<1;i++){
+            Faker faker = new Faker( new Locale("en-US"),new Random(randomId));
+            Integer r = random.nextInt();
+            String email = faker.bothify(faker.name().lastName()+".????"+r+"@pemilik.com");
+            Optional<Account> checkAccount = accountRepository.findByEmail(email);
 
-        Account account1 = new Account();
-        account1.setEmail("user1@pemilik.com");
-        account1.setPassword(passwordEncoder.encode(defaultPassword));
-        account1.setPhone(faker.phoneNumber().phoneNumber());
-        account1.setRoles(roles1);
-        accountRepository.save(account1);
-        UserProfile userProfile1 = new UserProfile();
-        userProfile1.setAccount(account1);
-        userProfile1.setFullname(faker.name().fullName());
-        userProfile1.setAddress(faker.address().fullAddress());
-        userProfile1.setGender(EnumGender.MALE);
-        userProfileRepository.save(userProfile1);
-        account1.setUserProfile(userProfile1);
-        accountRepository.save(account1);
+            if (checkAccount.isPresent()){
+                continue;
+            }
+            Account accountPemilik = new Account();
+            accountPemilik.setEmail(email);
+            accountPemilik.setPassword(passwordEncoder.encode(defaultPassword));
+            accountPemilik.setPhone(faker.phoneNumber().phoneNumber());
+            accountPemilik.setRoles(roles1);
+            accountRepository.save(accountPemilik);
 
-        Account account2 = new Account();
-        account2.setEmail("user2@pemilik.com");
-        account2.setPassword(passwordEncoder.encode(defaultPassword));
-        account2.setPhone(faker.phoneNumber().phoneNumber());
-        account2.setRoles(roles1);
-        accountRepository.save(account2);
-        UserProfile userProfile2 = new UserProfile();
-        userProfile2.setAccount(account2);
-        userProfile2.setFullname(faker.name().fullName());
-        userProfile2.setAddress(faker.address().fullAddress());
-        userProfile2.setGender(EnumGender.FEMALE);
-        userProfileRepository.save(userProfile2);
-        account2.setUserProfile(userProfile2);
-        accountRepository.save(account2);
+            UserProfile userProfile1 = new UserProfile();
+            userProfile1.setAccount(accountPemilik);
+            userProfile1.setFullname(faker.name().fullName());
+            userProfile1.setAddress(faker.address().fullAddress());
+            userProfile1.setGender(EnumGender.MALE);
+            userProfileRepository.save(userProfile1);
 
-        Account account3 = new Account();
-        account3.setEmail("user3@pencari.com");
-        account3.setPassword(passwordEncoder.encode(defaultPassword));
-        account3.setPhone(faker.phoneNumber().phoneNumber());
-        account3.setRoles(roles2);
-        accountRepository.save(account3);
-        UserProfile userProfile3 = new UserProfile();
-        userProfile3.setAccount(account3);
-        userProfile3.setFullname(faker.name().fullName());
-        userProfile3.setAddress(faker.address().fullAddress());
-        userProfile3.setGender(EnumGender.MALE);
-        userProfileRepository.save(userProfile3);
-        account3.setUserProfile(userProfile3);
-        accountRepository.save(account3);
+            UserBank userBank = new UserBank();
+            userBank.setBankName("BCA");
+            userBank.setAccountName(userProfile1.getFullname());
+            userBank.setAccountNumber(faker.finance().creditCard());
+            userBank.setAccount(accountPemilik);
+            userBankRepo.save(userBank);
 
-        log.info(account3.getUserProfile().getFullname());
+            UserValidation userValidation = new UserValidation();
+            userValidation.setIdCardUrl("url");
+            userValidation.setType(EnumIdCardType.KTP);
+            userValidation.setAccount(accountPemilik);
+            userValidationRepo.save(userValidation);
 
-        Kost kost1 = new Kost();
-        kost1.setAddress(userProfile3.getAddress());
-        kost1.setKostName("Kost " + userProfile3.getFullname());
-        kost1.setOwner(account3);
-        kost1.setKostType(EnumKostType.PUTRA);
-        kostRepository.save(kost1);
+            Kost kost = new Kost();
+            kost.setOwner(accountPemilik);
+            kost.setAddress(faker.address().streetAddress());
+            kost.setCity(faker.address().city());
+            kost.setDistrict(faker.address().cityName());
+            kost.setProvince(faker.address().city());
 
-        account3.getKosts().add(kost1);
-        accountRepository.save(account3);
+            Set<KostPaymentScheme> paymentSchemesSet = new HashSet<>();
+            List<KostPaymentScheme> paymentSchemeList = kostPaymentSchemeRepository.findAll();
 
-        RoomKost roomKost11 = new RoomKost();
-        roomKost11.setIsAvailable(true);
-        roomKost11.setQuantity(2);
-        roomKost11.setName("Kamar AC");
-        roomKost11.setKost(kost1);
-        roomKostRepository.save(roomKost11);
+            paymentSchemeList.forEach(paymentScheme -> {
+                paymentSchemesSet.add(paymentScheme);
+            });
 
-        kost1.getRoomKosts().add(roomKost11);
+            kost.setKostPaymentScheme(paymentSchemesSet);
+            kost.setKostName("Kost " + userProfile1.getFullname());
+            kost.setOwner(accountPemilik);
+            kost.setKostType(EnumKostType.PUTRA);
 
-        RoomKost roomKost12 = new RoomKost();
-        roomKost12.setIsAvailable(true);
-        roomKost12.setQuantity(2);
-        roomKost12.setName("Kamar Punya Helikopter");
-        roomKost12.setKost(kost1);
-        roomKostRepository.save(roomKost12);
+            for (int j=0;j<5;j++){
+                Optional<KostRule> kostRule = kostRuleRepo.findById((long) j);
 
-        kost1.getRoomKosts().add(roomKost12);
+                if (kostRule.isPresent()){
+                    kost.getKostRule().add(kostRule.get());
+                }
+            }
 
-        kostRepository.save(kost1);
+            kostRepository.save(kost);
 
-        Kost kost2 = new Kost();
-        kost2.setAddress(userProfile3.getAddress());
-        kost2.setKostName("Kost " + userProfile3.getFullname()+ " 2");
-        kost2.setOwner(account3);
-        kost2.setKostType(EnumKostType.PUTRI);
-        kostRepository.save(kost2);
+            for (int j = 0; j < 2; j++) {
+                RoomKost roomKost = new RoomKost();
+                roomKost.setKost(kost);
+                roomKost.setName("kamar"+faker.superhero().name());
+                roomKost.setLabel("KOST_TERBARU");
+                roomKost.setIsAvailable(true);
+                roomKost.setQuantity(2);
+                roomKost.setIndoorBathroom(true);
+                roomKost.setLength(2.0);
+                roomKost.setWidth(4.0);
+                roomKost.setMaxPerson(2);
+                roomKost.setPrice(600000.0);
+                roomKost.setAvailableRoom(2);
+                roomKost.getImageUrl().add("https://"+roomKost.getName()+"image_url.com");
+                roomKost.getImageUrl().add("https://"+roomKost.getName()+"image_url.com");
+                roomKost.getImageUrl().add("https://"+roomKost.getName()+"image_url.com");
+                roomKostRepository.save(roomKost);
 
-        account3.getKosts().add(kost2);
-        accountRepository.save(account3);
+
+
+
+
+                for (int k = 0; k < 5; k++) {
+                    Optional<RoomFacility> roomFacility =roomFacilityRepo.findById((long) k);
+
+                    if (roomFacility.isPresent()){
+                        roomKost.getRoomFacilitiesId().add(roomFacility.get());
+
+                    }
+                }
+
+                for (int k = 0; k < 3; k++) {
+                    Faker faker1 = new Faker(new Random(24));
+                    AdditionalRoomFacility additionalRoomFacility = new AdditionalRoomFacility();
+                    additionalRoomFacility.setPrice(20000.0);
+                    additionalRoomFacility.setName(faker1.superhero().power());
+                    additionalRoomFacility.setRoomKost(roomKost);
+                    additionalRoomFacilityRepo.save(additionalRoomFacility);
+                }
+
+                roomKostRepository.save(roomKost);
+                kost.getRoomKosts().add(roomKost);
+
+            }
+
+        }
+
+    }
+
+    private void insertToAccountTablePencari(){
+        Long randomId = (long)random.nextInt((5 - 1) + 1) + 1;
+
+        Role role1 = roleRepository.findByName(EnumRole.ROLE_USER_PENCARI).get();
+        Set<Role> roles1 = new HashSet<>();
+        roles1.add(role1);
+
+        for (int i=0;i<1;i++){
+            Faker faker = new Faker( new Locale("en-US"),new Random(100));
+            Integer r = random.nextInt();
+            String email = faker.bothify(faker.name().lastName()+".????"+r+"@pencari.com");
+            Optional<Account> checkAccount = accountRepository.findByEmail(email);
+
+            if (checkAccount.isPresent()){
+                continue;
+            }
+            Account accountPencari = new Account();
+            accountPencari.setEmail(email);
+            accountPencari.setPassword(passwordEncoder.encode(defaultPassword));
+            accountPencari.setPhone(faker.phoneNumber().phoneNumber());
+            accountPencari.setRoles(roles1);
+            accountRepository.save(accountPencari);
+
+            UserProfile userProfile1 = new UserProfile();
+            userProfile1.setAccount(accountPencari);
+            userProfile1.setFullname(faker.name().fullName());
+            userProfile1.setAddress(faker.address().fullAddress());
+            userProfile1.setGender(EnumGender.MALE);
+            userProfileRepository.save(userProfile1);
+
+            UserBank userBank = new UserBank();
+            userBank.setBankName("BCA");
+            userBank.setAccountName(userProfile1.getFullname());
+            userBank.setAccountNumber(faker.finance().creditCard());
+            userBank.setAccount(accountPencari);
+            userBankRepo.save(userBank);
+
+            UserValidation userValidation = new UserValidation();
+            userValidation.setIdCardUrl("url");
+            userValidation.setType(EnumIdCardType.KTP);
+            userValidation.setAccount(accountPencari);
+            userValidationRepo.save(userValidation);
+
+            accountRepository.save(accountPencari);
+
+            faker = null;
+        }
+
     }
 
     private void insertToRoleTable(){
@@ -210,16 +301,46 @@ public class DatabaseSeeder implements ApplicationRunner {
         kostPaymentSchemeRepository.save(kostPaymentScheme3);
     }
 
+    private void insertToRoomFacility(){
+        RoomFacility roomFacility1 = new RoomFacility();
+        roomFacility1.setFacilityName("AC");
+        roomFacility1.setType("FASILITAS_KAMAR");
+        roomFacilityRepo.save(roomFacility1);
+
+        RoomFacility roomFacility2 = new RoomFacility();
+        roomFacility2.setFacilityName("TV");
+        roomFacility2.setType("FASILITAS_KAMAR");
+        roomFacilityRepo.save(roomFacility2);
+
+        RoomFacility roomFacility3 = new RoomFacility();
+        roomFacility3.setFacilityName("LEMARI");
+        roomFacility3.setType("FASILITAS_KAMAR");
+        roomFacilityRepo.save(roomFacility3);
+
+        RoomFacility roomFacility4 = new RoomFacility();
+        roomFacility4.setFacilityName("SHOWER");
+        roomFacility4.setType("FASILITAS_KAMAR_MANDI");
+        roomFacilityRepo.save(roomFacility4);
+
+        RoomFacility roomFacility5 = new RoomFacility();
+        roomFacility5.setFacilityName("CERMIN");
+        roomFacility5.setType("FASILITAS_KAMAR_MANDI");
+        roomFacilityRepo.save(roomFacility5);
+    }
+
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         Optional<Account> superuser = accountRepository.findByEmail("super@admin.com");
 
         if (!superuser.isPresent()){
+            insertToRoomFacility();
             insertToRoleTable();
-            insertToAccountTable();
             insertToKostRuleTable();
             insertToKostPaymentScheme();
+            insertToAccountTableSuperadmin();
+            insertToAccountTablePemilik();
+            insertToAccountTablePencari();
         }
     }
 }

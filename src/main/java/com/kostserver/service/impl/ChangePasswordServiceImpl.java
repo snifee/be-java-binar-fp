@@ -25,8 +25,8 @@ public class ChangePasswordServiceImpl implements ChangePasswordService {
     private BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public Map changePassword(@Valid @RequestBody ChangePasswordDto request) {
-        Map<String ,Object> response = new LinkedHashMap<>();
+    public String changePassword(@Valid @RequestBody ChangePasswordDto request) {
+
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Optional<Account> account = accountRepository.findByEmail(email);
@@ -41,9 +41,6 @@ public class ChangePasswordServiceImpl implements ChangePasswordService {
 
         accountRepository.save(account.get());
 
-        response.put("status", HttpStatus.OK);
-        response.put("message","Password changed");
-
-        return response;
+        return "Password changed";
     }
 }

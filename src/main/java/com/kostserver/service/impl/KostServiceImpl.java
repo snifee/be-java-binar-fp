@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -43,6 +44,7 @@ public class KostServiceImpl implements KostService {
     private Cloudinary cloudinary;
 
 
+    @Transactional
     @Override
     public Map addKost(AddKostDto request) throws Exception {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -101,7 +103,6 @@ public class KostServiceImpl implements KostService {
 
         kostRepository.save(kost);
 
-        account.get().getKosts().add(kost);
         accountRepository.save(account.get());
 
         Map<String,Object> response = new LinkedHashMap<>();
@@ -112,6 +113,7 @@ public class KostServiceImpl implements KostService {
         return response;
     }
 
+    @Transactional
     @Override
     public Map updateKost(UpdateKostDto request) throws Exception {
         String requestEmail = SecurityContextHolder.getContext().getAuthentication().getName();

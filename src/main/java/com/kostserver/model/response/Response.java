@@ -1,5 +1,10 @@
 package com.kostserver.model.response;
 
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@Setter
 public class Response {
     public int status;
     public String message;
