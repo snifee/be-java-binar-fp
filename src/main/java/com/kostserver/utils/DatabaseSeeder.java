@@ -213,12 +213,12 @@ public class DatabaseSeeder implements ApplicationRunner {
         rating3.setUlasan("mantulity");
         ratingRepository.save(rating3);
 
-        Rating rating4 = new Rating();
-        rating4.setRating(2);
-        rating4.setRoomKost(roomKost13);
-        rating4.setAccount(account3);
-        rating4.setUlasan("mantulity");
-        ratingRepository.save(rating4);
+        // Rating rating4 = new Rating();
+        // rating4.setRating(2);
+        // rating4.setRoomKost(roomKost13);
+        // rating4.setAccount(account3);
+        // rating4.setUlasan("mantulity");
+        // ratingRepository.save(rating4);
 
     }
 

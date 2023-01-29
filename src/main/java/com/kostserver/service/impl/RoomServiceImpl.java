@@ -49,6 +49,9 @@ public class RoomServiceImpl implements RoomService {
                 pageable);
         roomData.stream().forEach(room -> {
             RoomKost roomKost = roomKostRepository.getRoom(room.getId());
+            if (room.getRating() == null) {
+                room.setRating(0D);
+            }
             if (!roomKost.getImageUrl().isEmpty()) {
                 room.setThumbnail(roomKost.getImageUrl().get(0));
             }
