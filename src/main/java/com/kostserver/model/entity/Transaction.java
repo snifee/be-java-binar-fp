@@ -1,5 +1,8 @@
 package com.kostserver.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kostserver.model.EnumKostPaymentScheme;
+import com.kostserver.model.EnumTransactionStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,6 +10,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,15 +28,22 @@ public class Transaction extends BaseEntity {
     private Date startRent;
     private Date endRent;
     private Double price;
-    private String status;
+    private EnumTransactionStatus status;
     private int rentalDuration;
-    private String rentalScheme;
+    private EnumKostPaymentScheme paymentScheme;
     private String urlDocument;
+    private Double addonsFacilitiesPrice;
 
+    @ManyToMany
+    private Set<AdditionalRoomFacility> addonsFacilities = new HashSet<>();
+
+    @JsonIgnore
     @ManyToOne
     private Account account;
+    @JsonIgnore
     @ManyToOne
     private RoomKost roomKost;
+    @JsonIgnore
     @ManyToOne
     private Payment payment;
 }
