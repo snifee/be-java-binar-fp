@@ -21,8 +21,6 @@ import java.util.*;
 @Slf4j
 @Service
 public class RoomServiceImpl implements RoomService {
-    @Autowired
-    private RoomFacilityRepository roomFacilityRepository;
 
     @Autowired
     private RoomKostRepository roomKostRepository;

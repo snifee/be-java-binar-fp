@@ -4,11 +4,14 @@ import com.kostserver.model.EnumKostPaymentScheme;
 import com.kostserver.model.entity.AdditionalRoomFacility;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 public class BookingDto {
+
+    @NotNull
     private Long room_id;
     private Long user_id;
     private Integer capacity;

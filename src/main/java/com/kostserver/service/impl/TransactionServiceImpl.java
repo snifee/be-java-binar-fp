@@ -40,8 +40,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Transaction booking(BookingDto request) throws Exception{
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+    public Transaction booking(BookingDto request, String email) throws Exception{
         Optional<Account> account = accountRepository.findByEmail(email);
 
         if (account.isEmpty()){
@@ -119,5 +118,52 @@ public class TransactionServiceImpl implements TransactionService {
 
         return transaction;
 
+    }
+
+    @Override
+    public List<Map<String,Object>> getUserTransactions(String email) throws Exception {
+
+        Optional<Account> account = accountRepository.findByEmail(email);
+
+        if (account.isEmpty()){
+            throw new IllegalStateException("account not found");
+        }
+
+        List<Transaction> transactionList = transactionRepo.getAllTransactionFromAccount(account.get().getId());
+
+        List<Map<String,Object>> data = new ArrayList<>();
+
+        transactionList.forEach(t ->{
+            Map<String,Object> transaction = new LinkedHashMap<>();
+
+            transaction.put("id",t.getId());
+            transaction.put("name",t.getRoomKost().getKost().getKostName());
+            transaction.put("status",t.getStatus());
+            transaction.put("label",t.getRoomKost().getLabel());
+            if (!t.getRoomKost().getImageUrl().isEmpty()){
+                transaction.put("thumbnail",t.getRoomKost().getImageUrl().get(0));
+            }else {
+                transaction.put("thumbnail",null);
+            }
+            transaction.put("address",t.getRoomKost().getKost().getAddress());
+            transaction.put("type",t.getRoomKost().getKost().getKostType());
+
+            if (!t.getRoomKost().getRating().isEmpty()){
+                RoomKost room = t.getRoomKost();
+                Integer totalRating = room.getRating().stream()
+                        .map(r -> r.getRating())
+                        .reduce(0,Integer::sum);
+
+                Double avgRating = (double) (totalRating/room.getRating().size());
+
+                transaction.put("rating",avgRating);
+            }
+
+            transaction.put("rating",null);
+
+            data.add(transaction);
+        });
+
+        return data;
     }
 }

@@ -36,7 +36,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             "/swagger-ui/",
             "/v3/api-docs",
             "/webjars/**",
-            "/v1/auth"));
+            "/v1/auth",
+            "/v1/rooms/{id}"));
 
     @Autowired
     private AccountService accountService;
@@ -87,6 +88,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 
     }
+
+
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
