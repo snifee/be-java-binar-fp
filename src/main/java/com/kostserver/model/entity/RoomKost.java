@@ -38,11 +38,12 @@ public class RoomKost extends BaseEntity implements Serializable {
     private List<String> imageUrl = new ArrayList<>();
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
+
+    @ManyToMany(fetch = FetchType.EAGER,targetEntity = RoomFacility.class)
     @JoinTable(
             name = "room_kost_facilities",
             joinColumns = @JoinColumn(name ="room_kost_id"),
-            inverseJoinColumns = @JoinColumn(name = "room_facilities_id")
+            inverseJoinColumns = @JoinColumn(name = "room_facilities_id",referencedColumnName = "id")
     )
     private Set<RoomFacility> roomFacilitiesId = new HashSet<>();
 

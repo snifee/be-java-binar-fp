@@ -36,7 +36,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests()
-                .antMatchers("/v1/auth/**",
+                .antMatchers("/v1/auth/**","/v1/rooms/**",
                         "/v2/api-docs/**",
                         "/swagger-ui/**",
                         "/configuration/ui",
@@ -45,7 +45,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/swagger-ui.html",
                         "/swagger/**",
                         "/webjars/**").permitAll()
-                .antMatchers("/v1/kost/**").hasAuthority(EnumRole.ROLE_USER_PEMILIK.name())
+                .antMatchers("/v1/rooms/add","/v1/rooms/update").authenticated()
+                .antMatchers("/v1/kost/**","/v1/rooms/update","/v1/rooms/add").hasAuthority(EnumRole.ROLE_USER_PEMILIK.name())
                 .anyRequest()
                 .authenticated()
                 .and()
