@@ -53,4 +53,13 @@ public class RepositoryTest {
         });
     }
 
+    @Test
+    public void transactionRepoOwner(){
+        List<Transaction> list = transactionRepo.getAllTransactionFromOwner(2L);
+
+        list.forEach(t ->{
+            System.out.println(t.getId());
+        });
+    }
+
 }

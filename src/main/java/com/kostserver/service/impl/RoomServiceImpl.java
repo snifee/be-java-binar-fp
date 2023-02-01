@@ -3,7 +3,6 @@ package com.kostserver.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kostserver.model.entity.*;
 import com.kostserver.repository.*;
 import com.kostserver.service.RoomService;
@@ -73,27 +72,23 @@ public class RoomServiceImpl implements RoomService {
         }
 
         if (!request.getBathroom_facilities().isEmpty()){
-            request.getBathroom_facilities().stream().forEach(roomFacility -> {
+            request.getBathroom_facilities().forEach(roomFacility -> {
                 Optional<RoomFacility> facility = roomFacilityRepo.findById(roomFacility.getId());
 
-                if (facility.isPresent()){
-                    room.getRoomFacilitiesId().add(facility.get());
-                }
+                facility.ifPresent(value -> room.getRoomFacilitiesId().add(value));
             });
         }
 
         if (!request.getBedroom_facilities().isEmpty()){
-            request.getBedroom_facilities().stream().forEach(roomFacility -> {
+            request.getBedroom_facilities().forEach(roomFacility -> {
                 Optional<RoomFacility> facility = roomFacilityRepo.findById(roomFacility.getId());
 
-                if (facility.isPresent()){
-                    room.getRoomFacilitiesId().add(facility.get());
-                }
+                facility.ifPresent(value -> room.getRoomFacilitiesId().add(value));
             });
         }
 
         if (!request.getAddons_facilities().isEmpty()){
-            request.getAddons_facilities().stream().forEach(additionalRoomFacility -> {
+            request.getAddons_facilities().forEach(additionalRoomFacility -> {
                 AdditionalRoomFacility facility = additionalRoomFacilityRepo.save(additionalRoomFacility);
                 facility.setRoomKost(room);
                 room.getAdditionalRoomFacilities().add(facility);

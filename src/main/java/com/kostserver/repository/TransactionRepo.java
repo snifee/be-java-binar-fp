@@ -15,4 +15,12 @@ public interface TransactionRepo extends JpaRepository<Transaction,Long> {
     @Query("SELECT t FROM tbl_transaction t " +
             "WHERE t.account.id = :id")
     List<Transaction> getAllTransactionFromAccount(@Param("id") Long id);
+
+
+    @Query("SELECT t FROM Kost k " +
+            "JOIN Account a.id = k.owner.id " +
+            "JOIN tbl_room r  " +
+            "JOIN tbl_transaction t " +
+            "WHERE k.owner.id = :id")
+    List<Transaction> getAllTransactionFromOwner(@Param("id") Long id);
 }
