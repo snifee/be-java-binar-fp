@@ -71,11 +71,13 @@ public class RoomServiceImpl implements RoomService {
             });
         }
 
+        Set<RoomFacility> roomFacilities = new HashSet<>();
+
         if (!request.getBathroom_facilities().isEmpty()){
             request.getBathroom_facilities().forEach(roomFacility -> {
                 Optional<RoomFacility> facility = roomFacilityRepo.findById(roomFacility.getId());
 
-                facility.ifPresent(value -> room.getRoomFacilitiesId().add(value));
+                facility.ifPresent(roomFacilities::add);
             });
         }
 
@@ -83,8 +85,12 @@ public class RoomServiceImpl implements RoomService {
             request.getBedroom_facilities().forEach(roomFacility -> {
                 Optional<RoomFacility> facility = roomFacilityRepo.findById(roomFacility.getId());
 
-                facility.ifPresent(value -> room.getRoomFacilitiesId().add(value));
+                facility.ifPresent(roomFacilities::add);
             });
+        }
+
+        if (!roomFacilities.isEmpty()){
+            room.setRoomFacilitiesId(roomFacilities);
         }
 
         if (!request.getAddons_facilities().isEmpty()){
