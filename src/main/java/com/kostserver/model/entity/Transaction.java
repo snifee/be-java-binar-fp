@@ -35,6 +35,9 @@ public class Transaction extends BaseEntity {
     private Double addonsFacilitiesPrice;
 
     @ManyToMany
+    @JoinTable(name = "tbl_transaction_addons_facilities",
+            joinColumns = @JoinColumn(name = "transaction_id"),
+            inverseJoinColumns = @JoinColumn(name = "addons_facility_id"))
     private Set<AdditionalRoomFacility> addonsFacilities = new HashSet<>();
 
     @JsonIgnore
