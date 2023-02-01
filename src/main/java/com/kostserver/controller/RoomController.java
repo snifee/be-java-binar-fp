@@ -54,4 +54,16 @@ public class RoomController {
         }
     }
 
+    @GetMapping("/contact/{roomId}")
+    ResponseEntity<Response> getRoomOwnerContact(@PathVariable("roomId") Long roomId){
+        try{
+            Map data = roomService.getOwnerContact(roomId);
+            Response response = new Response(HttpStatus.OK.value(), "success",data,null);
+            return new ResponseEntity<>(response,HttpStatus.OK);
+        }catch (Exception e){
+            Response response = new Response(HttpStatus.BAD_REQUEST.value(), "failed",null,e.getMessage());
+            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

@@ -1,16 +1,13 @@
 package com.kostserver.repository.test;
 
 import com.kostserver.model.EnumKostType;
-import com.kostserver.model.entity.Account;
 import com.kostserver.model.entity.Transaction;
-import com.kostserver.model.entity.UserProfile;
 import com.kostserver.repository.AccountRepository;
 import com.kostserver.repository.TransactionRepo;
 import com.kostserver.repository.UserProfileRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -46,7 +43,7 @@ public class RepositoryTest {
 
     @Test
     public void transactionRepo(){
-        List<Transaction> list = transactionRepo.getAllTransactionFromAccount(4L);
+        List<Transaction> list = transactionRepo.getAllTransactionAccount(4L);
 
         list.forEach(t ->{
             System.out.println(t.getId());
@@ -55,7 +52,7 @@ public class RepositoryTest {
 
     @Test
     public void transactionRepoOwner(){
-        List<Transaction> list = transactionRepo.getAllTransactionFromOwner(2L);
+        List<Transaction> list = transactionRepo.getAllTransactionOwner(5L);
 
         list.forEach(t ->{
             System.out.println(t.getId());

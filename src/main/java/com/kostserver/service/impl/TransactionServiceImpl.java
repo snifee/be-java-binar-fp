@@ -11,7 +11,6 @@ import com.kostserver.repository.TransactionRepo;
 import com.kostserver.service.TransactionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -129,7 +128,7 @@ public class TransactionServiceImpl implements TransactionService {
             throw new IllegalStateException("account not found");
         }
 
-        List<Transaction> transactionList = transactionRepo.getAllTransactionFromAccount(account.get().getId());
+        List<Transaction> transactionList = transactionRepo.getAllTransactionAccount(account.get().getId());
 
         List<Map<String,Object>> data = new ArrayList<>();
 
@@ -160,6 +159,51 @@ public class TransactionServiceImpl implements TransactionService {
             }
 
             transaction.put("rating",null);
+
+            data.add(transaction);
+        });
+
+        return data;
+    }
+
+    @Override
+    public List<Map<String, Object>> getOwnerTransactions(String email) throws Exception {
+        Optional<Account> account = accountRepository.findByEmail(email);
+
+        if (account.isEmpty()){
+            throw new IllegalStateException("account not found");
+        }
+
+        List<Transaction> transactionList = transactionRepo.getAllTransactionOwner(account.get().getId());
+
+        List<Map<String,Object>> data = new ArrayList<>();
+
+        transactionList.forEach(t ->{
+            Map<String,Object> transaction = new LinkedHashMap<>();
+
+            transaction.put("id",t.getId());
+            transaction.put("name",t.getAccount().getUserProfile().getFullname());
+            String accountCreatedDate = null;
+            if (t.getAccount().getCreatedDate()!=null){
+                accountCreatedDate = dateFormat.format(t.getAccount().getCreatedDate());
+            }
+            transaction.put("account_created_date",accountCreatedDate);
+            transaction.put("room_name",t.getRoomKost().getName());
+            transaction.put("room_label",t.getRoomKost().getLabel());
+            if (!t.getRoomKost().getImageUrl().isEmpty()){
+                transaction.put("room_thumbnail",t.getRoomKost().getImageUrl().get(0));
+            }else {
+                transaction.put("room_thumbnail",null);
+            }
+            transaction.put("room_address",t.getRoomKost().getKost().getAddress());
+            transaction.put("room_type",t.getRoomKost().getKost().getKostType());
+            transaction.put("price",t.getPrice());
+
+            String transactionCreatedDate = null;
+            if (t.getAccount().getCreatedDate()!=null){
+                transactionCreatedDate = dateFormat.format(t.getCreatedDate());
+            }
+            transaction.put("created_date",transactionCreatedDate);
 
             data.add(transaction);
         });

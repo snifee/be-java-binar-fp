@@ -41,9 +41,6 @@ public class RoomServiceImpl implements RoomService {
     public RoomKost addRoom (RoomDto request) throws Exception{
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        RoomKost room = new RoomKost();
-        room.setName(request.getName());
-
         Optional<Kost> kost = kostRepository.findById(request.getKost_id());
 
         if (kost.isEmpty()){
@@ -53,6 +50,10 @@ public class RoomServiceImpl implements RoomService {
         if (!email.equals(kost.get().getOwner().getEmail())){
             throw new IllegalStateException("not allowed to add room in this kost");
         }
+
+        RoomKost room = new RoomKost();
+        room.setName(request.getName());
+        room.setOwner(kost.get().getOwner());
 
         room.setKost(kost.get());
 
@@ -124,9 +125,7 @@ public class RoomServiceImpl implements RoomService {
             request.getBathroom_facilities().stream().forEach(roomFacility -> {
                 Optional<RoomFacility> facility = roomFacilityRepo.findById(roomFacility.getId());
 
-                if (facility.isPresent()){
-                    facilities.add(facility.get());
-                }
+                facility.ifPresent(facilities::add);
             });
         }
 
@@ -134,9 +133,7 @@ public class RoomServiceImpl implements RoomService {
             request.getBedroom_facilities().stream().forEach(roomFacility -> {
                 Optional<RoomFacility> facility = roomFacilityRepo.findById(roomFacility.getId());
 
-                if (facility.isPresent()){
-                    facilities.add(facility.get());
-                }
+                facility.ifPresent(facilities::add);
             });
         }
 
@@ -307,43 +304,30 @@ public class RoomServiceImpl implements RoomService {
 
         return data;
     }
-//
-//    @Override
-//    public RoomKost getRoomById(Long id) {
-//        return roomKostRepository.findById(id).get();
-//    }
-//
-//    @Override
-//    public Boolean delete(Long id) {
-//        Optional<RoomKost> room = roomKostRepository.findById(id);
-//        if (room.isPresent()) {
-//            RoomKost room1 = room.get();
-//            room1.setDeleted(true);
-//            roomKostRepository.save(room1);
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    @Override
-//    public RoomKost getOwnerById(Long id, String name, String phone, Date createdDate) {
-////        RoomKost roomOwner = roomKostRepository.getOwner(id, name, phone, createdDate);
-////        return roomOwner;
-//
-//        Optional<RoomKost> room = roomKostRepository.findById(id);
-//        if (room.isPresent()) {
-//            RoomKost account = new RoomKost();
-//            Account owner = account.getOwner();
-//            return getOwnerById(owner.getId(), owner.getName(), owner.getPhone(), owner.getCreatedDate());
-//        }
-//        return null;
-//    }
-//
-//
-//    @Override
-//    public List<RoomKost> findByKeyword(String keyword, int pageNo, int pageSize, int minPrice, int maxPrice, int rating) {
-//        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
-//        List<RoomKost> roomList = roomKostRepository.search(keyword.toLowerCase(Locale.ROOT),pageable,minPrice,maxPrice,rating).getContent();
-//        return roomList;
-//    }
+
+    @Override
+    public Map getOwnerContact(Long roomId) throws Exception {
+
+        Optional<RoomKost> room = roomKostRepository.findById(roomId);
+
+        if (room.isEmpty()){
+            throw new IllegalStateException("Room not found");
+        }
+
+        Account owner = room.get().getKost().getOwner();
+
+        Map<String ,Object> data = new LinkedHashMap<>();
+
+        data.put("id",owner.getId());
+
+        data.put("name",owner.getUserProfile().getFullname());
+
+        data.put("phone",owner.getPhone());
+
+        data.put("created_at",owner.getCreatedDate());
+
+        return data;
+    }
+
+
 }

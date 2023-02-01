@@ -53,4 +53,22 @@ public class TransactionController {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/owner")
+    ResponseEntity<Response> ownerTransaction(){
+        try{
+            String email = SecurityContextHolder.getContext().getAuthentication().getName();
+            Response response = new Response();
+            response.setStatus(HttpStatus.OK.value());
+            response.setData(transactionService.getOwnerTransactions(email));
+            response.setMessage("success");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e){
+            Response response = new Response();
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            response.setMessage("failed");
+            response.setError(e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
 }
