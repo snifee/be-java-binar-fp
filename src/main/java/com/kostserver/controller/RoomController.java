@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RestController
@@ -64,6 +65,28 @@ public class RoomController {
             Response response = new Response(HttpStatus.BAD_REQUEST.value(), "failed",null,e.getMessage());
             return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/search")
+    ResponseEntity<Map> searchRoom(@RequestParam(value = "keyword", required = true) String keyword,
+                                   @RequestParam(value = "label", required = false, defaultValue = "") String label,
+                                   @RequestParam(value = "type", required = false) String type,
+                                   @RequestParam(value = "price_min", required = false, defaultValue = "0") Double price_min,
+                                   @RequestParam(value = "price_max", required = false, defaultValue = "9999999999") Double price_max,
+                                   @RequestParam(value = "size", required = false, defaultValue = "1") int size) {
+        try {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("status", HttpStatus.OK);
+            response.put("data", roomService.searchRoom(keyword, label, type, price_min,
+                    price_max, size));
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("status", HttpStatus.BAD_REQUEST);
+            response.put("message", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
     }
 
 }
