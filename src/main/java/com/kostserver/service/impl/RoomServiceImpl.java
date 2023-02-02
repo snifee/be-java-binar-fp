@@ -1,18 +1,20 @@
 package com.kostserver.service.impl;
 
-
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.kostserver.dto.SearchRoomDto;
+import com.kostserver.model.EnumKostType;
 import com.kostserver.model.entity.*;
 import com.kostserver.repository.*;
 import com.kostserver.service.RoomService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.kostserver.dto.request.RoomDto;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.io.IOException;
 import java.util.*;
 
@@ -309,7 +311,6 @@ public class RoomServiceImpl implements RoomService {
         return data;
     }
 
-
     @Override
     public Map getOwnerContact(Long roomId) throws Exception {
 
@@ -333,5 +334,36 @@ public class RoomServiceImpl implements RoomService {
 
         return data;
     }
-}
 
+
+    @Override
+    public List<SearchRoomDto> searchRoom(String keyword, String label, String type, Double minPrice, Double maxPrice, int size) {
+            Pageable pageable = PageRequest.of(0, size);
+            EnumKostType kostType;
+            if (type == null) {
+                kostType = null;
+            } else {
+                kostType = EnumKostType.getTypeFromCode(type);
+            }
+
+            List<SearchRoomDto> roomData = new ArrayList<>();
+            roomData = roomKostRepository.searchRoom(keyword.toLowerCase(Locale.ROOT),
+                    label.toLowerCase(Locale.ROOT),
+                    kostType,
+                    minPrice,
+                    maxPrice,
+                    pageable);
+            roomData.stream().forEach(room -> {
+                Optional<RoomKost> roomKost = roomKostRepository.findById(room.getId());
+                if (room.getRating() == null) {
+                    room.setRating(0D);
+                }
+                if (!roomKost.get().getImageUrl().isEmpty()) {
+                    room.setThumbnail(roomKost.get().getImageUrl().get(0));
+                }
+            });
+            return roomData;
+    }
+
+
+}

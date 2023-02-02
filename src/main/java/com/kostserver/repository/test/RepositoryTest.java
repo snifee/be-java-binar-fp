@@ -38,7 +38,6 @@ public class RepositoryTest {
 
         EnumKostType enumKostType = EnumKostType.valueOf("PUTRA");
         System.out.println(enumKostType);
-
     }
 
     @Test

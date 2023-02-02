@@ -224,7 +224,6 @@ public class TransactionServiceImpl implements TransactionService {
         return data;
     }
 
-
     @Override
     public Transaction updateOwnerTransactionsStatus(String email, UpdateTransactionStatusDto request) throws Exception {
         Optional<Transaction> transaction = transactionRepo.findById(request.getId());
@@ -322,5 +321,4 @@ public class TransactionServiceImpl implements TransactionService {
 
         return transaction.get();
     }
-
 }

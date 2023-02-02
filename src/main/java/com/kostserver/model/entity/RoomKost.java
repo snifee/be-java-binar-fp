@@ -37,8 +37,6 @@ public class RoomKost extends BaseEntity implements Serializable {
     @CollectionTable(name = "room_image",joinColumns = @JoinColumn(name = "room_id"))
     private List<String> imageUrl = new ArrayList<>();
 
-
-
     @ManyToMany(fetch = FetchType.EAGER,targetEntity = RoomFacility.class)
     @JoinTable(
             name = "room_kost_facilities",

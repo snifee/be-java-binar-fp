@@ -20,5 +20,4 @@ public interface TransactionService {
     Map<String,Object> getTransactionById(String email, Long id) throws Exception;
 
     Transaction transactionPay(String email, TransactionPayDto request) throws Exception;
-
 }

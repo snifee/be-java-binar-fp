@@ -74,7 +74,6 @@ public class TransactionController {
         }
     }
 
-
     @PutMapping("/owner")
     ResponseEntity<Response> updateTransactionStatus(@Valid @RequestBody UpdateTransactionStatusDto request){
         try{
@@ -128,5 +127,4 @@ public class TransactionController {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
-
 }
