@@ -12,7 +12,10 @@ com\kostserver\dto\request\LocationDto.class
 com\kostserver\repository\KostRuleRepo.class
 com\kostserver\service\impl\LoginServiceImpl.class
 com\kostserver\model\entity\BaseEntity.class
+<<<<<<< HEAD
 com\kostserver\repository\TransactionRepo.class
+=======
+>>>>>>> feature/booking
 com\kostserver\controller\UserController.class
 com\kostserver\dto\request\LoginRequestDto.class
 com\kostserver\utils\DatabaseSeeder.class
@@ -20,7 +23,10 @@ com\kostserver\config\security\CorsOriginConfig.class
 com\kostserver\model\entity\RoomFacility.class
 com\kostserver\model\entity\UserValidation.class
 com\kostserver\utils\PhoneNumberValidator.class
+<<<<<<< HEAD
 com\kostserver\dto\request\RoomDto.class
+=======
+>>>>>>> feature/booking
 com\kostserver\dto\request\ChangePasswordDto.class
 com\kostserver\repository\AccountRepository.class
 com\kostserver\utils\auth\JwtUtils.class
@@ -28,26 +34,39 @@ com\kostserver\config\SpringFoxConfig.class
 com\kostserver\model\EnumKostType.class
 com\kostserver\dto\request\UpdateBankAccountDto.class
 com\kostserver\service\impl\OtpServiceImpl.class
+<<<<<<< HEAD
 com\kostserver\controller\TransactionController.class
+=======
+>>>>>>> feature/booking
 com\kostserver\service\UserService.class
 com\kostserver\utils\EmailSender.class
 com\kostserver\model\entity\ConfirmationToken.class
 com\kostserver\repository\UserBankRepo.class
+<<<<<<< HEAD
 com\kostserver\service\RoomService.class
+=======
+>>>>>>> feature/booking
 com\kostserver\model\entity\UserBank.class
 com\kostserver\repository\KostPaymentSchemeRepository.class
 com\kostserver\service\impl\RegisterServiceImpl.class
 com\kostserver\model\entity\Kost.class
 com\kostserver\model\response\Response.class
+<<<<<<< HEAD
 com\kostserver\repository\RatingRepo.class
 com\kostserver\model\entity\RoomKost.class
 com\kostserver\service\impl\TransactionServiceImpl.class
+=======
+com\kostserver\model\entity\RoomKost.class
+>>>>>>> feature/booking
 com\kostserver\dto\ErrorResponseDto.class
 com\kostserver\repository\ConfirmationTokenRepository.class
 com\kostserver\repository\UserProfileRepository.class
 com\kostserver\model\entity\UserProfile.class
 com\kostserver\model\entity\AdditionalRoomFacility.class
+<<<<<<< HEAD
 com\kostserver\repository\AdditionalRoomFacilityRepo.class
+=======
+>>>>>>> feature/booking
 com\kostserver\repository\RoomKostRepository.class
 com\kostserver\model\EnumKostPaymentScheme.class
 com\kostserver\service\auth\LoginService.class
@@ -55,7 +74,10 @@ com\kostserver\config\security\WebSecurityConfiguration.class
 com\kostserver\model\EnumRole.class
 com\kostserver\controller\KostController.class
 com\kostserver\dto\SuccessResponseDto.class
+<<<<<<< HEAD
 com\kostserver\service\test\RoomServiceTest.class
+=======
+>>>>>>> feature/booking
 com\kostserver\model\entity\Rating.class
 com\kostserver\model\entity\Role.class
 com\kostserver\controller\AuthController.class
@@ -74,6 +96,7 @@ com\kostserver\model\entity\KostRule.class
 com\kostserver\repository\test\RepositoryTest.class
 com\kostserver\dto\request\AddKostDto.class
 com\kostserver\service\impl\ChangePasswordServiceImpl.class
+<<<<<<< HEAD
 com\kostserver\service\TransactionService.class
 com\kostserver\service\ChangePasswordService.class
 com\kostserver\service\impl\RoomServiceImpl.class
@@ -81,11 +104,19 @@ com\kostserver\model\EnumGender.class
 com\kostserver\model\EnumTransactionStatus.class
 com\kostserver\repository\RoomFacilityRepo.class
 com\kostserver\controller\RoomController.class
+=======
+com\kostserver\service\ChangePasswordService.class
+com\kostserver\model\EnumGender.class
+com\kostserver\model\EnumTransactionStatus.class
+>>>>>>> feature/booking
 com\kostserver\model\entity\Transaction.class
 com\kostserver\service\OtpService.class
 com\kostserver\model\EnumIdCardType.class
 com\kostserver\utils\EmailSender$1.class
 com\kostserver\dto\request\RegisterRequestDto.class
 com\kostserver\service\auth\RegisterService.class
+<<<<<<< HEAD
 com\kostserver\dto\request\BookingDto.class
+=======
+>>>>>>> feature/booking
 com\kostserver\service\impl\UserServiceImpl.class

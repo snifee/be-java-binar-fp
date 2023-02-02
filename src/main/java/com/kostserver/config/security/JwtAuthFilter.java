@@ -89,6 +89,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> feature/booking
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();

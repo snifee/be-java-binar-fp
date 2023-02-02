@@ -1,6 +1,5 @@
 package com.kostserver.model.entity;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kostserver.model.EnumKostPaymentScheme;
 import com.kostserver.model.EnumTransactionStatus;
@@ -29,10 +28,14 @@ public class Transaction extends BaseEntity {
     private Date startRent;
     private Date endRent;
     private Double price;
-    private EnumTransactionStatus status;
     private int rentalDuration;
-    private EnumKostPaymentScheme paymentScheme;
+
     private String urlDocument;
+    @Enumerated(EnumType.STRING)
+    private EnumTransactionStatus status;
+    @Enumerated(EnumType.STRING)
+    private EnumKostPaymentScheme paymentScheme;
+    private String paymentProof;
     private Double addonsFacilitiesPrice;
 
     @ManyToMany

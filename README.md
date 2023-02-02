@@ -2,6 +2,7 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 https://be-java-binar-fp-staging.up.railway.app <br>
 https://kosthub-server.cleverapps.io/
 
@@ -158,6 +159,15 @@ https://be-java-binar-fp-staging.up.railway.app
 ----
   Creates a new User, send email otp and returns the success message.
 >>>>>>> feature/booking
+=======
+https://be-java-binar-fp-staging.up.railway.app
+
+## Registration
+
+**POST /v1/auth/penyewa/register**
+----
+  Creates a new User, send email otp and returns the success message.
+>>>>>>> feature/booking
 * **URL Params**  
   None
 * **Headers**  
@@ -173,11 +183,62 @@ https://be-java-binar-fp-staging.up.railway.app
 * **Success Response:**  
   status: success  
 <<<<<<< HEAD
+<<<<<<< HEAD
+  message:  `{message success}`
+=======
+  message:  `{message success} `
+>>>>>>> feature/booking
+
+* **Error Response:**  
+  status: failed  
+  message:  `{message failed}`
+<<<<<<< HEAD
+=======
+  
+**POST /v1/auth/penyedia/register**
+----
+  Creates a new User, send email otp and returns the success message.
+* **URL Params**  
+  None
+* **Headers**  
+  Content-Type: application/json  
+* **Body**  
+```
+  {
+    email: string,
+    phone: string,
+    password : string,
+  }
+```
+* **Success Response:**  
+  status: success  
   message:  `{message success}`
 
 * **Error Response:**  
   status: failed  
   message:  `{message failed}`
+  
+## Confirmation OTP
+
+**POST /v1/auth/confirm**
+----
+  Require email & password then returning jwt token.
+* **URL Params**  
+  otp : number
+* **Headers**  
+  Content-Type: application/json  
+* **Body**  
+```
+
+```
+* **Success Response:**  
+  status: success  
+  access_token:  `{message success}`
+
+* **Error Response:**  
+  status: failed  
+  message:  `{message failed}`  
+>>>>>>> feature/booking
   
 ## Confirmation OTP
 
@@ -223,6 +284,7 @@ https://be-java-binar-fp-staging.up.railway.app
 ```
 * **Success Response:**  
   status: success  
+<<<<<<< HEAD
   message:  `{message success}`
 
 * **Error Response:**  
@@ -309,12 +371,17 @@ https://be-java-binar-fp-staging.up.railway.app
 =======
 >>>>>>> feature/booking
   status: success  
+=======
+>>>>>>> feature/booking
   access_token:  `{JWT Token}`
 
 * **Error Response:**  
   status: failed  
   message:  `{message failed}`
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> develop/staging
+=======
+>>>>>>> feature/booking
 =======
 >>>>>>> feature/booking

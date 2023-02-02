@@ -1,4 +1,5 @@
 package com.kostserver.model;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 public enum EnumKostPaymentScheme {

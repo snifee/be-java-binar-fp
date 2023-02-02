@@ -83,13 +83,13 @@ public class RoomServiceImpl implements RoomService {
         }
 
         if (!request.getBedroom_facilities().isEmpty()){
-            request.getBedroom_facilities().stream().forEach(roomFacility -> {
+            request.getBedroom_facilities().forEach(roomFacility -> {
+
                 Optional<RoomFacility> facility = roomFacilityRepo.findById(roomFacility.getId());
 
                 facility.ifPresent(roomFacilities::add);
             });
         }
-
 
         if (!roomFacilities.isEmpty()){
             room.setRoomFacilitiesId(roomFacilities);
@@ -105,6 +105,7 @@ public class RoomServiceImpl implements RoomService {
 
         room.setLabel("KOST_TERBARU");
         room.setQuantity(request.getQuantity());
+        room.setAvailableRoom(request.getQuantity());
         room.setPrice(request.getPrice());
         room.setLength(request.getLength());
         room.setWidth(request.getWidth());
@@ -333,3 +334,4 @@ public class RoomServiceImpl implements RoomService {
         return data;
     }
 }
+
