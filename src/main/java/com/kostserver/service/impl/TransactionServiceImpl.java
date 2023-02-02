@@ -1,6 +1,10 @@
 package com.kostserver.service.impl;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.kostserver.dto.request.BookingDto;
+import com.kostserver.dto.request.TransactionPayDto;
+import com.kostserver.dto.request.UpdateTransactionStatusDto;
 import com.kostserver.model.EnumKostPaymentScheme;
 import com.kostserver.model.EnumTransactionStatus;
 import com.kostserver.model.entity.*;
@@ -11,11 +15,13 @@ import com.kostserver.repository.TransactionRepo;
 import com.kostserver.service.TransactionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
@@ -35,6 +41,9 @@ public class TransactionServiceImpl implements TransactionService {
     @Autowired
     private AdditionalRoomFacilityRepo addionsFacilityRepo;
 
+    @Autowired
+    private Cloudinary cloudinary;
+
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     @Override
@@ -49,6 +58,10 @@ public class TransactionServiceImpl implements TransactionService {
         Optional<RoomKost> room = roomKostRepository.findById(request.getRoom_id());
         if (room.isEmpty()){
             throw new IllegalStateException("Room not available!");
+        }
+
+        if (room.get().getAvailableRoom()==0){
+            throw new IllegalStateException("Room not ready to book, available room 0");
         }
 
 
@@ -209,5 +222,103 @@ public class TransactionServiceImpl implements TransactionService {
         });
 
         return data;
+    }
+
+    @Override
+    public Transaction updateOwnerTransactionsStatus(String email, UpdateTransactionStatusDto request) throws Exception {
+        Optional<Transaction> transaction = transactionRepo.findById(request.getId());
+        Optional<Account> ownerRequest = accountRepository.findByEmail(email);
+
+        if (transaction.isEmpty()){
+            throw new IllegalStateException("transaction not found");
+        }
+
+        Transaction updatedTransaction = transaction.get();
+
+        updatedTransaction.setStatus(EnumTransactionStatus.getTypeFromCode(request.getStatus()));
+
+        transactionRepo.save(updatedTransaction);
+
+        String requestStatusLower = request.getStatus().toLowerCase();
+
+        if (requestStatusLower.equals(EnumTransactionStatus.APPROVED.name().toLowerCase())){
+
+            RoomKost roomKost = updatedTransaction.getRoomKost();
+
+            Account roomKostOwner = roomKost.getKost().getOwner();
+
+            if (!roomKostOwner.getEmail().equals(ownerRequest.get().getEmail())){
+                throw new AuthorizationServiceException("user not allowed to update this transaction");
+            }
+
+            if (roomKost.getAvailableRoom()==0){
+                throw new IllegalStateException("available room is 0");
+            }
+
+            Integer availableRoom = roomKost.getAvailableRoom();
+
+            Integer newAvailableRoom = availableRoom - 1;
+
+            roomKost.setAvailableRoom(newAvailableRoom);
+
+            roomKostRepository.save(roomKost);
+        }
+
+
+
+        Map<String,Object> data = new LinkedHashMap<>();
+        return updatedTransaction;
+    }
+
+    @Override
+    public Map<String, Object> getTransactionById(String email,Long id) throws Exception {
+        Map<String,Object> data = new LinkedHashMap<>();
+
+        Optional<Account> requestAccount = accountRepository.findByEmail(email);
+
+        Optional<Transaction> transaction = transactionRepo.findById(id);
+
+        Account accountOwner = transaction.get().getRoomKost().getKost().getOwner();
+
+        String tenantEmail = transaction.get().getAccount().getEmail();
+        String ownerEmail = accountOwner.getEmail();
+
+        if (!(tenantEmail.equals(email) || ownerEmail.equals(email))){
+            throw new IllegalStateException("you not allowed access this transaction");
+        }
+
+        if (transaction.isEmpty()){
+            throw new IllegalStateException("no transaction with that id found");
+        }
+
+        LocalDateTime localDate = transaction.get().getCreatedDate().toInstant().atZone(ZoneId.of("Asia/Jakarta")).toLocalDateTime();
+        LocalDateTime tfEndDate = localDate.plusDays(1);
+
+        data.put("id",transaction.get().getId());
+        data.put("tf_end_date",tfEndDate);
+        data.put("price",transaction.get().getPrice());
+
+        return data;
+    }
+
+    @Override
+    public Transaction transactionPay(String email, TransactionPayDto request) throws Exception {
+        Optional<Account> account = accountRepository.findByEmail(email);
+
+        Optional<Transaction> transaction = transactionRepo.findById(request.getId());
+
+        if (transaction.isEmpty()){
+            throw new IllegalStateException("no transaction found");
+        }
+
+        if (request.getImage()!=null){
+            Map imgUrl = cloudinary.uploader().upload(request.getImage().getBytes(), ObjectUtils.emptyMap());
+
+            transaction.get().setPaymentProof(String.valueOf(imgUrl.get("url")));
+
+            transactionRepo.save(transaction.get());
+        }
+
+        return transaction.get();
     }
 }

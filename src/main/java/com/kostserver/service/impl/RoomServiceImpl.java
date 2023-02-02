@@ -104,6 +104,7 @@ public class RoomServiceImpl implements RoomService {
 
         room.setLabel("KOST_TERBARU");
         room.setQuantity(request.getQuantity());
+        room.setAvailableRoom(request.getQuantity());
         room.setPrice(request.getPrice());
         room.setLength(request.getLength());
         room.setWidth(request.getWidth());

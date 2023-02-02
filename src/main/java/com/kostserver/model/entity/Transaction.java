@@ -28,10 +28,13 @@ public class Transaction extends BaseEntity {
     private Date startRent;
     private Date endRent;
     private Double price;
+    @Enumerated(EnumType.STRING)
     private EnumTransactionStatus status;
     private int rentalDuration;
+
+    @Enumerated(EnumType.STRING)
     private EnumKostPaymentScheme paymentScheme;
-    private String urlDocument;
+    private String paymentProof;
     private Double addonsFacilitiesPrice;
 
     @ManyToMany
