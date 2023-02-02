@@ -34,11 +34,11 @@ public interface RoomKostRepository extends JpaRepository<RoomKost, Long> {
 //    @Query(value = "SELECT rk " + "FROM RoomKost " + "join Account a " + "on rk.owner = a.id " + "WHERE rk.id =: id ")
     RoomKost getOwner(@Param("id") Long id, @Param("name") String name, @Param("phone") String phone, @Param("createdDate") Date createdDate);
 
-    @Query(value = "SELECT new SearchRoomDto(rm.id, rm.name, rm.label,rm.price,ks.address, ks.kostType, avg(rt.rating), 'null') "
+    @Query(value = "SELECT new com.kostserver.dto.SearchRoomDto(rm.id, rm.name, rm.label ,rm.price ,ks.address , ks.kostType, avg(rt.rating), 'null') "
             +
             "FROM tbl_room rm " +
             "LEFT JOIN tbl_rating rt on rt.roomKost = rm.id " +
-            "JOIN tbl_kost ks on rm.kost = ks.id " +
+            "JOIN Kost ks on rm.kost = ks.id " +
             "WHERE lower(rm.name) LIKE %:keyword% " +
             "AND (rm.price>=:minPrice AND rm.price <=:maxPrice) " +
             "AND lower(rm.label) LIKE %:label% " +
