@@ -96,6 +96,7 @@ public class DatabaseSeeder implements ApplicationRunner {
         userProfile1.setFullname(faker.name().fullName());
         userProfile1.setAddress(faker.address().fullAddress());
         userProfile1.setGender(EnumGender.MALE);
+        userProfile1.setOccupation("occupation");
         userProfileRepository.save(userProfile1);
         account1.setUserProfile(userProfile1);
         accountRepository.save(account1);

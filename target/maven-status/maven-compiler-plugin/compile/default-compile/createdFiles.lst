@@ -33,12 +33,14 @@ com/kostserver/dto/request/RegisterRequestDto.class
 com/kostserver/repository/UserBankRepo.class
 com/kostserver/model/entity/RoomKost.class
 com/kostserver/model/entity/Rating.class
+com/kostserver/dto/request/AddRatingRequest.class
 com/kostserver/service/test/KostServiceTest.class
 com/kostserver/model/EnumGender.class
 com/kostserver/service/impl/LoginServiceImpl.class
 com/kostserver/controller/KostController.class
 com/kostserver/config/security/CorsOriginConfig.class
 com/kostserver/config/JpaConfig$1.class
+com/kostserver/dto/RatingDto.class
 com/kostserver/service/auth/LoginService.class
 com/kostserver/KostServerApplication.class
 com/kostserver/service/impl/RoomServiceImpl.class

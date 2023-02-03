@@ -59,7 +59,9 @@
 /home/robert/dev/SYNRGY/work/be-java-binar-fp/src/main/java/com/kostserver/dto/request/UpdateBankAccountDto.java
 /home/robert/dev/SYNRGY/work/be-java-binar-fp/src/main/java/com/kostserver/repository/UserProfileRepository.java
 /home/robert/dev/SYNRGY/work/be-java-binar-fp/src/main/java/com/kostserver/repository/KostRepository.java
+/home/robert/dev/SYNRGY/work/be-java-binar-fp/src/main/java/com/kostserver/dto/RatingDto.java
 /home/robert/dev/SYNRGY/work/be-java-binar-fp/src/main/java/com/kostserver/model/response/UserDetailsRespond.java
+/home/robert/dev/SYNRGY/work/be-java-binar-fp/src/main/java/com/kostserver/dto/request/AddRatingRequest.java
 /home/robert/dev/SYNRGY/work/be-java-binar-fp/src/main/java/com/kostserver/model/entity/KostPaymentScheme.java
 /home/robert/dev/SYNRGY/work/be-java-binar-fp/src/main/java/com/kostserver/repository/RoomKostRepository.java
 /home/robert/dev/SYNRGY/work/be-java-binar-fp/src/main/java/com/kostserver/model/entity/Role.java

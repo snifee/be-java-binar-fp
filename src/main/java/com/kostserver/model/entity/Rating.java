@@ -22,6 +22,7 @@ public class Rating extends BaseEntity {
 
     private Integer rating;
     private String ulasan;
+    private Boolean anonym;
 
     @ManyToOne
     private Account account;

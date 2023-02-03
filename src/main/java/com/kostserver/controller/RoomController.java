@@ -3,15 +3,19 @@ package com.kostserver.controller;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kostserver.dto.request.AddRatingRequest;
 import com.kostserver.model.EnumKostType;
 import com.kostserver.repository.RoomKostRepository;
 import com.kostserver.service.RoomService;
@@ -21,9 +25,6 @@ import com.kostserver.service.RoomService;
 public class RoomController {
     @Autowired
     RoomService roomService;
-
-    @Autowired
-    RoomKostRepository roomKostRepository;
 
     @GetMapping("/search")
     ResponseEntity<Map> searchRoom(@RequestParam(value = "keyword", required = true) String keyword,
@@ -47,4 +48,31 @@ public class RoomController {
 
     }
 
+    @PostMapping("/rooms/rating")
+    ResponseEntity<Map> addRating(@Valid @RequestBody AddRatingRequest request) {
+        try {
+            return new ResponseEntity<>(roomService.addRating(request), HttpStatus.CREATED);
+
+        } catch (Exception e) {
+            Map response = new LinkedHashMap<>();
+            response.put("status", HttpStatus.BAD_REQUEST);
+            response.put("message", e.getMessage());
+            return new ResponseEntity<Map>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/rooms/rating")
+    ResponseEntity<Map> addRating(@RequestParam(value = "id", required = true) Long id,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(value = "size", required = false, defaultValue = "1") int size) {
+        try {
+            return new ResponseEntity<>(roomService.getRating(id, page, size), HttpStatus.OK);
+
+        } catch (Exception e) {
+            Map response = new LinkedHashMap<>();
+            response.put("status", HttpStatus.BAD_REQUEST);
+            response.put("message", e.getMessage());
+            return new ResponseEntity<Map>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
 }

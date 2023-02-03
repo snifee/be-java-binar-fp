@@ -1,7 +1,9 @@
 package com.kostserver.repository;
 
+import com.kostserver.dto.RatingDto;
 import com.kostserver.dto.RoomDto;
 import com.kostserver.model.EnumKostType;
+import com.kostserver.model.entity.Account;
 import com.kostserver.model.entity.Kost;
 import com.kostserver.model.entity.RoomKost;
 
@@ -15,7 +17,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface RoomKostRepository extends JpaRepository<RoomKost, Long> {
-        @Query(value = "SELECT new com.kostserver.dto.RoomDto(rm.id, rm.name, rm.label,rm.price,ks.address, ks.kostType,avg(rt.rating), 'null')"
+        @Query(value = "SELECT new com.kostserver.dto.RoomDto(rm.id, rm.name, rm.label,rm.price,ks.address, ks.kostType, ROUND(avg(rt.rating), 1), 'null')"
                         +
                         "FROM tbl_room rm " +
                         "LEFT JOIN tbl_rating rt on rt.roomKost = rm.id " +
@@ -32,4 +34,8 @@ public interface RoomKostRepository extends JpaRepository<RoomKost, Long> {
         @Query(value = "select rm from tbl_room rm where rm.id=:id")
         RoomKost getRoom(@Param("id") Long id);
 
+        @Query(value = "SELECT new com.kostserver.dto.RatingDto(ac.id, CASE WHEN rt.anonym IS NOT true THEN ac.userProfile.fullname ELSE '****' END,  CASE WHEN rt.anonym IS NOT true THEN ac.userProfile.photoUrl ELSE '****' END, rt.rating, rt.ulasan, ac.userProfile.occupation ,rt.anonym) FROM Account ac "
+                        +
+                        " JOIN tbl_rating rt on rt.account = ac.id AND rt.roomKost.id = :id")
+        List<RatingDto> getRating(@Param("id") Long id, Pageable pageable);
 }
