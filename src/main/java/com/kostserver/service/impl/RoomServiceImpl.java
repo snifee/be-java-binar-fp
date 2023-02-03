@@ -2,7 +2,7 @@ package com.kostserver.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.kostserver.dto.SearchRoomDto;
+import com.kostserver.dto.ItemRoomDto;
 import com.kostserver.model.EnumKostType;
 import com.kostserver.model.entity.*;
 import com.kostserver.repository.*;
@@ -37,6 +37,9 @@ public class RoomServiceImpl implements RoomService {
 
     @Autowired
     private Cloudinary cloudinary;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -337,7 +340,7 @@ public class RoomServiceImpl implements RoomService {
 
 
     @Override
-    public List<SearchRoomDto> searchRoom(String keyword, String label, String type, Double minPrice, Double maxPrice, int size) {
+    public List<ItemRoomDto> searchRoom(String keyword, String label, String type, Double minPrice, Double maxPrice, int size) {
             Pageable pageable = PageRequest.of(0, size);
             EnumKostType kostType;
             if (type == null) {
@@ -346,7 +349,7 @@ public class RoomServiceImpl implements RoomService {
                 kostType = EnumKostType.getTypeFromCode(type);
             }
 
-            List<SearchRoomDto> roomData = new ArrayList<>();
+            List<ItemRoomDto> roomData = new ArrayList<>();
             roomData = roomKostRepository.searchRoom(keyword.toLowerCase(Locale.ROOT),
                     label.toLowerCase(Locale.ROOT),
                     kostType,
@@ -363,6 +366,31 @@ public class RoomServiceImpl implements RoomService {
                 }
             });
             return roomData;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ItemRoomDto> listOwnerRoom(String ownerEmail) throws Exception {
+        Optional<Account> ownerAccount = accountRepository.findByEmail(ownerEmail);
+
+        if (ownerAccount.isEmpty()){
+            throw new IllegalStateException("account related with email not found");
+        }
+
+        List<ItemRoomDto> listRoomKost = roomKostRepository
+                .getListRoomKostByOwner(ownerAccount.get().getId());
+
+        listRoomKost.forEach(r ->{
+            Optional<RoomKost> room = roomKostRepository.findById(r.getId());
+
+            room.ifPresent(roomKost -> {
+                if (!roomKost.getImageUrl().isEmpty()) {
+                    r.setThumbnail(roomKost.getImageUrl().get(0));
+                }
+            });
+        });
+
+        return listRoomKost;
     }
 
 
