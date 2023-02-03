@@ -1,10 +1,10 @@
 package com.kostserver.repository.test;
 
+import com.kostserver.dto.ItemRoomDto;
 import com.kostserver.model.EnumKostType;
+import com.kostserver.model.entity.Kost;
 import com.kostserver.model.entity.Transaction;
-import com.kostserver.repository.AccountRepository;
-import com.kostserver.repository.TransactionRepo;
-import com.kostserver.repository.UserProfileRepository;
+import com.kostserver.repository.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +24,11 @@ public class RepositoryTest {
 
     @Autowired
     private UserProfileRepository userProfileRepository;
+    @Autowired
+    private KostRepository kostRepository;
+    @Autowired
+    private RoomKostRepository roomKostRepository;
+
     @Test
     public void test(){
 //        Account account = new Account();
@@ -52,6 +57,15 @@ public class RepositoryTest {
     @Test
     public void transactionRepoOwner(){
         List<Transaction> list = transactionRepo.getAllTransactionOwner(5L);
+
+        list.forEach(t ->{
+            System.out.println(t.getId());
+        });
+    }
+
+    @Test
+    public void kostRepoOwnerTest(){
+        List<ItemRoomDto> list = roomKostRepository.getListRoomKostByOwner(79L);
 
         list.forEach(t ->{
             System.out.println(t.getId());

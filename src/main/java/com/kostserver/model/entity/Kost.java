@@ -19,8 +19,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "tbl_kost")
+@Entity(name = "tbl_kost")
 public class Kost extends BaseEntity implements Serializable {
 
     @Id
