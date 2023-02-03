@@ -2,6 +2,7 @@ package com.kostserver.repository.test;
 
 import com.kostserver.dto.ItemRoomDto;
 import com.kostserver.model.EnumKostType;
+import com.kostserver.model.entity.ConfirmationToken;
 import com.kostserver.model.entity.Kost;
 import com.kostserver.model.entity.Transaction;
 import com.kostserver.repository.*;
@@ -9,13 +10,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
+import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RepositoryTest {
 
+    @Autowired
+    private ConfirmationTokenRepository confirmationTokenRepository;
     @Autowired
     private TransactionRepo transactionRepo;
 
@@ -28,6 +33,9 @@ public class RepositoryTest {
     private KostRepository kostRepository;
     @Autowired
     private RoomKostRepository roomKostRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Test
     public void test(){
@@ -71,5 +79,7 @@ public class RepositoryTest {
             System.out.println(t.getId());
         });
     }
+
+
 
 }

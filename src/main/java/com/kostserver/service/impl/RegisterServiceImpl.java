@@ -9,6 +9,7 @@ import com.kostserver.repository.test.UserValidationRepo;
 import com.kostserver.service.OtpService;
 import com.kostserver.service.auth.RegisterService;
 import com.kostserver.service.auth.AccountService;
+import com.kostserver.utils.EmailSender;
 import com.kostserver.utils.auth.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -52,6 +53,9 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Autowired
     private UserBankRepo userBankRepo;
+
+    @Autowired
+    private EmailSender emailSender;
 
 
     @Override
@@ -135,6 +139,8 @@ public class RegisterServiceImpl implements RegisterService {
             response.put("status",HttpStatus.CREATED);
             response.put("message","Please check email for confirmation code");
             response.put("data",data);
+
+            emailSender.sendAsync(request.getEmail(),"Welcome to KostHub","welcoming-email-template.html");
 
         }catch(Exception e){
             log.info(e.getMessage());
