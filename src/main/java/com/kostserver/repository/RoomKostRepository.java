@@ -1,8 +1,8 @@
 package com.kostserver.repository;
 
 import com.kostserver.dto.ItemRoomDto;
+import com.kostserver.dto.RatingDto;
 import com.kostserver.model.EnumKostType;
-import com.kostserver.model.entity.Kost;
 import com.kostserver.model.entity.RoomKost;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -49,4 +49,8 @@ public interface RoomKostRepository extends JpaRepository<RoomKost, Long> {
             "group by rm.id, ks.id")
     List<ItemRoomDto> getListRoomKostByOwner(@Param("ownerId") Long ownerId);
 
+    @Query(value = "SELECT new com.kostserver.dto.RatingDto(ac.id, CASE WHEN rt.anonym IS NOT true THEN ac.userProfile.fullname ELSE '****' END,  CASE WHEN rt.anonym IS NOT true THEN ac.userProfile.photoUrl ELSE '****' END, rt.rating, rt.ulasan, ac.userProfile.occupation ,rt.anonym) FROM Account ac "
+            +
+            " JOIN tbl_rating rt on rt.account = ac.id AND rt.roomKost.id = :id")
+    List<RatingDto> getRating(@Param("id") Long id, Pageable pageable);
 }

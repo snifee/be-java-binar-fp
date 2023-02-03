@@ -3,6 +3,8 @@ package com.kostserver.service.impl;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.kostserver.dto.ItemRoomDto;
+import com.kostserver.dto.RatingDto;
+import com.kostserver.dto.request.AddRatingRequest;
 import com.kostserver.model.EnumKostType;
 import com.kostserver.model.entity.*;
 import com.kostserver.repository.*;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.kostserver.dto.request.RoomDto;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +43,9 @@ public class RoomServiceImpl implements RoomService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private RatingRepo ratingRepo;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -393,5 +399,30 @@ public class RoomServiceImpl implements RoomService {
         return listRoomKost;
     }
 
+    @Override
+    public Rating addRating(AddRatingRequest request) throws Exception {
+        Rating rating = new Rating();
+        rating.setRating(request.getRating());
+        rating.setUlasan(request.getReview());
+        rating.setAnonym(request.getAnonym());
+
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Optional<Account> account = accountRepository.findByEmail(email);
+        rating.setAccount(account.get());
+
+        Optional<RoomKost> room = roomKostRepository.findById(request.getRoom_id());
+        rating.setRoomKost(room.get());
+
+        return ratingRepo.save(rating);
+    }
+
+    @Override
+    public List<RatingDto> getRating(Long id, int page, int size) throws Exception {
+        Pageable pageable = PageRequest.of(page - 1, size);
+
+        List<RatingDto> data = roomKostRepository.getRating(id, pageable);
+
+        return data;
+    }
 
 }
