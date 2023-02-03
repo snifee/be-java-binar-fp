@@ -1,5 +1,6 @@
 package com.kostserver.controller;
 
+import com.kostserver.dto.request.AddRatingRequest;
 import com.kostserver.model.response.Response;
 import com.kostserver.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -60,6 +62,27 @@ public class RoomPublicController {
             Response response = new Response(HttpStatus.OK.value(), "success",data,null);
             return new ResponseEntity<>(response,HttpStatus.OK);
         }catch (Exception e){
+            Response response = new Response(HttpStatus.BAD_REQUEST.value(), "failed",null,e.getMessage());
+            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    @GetMapping("/rooms/rating")
+    ResponseEntity<Response> addRating(@RequestParam(value = "id", required = true) Long id,
+                                       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+                                       @RequestParam(value = "size", required = false, defaultValue = "1") int size) {
+
+        try {
+
+            Response response = new Response();
+            response.setStatus(HttpStatus.CREATED.value());
+            response.setMessage("success");
+            response.setData(roomService.getRating(id, page, size));
+
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+
+        } catch (Exception e) {
             Response response = new Response(HttpStatus.BAD_REQUEST.value(), "failed",null,e.getMessage());
             return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
         }

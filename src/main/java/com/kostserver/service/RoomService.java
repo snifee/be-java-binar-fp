@@ -2,7 +2,10 @@ package com.kostserver.service;
 
 
 import com.kostserver.dto.ItemRoomDto;
+import com.kostserver.dto.RatingDto;
+import com.kostserver.dto.request.AddRatingRequest;
 import com.kostserver.dto.request.RoomDto;
+import com.kostserver.model.entity.Rating;
 import com.kostserver.model.entity.RoomKost;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -21,4 +24,9 @@ public interface RoomService {
     List<ItemRoomDto> searchRoom(String keyword, String label, String type, Double minPrice, Double maxPrice, int size);
 
     List<ItemRoomDto> listOwnerRoom(String ownerEmail) throws Exception;
+
+    Rating addRating(AddRatingRequest request) throws Exception;
+
+    List<RatingDto> getRating(Long id, int page, int size) throws Exception;
+
 }
