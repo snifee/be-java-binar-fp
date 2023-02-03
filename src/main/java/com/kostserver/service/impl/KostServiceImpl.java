@@ -20,10 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -43,6 +40,35 @@ public class KostServiceImpl implements KostService {
     @Autowired
     private Cloudinary cloudinary;
 
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Map<String,Object>> listOwnerKost(String email) throws Exception {
+        Optional<Account> account = accountRepository.findByEmail(email);
+
+        if (account.isEmpty()){
+            throw new IllegalStateException("account with this email not found");
+        }
+
+        List<Kost> kostList = kostRepository.getListKostByOwnerId(account.get().getId());
+
+        List<Map<String,Object>> listItemKost = new ArrayList<>();
+        
+        kostList.forEach(k ->{
+            Map<String,Object> itemKost = new LinkedHashMap<>();
+            
+            itemKost.put("id",k.getId());
+            itemKost.put("image",k.getOutdoorPhotoUrl());
+            itemKost.put("label",null);
+            itemKost.put("type",k.getKostType());
+            itemKost.put("address",k.getAddress());
+
+            listItemKost.add(itemKost);
+        });
+
+
+        return listItemKost;
+    }
 
     @Transactional
     @Override
