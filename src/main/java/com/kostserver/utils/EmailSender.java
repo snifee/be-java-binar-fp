@@ -13,6 +13,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.internet.MimeMessage;
 
@@ -24,6 +26,9 @@ public class EmailSender {
 
     @Autowired
     private JavaMailSenderImpl javaMailSender;
+
+    @Autowired
+    private SpringTemplateEngine templateEngine;
 
 
     @Value("${spring.mail.sender.name:}")
@@ -39,17 +44,20 @@ public class EmailSender {
     public boolean sendEmail(String email, String subject, String message) {
         MimeMessage mime = javaMailSender.createMimeMessage();
         try{
+            MimeMessageHelper helper = new MimeMessageHelper(mime,true);
+            Context context = new Context();
+            context.setVariable("email",email);
+            helper.setFrom(senderEmail,senderName);
+            helper.setTo(email);
+            helper.setSubject(subject);
+            String html = templateEngine.process(message,context);
+            helper.setText(html, true);
+
+            javaMailSender.send(mime);
+
             log.info("Sending Email to : "+email);
             log.info("Sending email from: "+senderEmail);
             log.info("Sending email with subject: "+subject);
-
-            MimeMessageHelper helper = new MimeMessageHelper(mime,true);
-            helper.setFrom(senderEmail);
-            helper.setTo(email);
-            helper.setSubject(subject);
-            helper.setText(message, true);
-
-            javaMailSender.send(mime);
 
             return true;
         }catch (Exception e){

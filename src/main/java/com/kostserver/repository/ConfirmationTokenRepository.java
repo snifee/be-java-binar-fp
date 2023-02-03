@@ -15,6 +15,8 @@ import java.util.Optional;
 public interface ConfirmationTokenRepository extends JpaRepository<ConfirmationToken,Long> {
     Optional<ConfirmationToken> findByToken(String token);
 
+    Optional<ConfirmationToken> findById(Long id);
+
     @Transactional
     @Modifying
     @Query("UPDATE tbl_confirmation_token c " +
