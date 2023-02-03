@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/v1/transaction")
+@RequestMapping("/v1/transactions")
 public class TransactionController {
 
     @Autowired
