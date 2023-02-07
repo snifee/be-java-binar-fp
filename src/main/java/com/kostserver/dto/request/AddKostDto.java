@@ -16,10 +16,12 @@ public class AddKostDto {
 
     @NotBlank
     private String name;
-    @Pattern(regexp = "^data:image/jpeg;base64,.*\\B",message = "only accept jpeg image")
+    @Pattern(regexp = "(^data:image/jpeg;base64,.*)|(^data:image/png;base64,.*)|(^data:image/jpg;base64,.*)"
+            ,message = "only accept jpeg,png or jpg image")
     private String outdoor_photo;
 
-    @Pattern(regexp = "^data:image/jpeg;base64,.*\\B",message = "only accept jpeg image")
+    @Pattern(regexp = "(^data:image/jpeg;base64,.*)|(^data:image/png;base64,.*)|(^data:image/jpg;base64,.*)"
+            ,message = "only accept jpeg,png or jpg image")
     private String indoor_photo;
     @NotNull
     private EnumKostType type;
