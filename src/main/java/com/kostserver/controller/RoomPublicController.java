@@ -66,8 +66,8 @@ public class RoomPublicController {
     }
 
 
-    @GetMapping("/rooms/rating")
-    ResponseEntity<Response> addRating(@RequestParam(value = "id", required = true) Long id,
+    @GetMapping("/rooms/rating/{id}")
+    ResponseEntity<Response> addRating(@PathVariable("id") Long id,
                                        @RequestParam(value = "page", required = false, defaultValue = "1") int page,
                                        @RequestParam(value = "size", required = false, defaultValue = "1") int size) {
 
