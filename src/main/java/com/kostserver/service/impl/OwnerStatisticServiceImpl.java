@@ -42,6 +42,7 @@ public class OwnerStatisticServiceImpl implements OwnerStatisticService {
             Integer emptyRoom = roomKostRepository.sumOfAvailableRoom(account.get().getId());
             Integer bookers = transactionRepo.countBookers(account.get().getId());
 
+            data.put("id","");
             data.put("occupants",occupants);
             data.put("empty_room",emptyRoom);
             data.put("bookers",bookers);
