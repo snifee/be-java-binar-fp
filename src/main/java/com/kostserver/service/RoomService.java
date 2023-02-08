@@ -15,7 +15,7 @@ import java.util.Map;
 public interface RoomService {
 
     RoomKost addRoom (RoomDto request) throws Exception;
-    RoomKost updateRoom (Long id, RoomDto request) throws Exception;
+    RoomKost updateRoom (String email,Long id, RoomDto request) throws Exception;
 
     Map getRoomDetailsById (Long id) throws Exception;
 

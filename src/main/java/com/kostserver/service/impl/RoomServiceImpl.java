@@ -128,11 +128,24 @@ public class RoomServiceImpl implements RoomService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public RoomKost updateRoom(Long id, RoomDto request) throws Exception{
+    public RoomKost updateRoom(String email,Long id, RoomDto request) throws Exception{
+        Optional<Account> account = accountRepository.findByEmail(email);
+
+        if (account.isEmpty()){
+            throw new IllegalStateException("account not found");
+        }
         RoomKost room = roomKostRepository.findById(id).get();
+
         if (room==null) {
             throw new IllegalStateException("Room Id doesn't exist");
         }
+
+        String roomOwnerEmail = room.getKost().getOwner().getEmail();
+
+        if (!email.equals(roomOwnerEmail)){
+            throw new IllegalStateException("You cannot edit this room");
+        }
+
         Set<RoomFacility> facilities = new HashSet<>();
         if (!request.getBathroom_facilities().isEmpty()){
             request.getBathroom_facilities().stream().forEach(roomFacility -> {

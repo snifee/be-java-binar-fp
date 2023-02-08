@@ -150,8 +150,6 @@ public class KostServiceImpl implements KostService {
             throw new IllegalStateException("you cannot access this kost data");
         }
 
-
-
         if (request.getName()!=null){
             kost.get().setKostName(request.getName());
         }

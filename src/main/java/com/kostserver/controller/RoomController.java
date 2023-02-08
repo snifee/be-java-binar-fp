@@ -36,10 +36,10 @@ public class RoomController {
     }
 
     @PutMapping("/update/{id}")
-    ResponseEntity<Response> addRoom(@RequestBody RoomDto request, @PathVariable("id") String id){
+    ResponseEntity<Response> updateRoom(@RequestBody RoomDto request, @PathVariable("id") Long id){
         try {
-            Long roomId = Long.parseUnsignedLong(id);
-            RoomKost room = roomService.updateRoom(roomId,request);
+            String email = SecurityContextHolder.getContext().getAuthentication().getName();
+            RoomKost room = roomService.updateRoom(email,id,request);
             return new ResponseEntity<>(new Response(HttpStatus.OK.value(),"success",room,null), HttpStatus.OK);
         }catch (Exception e){
 
