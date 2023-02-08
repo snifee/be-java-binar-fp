@@ -59,7 +59,7 @@ public class RoomController {
         }
     }
 
-    @PostMapping("/rooms/rating")
+    @PostMapping("/rating")
     ResponseEntity<Response> addRating(@Valid @RequestBody AddRatingRequest request) {
         try {
 
