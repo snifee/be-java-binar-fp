@@ -72,4 +72,21 @@ public class KostController {
             return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/{id}")
+    ResponseEntity<Response> getKostDetail(@PathVariable("id") Long id){
+        try{
+            Kost data = kostService.kostDetail(id);
+            Response response = new Response();
+            response.setStatus(HttpStatus.OK.value());
+            response.setData(data);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e){
+            Response response = new Response();
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            response.setError(e.getMessage());
+            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

@@ -16,5 +16,8 @@ public interface KostRepository extends JpaRepository<Kost,Long> {
     @Query("SELECT k FROM tbl_kost k WHERE k.owner.id = :id")
     List<Kost> getListKostByOwnerId(@Param("id")Long id);
 
+    @Query("SELECT k FROM tbl_kost k")
+    List<Kost> getAllKost();
+
 
 }

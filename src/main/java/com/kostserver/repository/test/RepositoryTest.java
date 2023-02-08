@@ -2,8 +2,6 @@ package com.kostserver.repository.test;
 
 import com.kostserver.dto.ItemRoomDto;
 import com.kostserver.model.EnumKostType;
-import com.kostserver.model.entity.ConfirmationToken;
-import com.kostserver.model.entity.Kost;
 import com.kostserver.model.entity.Transaction;
 import com.kostserver.repository.*;
 import org.junit.Test;
@@ -13,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
-import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -78,6 +75,17 @@ public class RepositoryTest {
         list.forEach(t ->{
             System.out.println(t.getId());
         });
+    }
+
+    @Test
+    public void sumOfAvailableRoom(){
+        Integer t = roomKostRepository.sumOfAvailableRoom(41L);
+
+        System.out.println(t);
+
+        Integer x = transactionRepo.sumOfOccupantsByOwner(79L);
+
+        System.out.println(x);
     }
 
 

@@ -23,4 +23,16 @@ public interface TransactionRepo extends JpaRepository<Transaction,Long> {
             "JOIN tbl_kost k ON k.id = r.kost_id " +
             "WHERE k.owner_id = ?1",nativeQuery = true)
     List<Transaction> getAllTransactionOwner(Long id);
+
+    @Query(value = "select sum(t.num_of_people) from tbl_transaction t " +
+            "join tbl_room tr on tr.id = t.room_kost_id " +
+            "join tbl_kost tk on tk.id = tr.kost_id " +
+            "where tk.owner_id = :id " ,nativeQuery = true)
+    Integer sumOfOccupantsByOwner(@Param("id") Long id);
+
+    @Query(value = "select count(t) from tbl_transaction t " +
+            "join tbl_room tr on tr.id = t.room_kost_id " +
+            "join tbl_kost tk on tk.id = tr.kost_id " +
+            "where tk.owner_id = :id " ,nativeQuery = true)
+    Integer countBookers(@Param("id") Long id);
 }

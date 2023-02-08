@@ -12,4 +12,7 @@ public interface KostService {
     List<Map<String,Object>> listOwnerKost(String email) throws Exception;
     Kost addKost(AddKostDto request) throws Exception;
     Kost updateKost(UpdateKostDto request) throws Exception;
+
+    Kost kostDetail(Long id) throws Exception;
+
 }

@@ -236,6 +236,7 @@ public class RoomServiceImpl implements RoomService {
         data.put("district",room.getKost().getDistrict());
         data.put("note",room.getKost().getAddressNote());
         data.put("images",room.getImageUrl());
+        data.put("available_room",room.getAvailableRoom());
 
         List<Map<String, Object>> facilities = new ArrayList<>();
 

@@ -53,4 +53,10 @@ public interface RoomKostRepository extends JpaRepository<RoomKost, Long> {
             +
             " JOIN tbl_rating rt on rt.account = ac.id AND rt.roomKost.id = :id")
     List<RatingDto> getRating(@Param("id") Long id, Pageable pageable);
+
+
+    @Query("SELECT SUM(rm.availableRoom) FROM tbl_room rm " +
+            "JOIN tbl_kost ks on rm.kost = ks.id " +
+            "WHERE ks.owner.id = :ownerId " )
+    Integer sumOfAvailableRoom(@Param("ownerId") Long ownerId);
 }

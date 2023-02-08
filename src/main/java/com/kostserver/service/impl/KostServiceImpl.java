@@ -230,4 +230,17 @@ public class KostServiceImpl implements KostService {
 
         return kost.get();
     }
+
+    @Override
+    public Kost kostDetail(Long id) throws Exception {
+        Optional<Kost> kost = kostRepository.findById(id);
+
+        if (kost.isPresent()){
+            return kost.get();
+        }else {
+            throw new IllegalStateException("kost not found");
+        }
+    }
+
+
 }
