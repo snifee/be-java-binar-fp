@@ -414,6 +414,24 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public List<ItemRoomDto> listRoomByKostId(Long id) throws Exception {
+        List<ItemRoomDto> listRoomKost = roomKostRepository
+                .getListRoomKostByKostId(id);
+
+        listRoomKost.forEach(r ->{
+            Optional<RoomKost> room = roomKostRepository.findById(r.getId());
+
+            room.ifPresent(roomKost -> {
+                if (!roomKost.getImageUrl().isEmpty()) {
+                    r.setThumbnail(roomKost.getImageUrl().get(0));
+                }
+            });
+        });
+
+        return listRoomKost;
+    }
+
+    @Override
     public Rating addRating(AddRatingRequest request) throws Exception {
         Rating rating = new Rating();
         rating.setRating(request.getRating());

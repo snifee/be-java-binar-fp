@@ -49,6 +49,14 @@ public interface RoomKostRepository extends JpaRepository<RoomKost, Long> {
             "group by rm.id, ks.id")
     List<ItemRoomDto> getListRoomKostByOwner(@Param("ownerId") Long ownerId);
 
+    @Query("SELECT new com.kostserver.dto.ItemRoomDto(rm.id, rm.name, rm.label ,rm.price ,ks.address , ks.kostType, avg(rt.rating), 'null') " +
+            "FROM tbl_room rm " +
+            "LEFT JOIN tbl_rating rt on rt.roomKost = rm.id " +
+            "JOIN tbl_kost ks on rm.kost = ks.id " +
+            "WHERE rm.kost.id = :kostId " +
+            "group by rm.id, ks.id")
+    List<ItemRoomDto> getListRoomKostByKostId(@Param("kostId") Long kostId);
+
     @Query(value = "SELECT new com.kostserver.dto.RatingDto(ac.id, CASE WHEN rt.anonym IS NOT true THEN ac.userProfile.fullname ELSE '****' END,  CASE WHEN rt.anonym IS NOT true THEN ac.userProfile.photoUrl ELSE '****' END, rt.rating, rt.ulasan, ac.userProfile.occupation ,rt.anonym) FROM Account ac "
             +
             " JOIN tbl_rating rt on rt.account = ac.id AND rt.roomKost.id = :id")

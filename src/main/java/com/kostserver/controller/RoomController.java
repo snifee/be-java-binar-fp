@@ -59,6 +59,17 @@ public class RoomController {
         }
     }
 
+    @GetMapping("/{kostId}")
+    ResponseEntity<Response> listRoomByKostId(@PathVariable("kostId")Long id){
+        try {
+            List<ItemRoomDto> data = roomService.listRoomByKostId(id);
+            return new ResponseEntity<>(new Response(HttpStatus.OK.value(),"success",data,null), HttpStatus.OK);
+        }catch (Exception e){
+
+            return new ResponseEntity<>(new Response(HttpStatus.BAD_REQUEST.value(),null,null,e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping("/rating")
     ResponseEntity<Response> addRating(@Valid @RequestBody AddRatingRequest request) {
         try {

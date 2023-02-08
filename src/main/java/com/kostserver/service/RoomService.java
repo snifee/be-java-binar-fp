@@ -28,4 +28,6 @@ public interface RoomService {
     List<RatingDto> getRating(Long id, int page, int size) throws Exception;
 
     List<ItemRoomDto> listOwnerRoom(String ownerEmail) throws Exception;
+
+    List<ItemRoomDto> listRoomByKostId(Long id) throws Exception;
 }
