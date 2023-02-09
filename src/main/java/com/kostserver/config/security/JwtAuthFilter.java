@@ -37,7 +37,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             "/v3/api-docs",
             "/webjars/**",
             "/v1/auth",
-            "/v1/public"));
+            "/v1/public",
+            "/oauth"));
 
     @Autowired
     private AccountService accountService;

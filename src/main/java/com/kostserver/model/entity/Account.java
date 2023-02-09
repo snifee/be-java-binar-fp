@@ -2,10 +2,12 @@ package com.kostserver.model.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kostserver.model.EnumProvider;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.security.Provider;
 import java.util.HashSet;
 import java.util.Set;
 
