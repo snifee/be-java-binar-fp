@@ -5,6 +5,6 @@ import java.util.Map;
 import com.kostserver.dto.request.ForgotPasswordRequestDto;
 
 public interface ForgotPasswordService {
-    Map forgotPassword(ForgotPasswordRequestDto request, String token);
+    Map forgotPassword(ForgotPasswordRequestDto request);
 
 }

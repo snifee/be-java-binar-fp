@@ -76,11 +76,10 @@ public class AuthController {
         return new ResponseEntity<Map>(response, (HttpStatus) response.get("status"));
     }
 
-    @PostMapping("/password/{token}")
-    ResponseEntity<Map> forgotPassword(@Valid @RequestBody ForgotPasswordRequestDto request,
-                                       @PathVariable("token") String token) {
+    @PostMapping("/password")
+    ResponseEntity<Map> forgotPassword(@Valid @RequestBody ForgotPasswordRequestDto request) {
         try {
-            return new ResponseEntity<>(forgotPasswordService.forgotPassword(request, token), HttpStatus.OK);
+            return new ResponseEntity<>(forgotPasswordService.forgotPassword(request), HttpStatus.OK);
         } catch (Exception e) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("status", HttpStatus.BAD_REQUEST);

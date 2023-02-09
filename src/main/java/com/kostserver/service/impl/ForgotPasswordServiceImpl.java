@@ -33,7 +33,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
     private BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public Map forgotPassword(ForgotPasswordRequestDto request, String token) {
+    public Map forgotPassword(ForgotPasswordRequestDto request) {
         Map<String, Object> response = new LinkedHashMap<>();
         Account account = null;
         if (request.getEmail() != null) {
@@ -51,8 +51,8 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 
             for (String ct : confirmationTokenList) {
                 log.info(ct);
-                log.info(token);
-                if (bCryptPasswordEncoder.matches(token, ct)) {
+                log.info(request.getToken());
+                if (bCryptPasswordEncoder.matches(request.getToken(), ct)) {
                     isTokenExist = true;
                 }
             }
