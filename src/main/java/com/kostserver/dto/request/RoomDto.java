@@ -16,6 +16,8 @@ import java.util.Set;
 @NoArgsConstructor
 public class RoomDto {
 
+    //komen
+
     private Long kost_id;
 
     private Double price;
