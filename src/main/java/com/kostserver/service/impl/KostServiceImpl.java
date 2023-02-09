@@ -242,7 +242,7 @@ public class KostServiceImpl implements KostService {
         Optional<Account> account = accountRepository.findByEmail(email);
         Optional<Kost> kost = kostRepository.findById(id);
 
-        if (account.isPresent()){
+        if (account.isEmpty()){
             throw new IllegalStateException("no account found");
         }
 

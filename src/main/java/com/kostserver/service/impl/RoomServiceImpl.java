@@ -436,7 +436,7 @@ public class RoomServiceImpl implements RoomService {
         Optional<Account> account = accountRepository.findByEmail(email);
         Optional<RoomKost> roomKost = roomKostRepository.findById(id);
 
-        if (account.isPresent()){
+        if (account.isEmpty()){
             throw new IllegalStateException("no account found");
         }
 
