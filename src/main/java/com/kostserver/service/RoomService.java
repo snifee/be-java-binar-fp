@@ -30,4 +30,7 @@ public interface RoomService {
     List<ItemRoomDto> listOwnerRoom(String ownerEmail) throws Exception;
 
     List<ItemRoomDto> listRoomByKostId(Long id) throws Exception;
+
+    String deleteRoomById(String email,Long id) throws Exception;
+
 }

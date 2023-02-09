@@ -432,6 +432,28 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public String deleteRoomById(String email, Long id) throws Exception {
+        Optional<Account> account = accountRepository.findByEmail(email);
+        Optional<RoomKost> roomKost = roomKostRepository.findById(id);
+
+        if (account.isPresent()){
+            throw new IllegalStateException("no account found");
+        }
+
+        if (roomKost.isPresent()){
+            String roomOwnerEmail = roomKost.get().getKost().getOwner().getEmail();
+
+            if (email.equals(roomOwnerEmail)){
+                roomKostRepository.softDeleteRoom(id);
+
+                return "data deleted";
+            }
+        }
+
+        return "data not deleted";
+    }
+
+    @Override
     public Rating addRating(AddRatingRequest request) throws Exception {
         Rating rating = new Rating();
         rating.setRating(request.getRating());

@@ -35,6 +35,7 @@ public interface RoomKostRepository extends JpaRepository<RoomKost, Long> {
             "AND (rm.price>=:minPrice AND rm.price <=:maxPrice) " +
             "AND lower(rm.label) LIKE %:label% " +
             "AND (ks.kostType = :type OR :type is null) " +
+            "AND rm.isDeleted = false " +
             "group by rm.id, ks.id")
     List<ItemRoomDto> searchRoom(@Param("keyword") String keyword, @Param("label") String label,
                                  @Param("type") EnumKostType type, @Param("minPrice") Double minPrice,
@@ -46,6 +47,7 @@ public interface RoomKostRepository extends JpaRepository<RoomKost, Long> {
             "LEFT JOIN tbl_rating rt on rt.roomKost = rm.id " +
             "JOIN tbl_kost ks on rm.kost = ks.id " +
             "WHERE ks.owner.id = :ownerId " +
+            "AND rm.isDeleted = false " +
             "group by rm.id, ks.id")
     List<ItemRoomDto> getListRoomKostByOwner(@Param("ownerId") Long ownerId);
 
@@ -54,6 +56,7 @@ public interface RoomKostRepository extends JpaRepository<RoomKost, Long> {
             "LEFT JOIN tbl_rating rt on rt.roomKost = rm.id " +
             "JOIN tbl_kost ks on rm.kost = ks.id " +
             "WHERE rm.kost.id = :kostId " +
+            "AND rm.isDeleted = false " +
             "group by rm.id, ks.id")
     List<ItemRoomDto> getListRoomKostByKostId(@Param("kostId") Long kostId);
 
@@ -67,4 +70,7 @@ public interface RoomKostRepository extends JpaRepository<RoomKost, Long> {
             "JOIN tbl_kost ks on rm.kost = ks.id " +
             "WHERE ks.owner.id = :ownerId " )
     Integer sumOfAvailableRoom(@Param("ownerId") Long ownerId);
+
+    @Query(value = "UPDATE tbl_room set is_deleted = true  WHERE id=:id", nativeQuery = true)
+    void softDeleteRoom(@Param("id") Long id);
 }

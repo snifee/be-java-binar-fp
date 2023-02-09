@@ -15,4 +15,6 @@ public interface KostService {
 
     Kost kostDetail(Long id) throws Exception;
 
+    String deleteKostById(String email,Long id) throws Exception;
+
 }

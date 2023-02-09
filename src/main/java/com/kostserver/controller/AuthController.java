@@ -2,10 +2,12 @@ package com.kostserver.controller;
 
 
 import com.kostserver.dto.request.ChangePasswordDto;
+import com.kostserver.dto.request.ForgotPasswordRequestDto;
 import com.kostserver.dto.request.LoginRequestDto;
 import com.kostserver.dto.request.RegisterRequestDto;
 import com.kostserver.model.EnumRole;
 import com.kostserver.service.ChangePasswordService;
+import com.kostserver.service.auth.ForgotPasswordService;
 import com.kostserver.service.auth.LoginService;
 import com.kostserver.service.OtpService;
 import com.kostserver.service.auth.RegisterService;
@@ -25,6 +27,9 @@ public class AuthController {
 
     @Autowired
     private RegisterService registerService;
+
+    @Autowired
+    private ForgotPasswordService forgotPasswordService;
 
 
     @Autowired
@@ -69,6 +74,19 @@ public class AuthController {
         }
 
         return new ResponseEntity<Map>(response, (HttpStatus) response.get("status"));
+    }
+
+    @PostMapping("/password/{token}")
+    ResponseEntity<Map> forgotPassword(@Valid @RequestBody ForgotPasswordRequestDto request,
+                                       @PathVariable("token") String token) {
+        try {
+            return new ResponseEntity<>(forgotPasswordService.forgotPassword(request, token), HttpStatus.OK);
+        } catch (Exception e) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("status", HttpStatus.BAD_REQUEST);
+            response.put("message", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
     }
 
     //CORS TEST

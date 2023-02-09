@@ -87,4 +87,23 @@ public class RoomController {
         }
     }
 
+    @DeleteMapping("/delete/{id}")
+    ResponseEntity<Response> deleteRoomById(@PathVariable("id")Long id){
+        try {
+
+            String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+            Response response = new Response();
+            response.setStatus(HttpStatus.CREATED.value());
+            response.setMessage("success");
+            response.setData(roomService.deleteRoomById(email,id));
+
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+
+        } catch (Exception e) {
+            Response response = new Response(HttpStatus.BAD_REQUEST.value(), "failed",null,e.getMessage());
+            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

@@ -4,10 +4,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.kostserver.dto.request.AddKostDto;
 import com.kostserver.dto.request.UpdateKostDto;
-import com.kostserver.model.entity.Account;
-import com.kostserver.model.entity.Kost;
-import com.kostserver.model.entity.KostPaymentScheme;
-import com.kostserver.model.entity.KostRule;
+import com.kostserver.model.entity.*;
 import com.kostserver.repository.AccountRepository;
 import com.kostserver.repository.KostPaymentSchemeRepository;
 import com.kostserver.repository.KostRepository;
@@ -238,6 +235,28 @@ public class KostServiceImpl implements KostService {
         }else {
             throw new IllegalStateException("kost not found");
         }
+    }
+
+    @Override
+    public String deleteKostById(String email, Long id) throws Exception {
+        Optional<Account> account = accountRepository.findByEmail(email);
+        Optional<Kost> kost = kostRepository.findById(id);
+
+        if (account.isPresent()){
+            throw new IllegalStateException("no account found");
+        }
+
+        if (kost.isPresent()){
+            String kostOwnerEmail = kost.get().getOwner().getEmail();
+
+            if (email.equals(kostOwnerEmail)){
+                kostRepository.softDeleteKost(id);
+
+                return "data deleted";
+            }
+        }
+
+        return "data not deleted";
     }
 
 
