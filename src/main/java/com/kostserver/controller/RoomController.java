@@ -94,11 +94,11 @@ public class RoomController {
             String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
             Response response = new Response();
-            response.setStatus(HttpStatus.CREATED.value());
+            response.setStatus(HttpStatus.OK.value());
             response.setMessage("success");
             response.setData(roomService.deleteRoomById(email,id));
 
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
+            return new ResponseEntity<>(response, HttpStatus.OK);
 
         } catch (Exception e) {
             Response response = new Response(HttpStatus.BAD_REQUEST.value(), "failed",null,e.getMessage());
