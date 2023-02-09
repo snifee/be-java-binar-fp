@@ -76,7 +76,7 @@ public class AuthController {
         return new ResponseEntity<Map>(response, (HttpStatus) response.get("status"));
     }
 
-    @PostMapping("/password")
+    @PutMapping("/password")
     ResponseEntity<Map> forgotPassword(@Valid @RequestBody ForgotPasswordRequestDto request) {
         try {
             return new ResponseEntity<>(forgotPasswordService.forgotPassword(request), HttpStatus.OK);
