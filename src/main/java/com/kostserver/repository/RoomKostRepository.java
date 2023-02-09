@@ -36,10 +36,21 @@ public interface RoomKostRepository extends JpaRepository<RoomKost, Long> {
             "AND lower(rm.label) LIKE %:label% " +
             "AND (ks.kostType = :type OR :type is null) " +
             "AND rm.isDeleted = false " +
-            "group by rm.id, ks.id")
+            "group by rm.id, ks.id " +
+            "ORDER BY rm.createdDate desc")
     List<ItemRoomDto> searchRoom(@Param("keyword") String keyword, @Param("label") String label,
                                  @Param("type") EnumKostType type, @Param("minPrice") Double minPrice,
                                  @Param("maxPrice") Double maxPrice, Pageable pageable);
+
+//    @Query(value = "SELECT new com.kostserver.dto.ItemRoomDto(rm.id, rm.name, rm.label ,rm.price ,ks.address , ks.kostType, avg(rt.rating), 'null') "
+//            +
+//            "FROM tbl_room rm " +
+//            "LEFT JOIN tbl_rating rt on rt.roomKost = rm.id " +
+//            "JOIN tbl_kost ks on rm.kost = ks.id " +
+//            "ORDER BY rm.createdDate desc" +
+//            "WHERE rm.isDeleted = false " +
+//            "group by rm.id, ks.id")
+//    List<ItemRoomDto> getNewestRooms();
 
 
     @Query("SELECT new com.kostserver.dto.ItemRoomDto(rm.id, rm.name, rm.label ,rm.price ,ks.address , ks.kostType, avg(rt.rating), 'null') " +

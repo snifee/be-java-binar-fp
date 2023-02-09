@@ -20,12 +20,12 @@ public class RoomPublicController {
     private RoomService roomService;
 
     @GetMapping("/search")
-    ResponseEntity<Map> searchRoom(@RequestParam(value = "keyword", required = true) String keyword,
+    ResponseEntity<Map> searchRoom(@RequestParam(value = "keyword", required = false,defaultValue = "") String keyword,
                                    @RequestParam(value = "label", required = false, defaultValue = "") String label,
                                    @RequestParam(value = "type", required = false) String type,
                                    @RequestParam(value = "price_min", required = false, defaultValue = "0") Double price_min,
                                    @RequestParam(value = "price_max", required = false, defaultValue = "9999999999") Double price_max,
-                                   @RequestParam(value = "size", required = false, defaultValue = "1") int size) {
+                                   @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
         try {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("status", HttpStatus.OK);
