@@ -1,5 +1,6 @@
 package com.kostserver.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kostserver.model.entity.BaseEntity;
 import com.kostserver.model.entity.RoomKost;
 import lombok.AllArgsConstructor;
@@ -25,9 +26,11 @@ public class Rating extends BaseEntity {
 
     private Boolean anonym;
 
+    @JsonIgnore
     @ManyToOne
     private Account account;
 
+    @JsonIgnore
     @ManyToOne
     private RoomKost roomKost;
 }
