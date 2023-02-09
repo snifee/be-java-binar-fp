@@ -5,10 +5,7 @@ import com.cloudinary.utils.ObjectUtils;
 import com.kostserver.dto.request.AddKostDto;
 import com.kostserver.dto.request.UpdateKostDto;
 import com.kostserver.model.entity.*;
-import com.kostserver.repository.AccountRepository;
-import com.kostserver.repository.KostPaymentSchemeRepository;
-import com.kostserver.repository.KostRepository;
-import com.kostserver.repository.KostRuleRepo;
+import com.kostserver.repository.*;
 import com.kostserver.service.KostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +19,8 @@ import java.util.*;
 @Service
 @Slf4j
 public class KostServiceImpl implements KostService {
+    @Autowired
+    private RoomKostRepository roomKostRepository;
 
     @Autowired
     private  KostRepository kostRepository;
@@ -250,7 +249,15 @@ public class KostServiceImpl implements KostService {
             String kostOwnerEmail = kost.get().getOwner().getEmail();
 
             if (email.equals(kostOwnerEmail)){
-                kostRepository.softDeleteKost(id);
+
+                Set<RoomKost> roomKostSet = kost.get().getRoomKosts();
+                roomKostSet.forEach(r->{
+                    r.setDeleted(true);
+                    roomKostRepository.save(r);
+
+                });
+                kost.get().setDeleted(true);
+                kostRepository.save(kost.get());
 
                 return "data deleted";
             }

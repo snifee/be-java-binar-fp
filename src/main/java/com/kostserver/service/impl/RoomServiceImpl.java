@@ -444,7 +444,8 @@ public class RoomServiceImpl implements RoomService {
             String roomOwnerEmail = roomKost.get().getKost().getOwner().getEmail();
 
             if (email.equals(roomOwnerEmail)){
-                roomKostRepository.softDeleteRoom(id);
+                roomKost.get().setDeleted(true);
+                roomKostRepository.save(roomKost.get());
 
                 return "data deleted";
             }
