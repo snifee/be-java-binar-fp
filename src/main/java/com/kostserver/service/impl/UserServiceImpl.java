@@ -103,10 +103,12 @@ public class UserServiceImpl implements UserService {
         }
 
         if (request.getPhoto()!=null){
-            String imageType = request.getPhoto().getContentType();
 
-            if (!(imageType.equals("image/jpeg")||imageType.equals("image/png"))){
-                throw  new IllegalStateException("must use jpg or png image");
+            if (!(request.getPhoto().getContentType().equals("image/jpeg")||
+                    request.getPhoto().getContentType().equals("image/jpg")||
+                    request.getPhoto().getContentType().equals("image/png"))){
+
+                throw new IllegalStateException("photo must jpeg/png/jpg format");
             }
 
             if (request.getPhoto().getSize()>20000000){
@@ -206,9 +208,11 @@ public class UserServiceImpl implements UserService {
         }
 
         if (request.getPhoto()!=null){
-            if (!request.getPhoto().getContentType().equals("image/jpeg")){
+            if (!(request.getPhoto().getContentType().equals("image/jpeg")||
+                    request.getPhoto().getContentType().equals("image/jpg")||
+                    request.getPhoto().getContentType().equals("image/png"))){
 
-                throw new IllegalStateException("photo must jpeg format");
+                throw new IllegalStateException("photo must jpeg/png/jpg format");
             }
 
             if (request.getPhoto().getSize()>200000000){
