@@ -69,7 +69,6 @@ public class TransactionServiceImpl implements TransactionService {
 
         transaction.setAccount(account.get());
         transaction.setTransactionDate(new Date());
-        transaction.setPaymentScheme(EnumKostPaymentScheme.getTypeFromCode(request.getPayment_scheme()));
         transaction.setStatus(EnumTransactionStatus.PENDING);
         transaction.setNumOfPeople(request.getCapacity());
         transaction.setRoomKost(room.get());
@@ -102,6 +101,7 @@ public class TransactionServiceImpl implements TransactionService {
         EnumKostPaymentScheme paymentScheme = EnumKostPaymentScheme.getTypeFromCode(request.getPayment_scheme());
 
         if (request.getStart_date()!=null && paymentScheme!=null){
+            transaction.setPaymentScheme(paymentScheme);
             Date startRent = dateFormat.parse(request.getStart_date());
             log.info(startRent.toString());
             transaction.setStartRent(startRent);
@@ -113,6 +113,8 @@ public class TransactionServiceImpl implements TransactionService {
             endRentDate = Date.from(localDate.atStartOfDay(ZoneId.of("Asia/Jakarta")).toInstant());
 
             transaction.setEndRent(endRentDate);
+        }else {
+            throw new IllegalStateException("start rent or payment scheme cannot be null");
         }
 
         transactionRepo.save(transaction);
