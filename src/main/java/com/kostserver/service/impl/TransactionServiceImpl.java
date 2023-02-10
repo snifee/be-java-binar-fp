@@ -101,27 +101,16 @@ public class TransactionServiceImpl implements TransactionService {
 
         EnumKostPaymentScheme paymentScheme = EnumKostPaymentScheme.getTypeFromCode(request.getPayment_scheme());
 
-        if (request.getStart_date()!=null){
+        if (request.getStart_date()!=null && paymentScheme!=null){
             Date startRent = dateFormat.parse(request.getStart_date());
             log.info(startRent.toString());
             transaction.setStartRent(startRent);
 
             LocalDate localDate = startRent.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             Date endRentDate = null;
-            if (paymentScheme == EnumKostPaymentScheme.BULANAN){
 
-                localDate = localDate.plusDays(30);
-                endRentDate = Date.from(localDate.atStartOfDay(ZoneId.of("Asia/Jakarta")).toInstant());
-
-            }else if (paymentScheme == EnumKostPaymentScheme.HARIAN){
-                localDate = localDate.plusDays(1);
-                endRentDate = Date.from(localDate.atStartOfDay(ZoneId.of("Asia/Jakarta")).toInstant());
-
-            }else if (paymentScheme == EnumKostPaymentScheme.MINGGUAN){
-                localDate = localDate.plusDays(7);
-                endRentDate = Date.from(localDate.atStartOfDay(ZoneId.of("Asia/Jakarta")).toInstant());
-
-            }
+            localDate = localDate.plusDays(paymentScheme.days);
+            endRentDate = Date.from(localDate.atStartOfDay(ZoneId.of("Asia/Jakarta")).toInstant());
 
             transaction.setEndRent(endRentDate);
         }
