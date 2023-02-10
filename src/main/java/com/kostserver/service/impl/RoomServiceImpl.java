@@ -236,20 +236,25 @@ public class RoomServiceImpl implements RoomService {
         }
 
         data.put("rating",avgRating);
-
         data.put("label",room.getLabel());
         data.put("description",kost.getDescription());
+        data.put("width",room.getWidth());
+        data.put("length",room.getLength());
         data.put("max_person",room.getMaxPerson());
         data.put("price",room.getPrice());
+        data.put("indoor_bathroom",room.getIndoorBathroom());
         data.put("long",room.getKost().getLongitude());
         data.put("lat",room.getKost().getLongitude());
         data.put("address",room.getKost().getAddress());
         data.put("province",room.getKost().getProvince());
         data.put("city",room.getKost().getCity());
+        data.put("available_room",room.getAvailableRoom());
+        data.put("is_available",room.getIsAvailable());
+        data.put("quantity",room.getQuantity());
         data.put("district",room.getKost().getDistrict());
         data.put("note",room.getKost().getAddressNote());
         data.put("images",room.getImageUrl());
-        data.put("available_room",room.getAvailableRoom());
+
 
         List<Map<String, Object>> facilities = new ArrayList<>();
 
