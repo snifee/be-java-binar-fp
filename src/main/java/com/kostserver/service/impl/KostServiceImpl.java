@@ -115,7 +115,9 @@ public class KostServiceImpl implements KostService {
             log.info(String.valueOf(imgMap.get("url")));
         }
 
-        if (request.getOutdoor_photo() != null && request.getOutdoor_photo().startsWith("data:image/jpeg;base64,")){
+        if (request.getOutdoor_photo() != null && (request.getOutdoor_photo().startsWith("data:image/jpeg;base64,")||
+                request.getOutdoor_photo().startsWith("data:image/jpg;base64,")||
+                request.getOutdoor_photo().startsWith("data:image/png;base64,"))){
             String imageString2 = request.getOutdoor_photo();
             byte[] imageByte2 = imageString2.getBytes();
 

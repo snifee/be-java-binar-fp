@@ -70,7 +70,9 @@ public class RoomServiceImpl implements RoomService {
 
         if (!request.getImages().isEmpty()){
             request.getImages().forEach(image->{
-                if (image.contains("data:image/jpeg;base64") && image!=null){
+                if ((image.contains("data:image/jpeg;base64")||
+                        image.contains("data:image/jpg;base64")||
+                        image.contains("data:image/png;base64")) && image!=null){
 
                     try {
                         Map resUrl = null;
@@ -182,7 +184,9 @@ public class RoomServiceImpl implements RoomService {
         if (!request.getImages().isEmpty()){
             List<String> images = new ArrayList<>();
             request.getImages().forEach(image->{
-                if (image.contains("data:image/jpeg;base64") && image!=null){
+                if ((image.contains("data:image/jpeg;base64")||
+                        image.contains("data:image/png;base64")||
+                        image.contains("data:image/jpg;base64")) && image!=null){
 
                     try {
                         Map resUrl = null;
