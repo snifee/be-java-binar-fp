@@ -201,20 +201,20 @@ public class KostServiceImpl implements KostService {
         }
 
         if (request.getPayment_scheme() != null){
+            kost.get().setKostPaymentScheme(new HashSet<KostPaymentScheme>());
             request.getPayment_scheme().forEach((scheme)->{
                 Optional<KostPaymentScheme> paymentScheme = kostPaymentSchemeRepository.findById(scheme.getId());
                 if (paymentScheme.isPresent()){
-                    kost.get().setKostPaymentScheme(new HashSet<KostPaymentScheme>());
                     kost.get().getKostPaymentScheme().add(paymentScheme.get());
                 }
             });
         }
 
         if (request.getRules()!=null){
+            kost.get().setKostRule(new HashSet<KostRule>());
             request.getRules().forEach(rule ->{
                 Optional<KostRule> rule1 = kostRuleRepo.findById(rule.getId());
                 if (rule1.isPresent()){
-                    kost.get().setKostRule(new HashSet<KostRule>());
                     kost.get().getKostRule().add(rule1.get());
                 }
             });
