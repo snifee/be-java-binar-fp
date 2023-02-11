@@ -3,7 +3,7 @@ package com.kostserver.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 public enum EnumTransactionStatus {
-    PENDING,ONPROCCESS,APPROVED,REJECTED;
+    PENDING,ONPROCCESS,APPROVED,REJECTED,ONGOING,ENDED;
 
     @JsonCreator
     public static EnumTransactionStatus getTypeFromCode(String value) {
