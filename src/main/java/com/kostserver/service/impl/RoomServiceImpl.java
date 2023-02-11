@@ -387,6 +387,11 @@ public class RoomServiceImpl implements RoomService {
                     pageable);
             roomData.stream().forEach(room -> {
                 Optional<RoomKost> roomKost = roomKostRepository.findById(room.getId());
+                roomKost.ifPresent(r ->{
+                    Kost kost = r.getKost();
+                    String completeAddress = kost.getAddress()+","+kost.getDistrict()+","+kost.getCity()+","+kost.getProvince();
+                    room.setAddress(completeAddress);
+                });
                 if (room.getRating() == null) {
                     room.setRating(0D);
                 }
