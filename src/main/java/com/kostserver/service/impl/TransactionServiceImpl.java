@@ -101,10 +101,11 @@ public class TransactionServiceImpl implements TransactionService {
         EnumKostPaymentScheme paymentScheme = EnumKostPaymentScheme.getTypeFromCode(request.getPayment_scheme());
 
         if (request.getStart_date()!=null && paymentScheme!=null){
-            transaction.setPaymentScheme(paymentScheme);
+
             Date startRent = dateFormat.parse(request.getStart_date());
-            log.info(startRent.toString());
+//            log.info(startRent.toString());
             transaction.setStartRent(startRent);
+            transaction.setPaymentScheme(paymentScheme);
 
             LocalDate localDate = startRent.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             Date endRentDate = null;
@@ -306,6 +307,7 @@ public class TransactionServiceImpl implements TransactionService {
             Map imgUrl = cloudinary.uploader().upload(request.getImage().getBytes(), ObjectUtils.emptyMap());
 
             transaction.get().setPaymentProof(String.valueOf(imgUrl.get("url")));
+            transaction.get().setStatus(EnumTransactionStatus.ONPROCCESS);
 
             transactionRepo.save(transaction.get());
         }

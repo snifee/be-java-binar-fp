@@ -31,7 +31,11 @@ public interface RoomKostRepository extends JpaRepository<RoomKost, Long> {
             "FROM tbl_room rm " +
             "LEFT JOIN tbl_rating rt on rt.roomKost = rm.id " +
             "JOIN tbl_kost ks on rm.kost = ks.id " +
-            "WHERE lower(rm.name) LIKE %:keyword% " +
+            "WHERE (lower(rm.name) LIKE %:keyword% " +
+            "OR lower(ks.district) LIKE %:keyword% " +
+            "OR lower(ks.address) LIKE %:keyword% " +
+            "OR lower(ks.city) LIKE %:keyword% " +
+            "OR lower(ks.province) LIKE %:keyword%) " +
             "AND (rm.price>=:minPrice AND rm.price <=:maxPrice) " +
             "AND lower(rm.label) LIKE %:label% " +
             "AND (ks.kostType = :type OR :type is null) " +
