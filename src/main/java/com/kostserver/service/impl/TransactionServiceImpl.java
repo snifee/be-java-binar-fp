@@ -307,6 +307,7 @@ public class TransactionServiceImpl implements TransactionService {
             Map imgUrl = cloudinary.uploader().upload(request.getImage().getBytes(), ObjectUtils.emptyMap());
 
             transaction.get().setPaymentProof(String.valueOf(imgUrl.get("url")));
+            transaction.get().setStatus(EnumTransactionStatus.ONPROCCESS);
 
             transactionRepo.save(transaction.get());
         }
