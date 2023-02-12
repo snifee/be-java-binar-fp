@@ -3,12 +3,9 @@ package com.kostserver.service.impl;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-import com.kostserver.model.entity.ConfirmationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,8 +30,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
     private BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public Map forgotPassword(ForgotPasswordRequestDto request) {
-        Map<String, Object> response = new LinkedHashMap<>();
+    public String forgotPassword(ForgotPasswordRequestDto request) throws Exception{
         Account account = null;
         if (request.getEmail() != null) {
             account = accountRepository.findByEmail(request.getEmail()).get();
@@ -60,17 +56,14 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
             if (isTokenExist) {
                 account.setPassword(passwordEncoder.encode(request.getPassword()));
                 accountRepository.save(account);
-                response.put("status", HttpStatus.OK);
-                response.put("message", "Password is changed");
+
+                return "password changed";
             } else {
-                response.put("status", HttpStatus.BAD_REQUEST);
-                response.put("message", "Token is not valid");
+                throw new IllegalStateException("invalid token");
             }
         } else {
-            response.put("status", HttpStatus.NOT_FOUND);
-            response.put("message", "Account is not found");
+            throw new IllegalStateException("Account is not found");
         }
-        return response;
     }
 
 }

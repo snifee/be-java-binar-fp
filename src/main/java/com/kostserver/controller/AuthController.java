@@ -6,6 +6,7 @@ import com.kostserver.dto.request.ForgotPasswordRequestDto;
 import com.kostserver.dto.request.LoginRequestDto;
 import com.kostserver.dto.request.RegisterRequestDto;
 import com.kostserver.model.EnumRole;
+import com.kostserver.model.response.Response;
 import com.kostserver.service.ChangePasswordService;
 import com.kostserver.service.auth.ForgotPasswordService;
 import com.kostserver.service.auth.LoginService;
@@ -77,13 +78,17 @@ public class AuthController {
     }
 
     @PutMapping("/password")
-    ResponseEntity<Map> forgotPassword(@Valid @RequestBody ForgotPasswordRequestDto request) {
+    ResponseEntity<Response> forgotPassword(@Valid @RequestBody ForgotPasswordRequestDto request) {
         try {
-            return new ResponseEntity<>(forgotPasswordService.forgotPassword(request), HttpStatus.OK);
+            Response response = new Response();
+            response.setStatus(HttpStatus.OK.value());
+            response.setMessage(forgotPasswordService.forgotPassword(request));
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            Map<String, Object> response = new LinkedHashMap<>();
-            response.put("status", HttpStatus.BAD_REQUEST);
-            response.put("message", e.getMessage());
+            Response response = new Response();
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            response.setMessage(null);
+            response.setError(e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
