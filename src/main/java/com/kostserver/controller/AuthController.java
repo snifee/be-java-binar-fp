@@ -1,21 +1,29 @@
 package com.kostserver.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kostserver.dto.request.ChangePasswordDto;
 import com.kostserver.dto.request.ForgotPasswordRequestDto;
 import com.kostserver.dto.request.LoginRequestDto;
 import com.kostserver.dto.request.RegisterRequestDto;
 import com.kostserver.model.EnumRole;
+import com.kostserver.model.entity.Account;
 import com.kostserver.model.response.Response;
+import com.kostserver.model.response.UserDetailsRespond;
+import com.kostserver.repository.AccountRepository;
 import com.kostserver.service.ChangePasswordService;
+import com.kostserver.service.auth.AccountService;
 import com.kostserver.service.auth.ForgotPasswordService;
 import com.kostserver.service.auth.LoginService;
 import com.kostserver.service.OtpService;
 import com.kostserver.service.auth.RegisterService;
+import com.kostserver.utils.auth.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -39,6 +47,14 @@ public class AuthController {
     @Autowired
     private OtpService otpService;
 
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private JwtUtils jwtUtils;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
 
     @PostMapping("/pemilik/register")
@@ -90,6 +106,39 @@ public class AuthController {
             response.setMessage(null);
             response.setError(e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/google/{email}")
+    ResponseEntity<Map> oauth2(@PathVariable("email") String email) {
+        try {
+
+            Account account = accountRepository.findByEmail(email).get();
+
+            UserDetails userDetails = accountService.loadUserByUsername(account.getEmail());
+
+            UserDetailsRespond udr = new UserDetailsRespond(account,account.getUserProfile());
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            Map<String,Object> userDetailResponse = objectMapper.convertValue(udr,Map.class);
+
+            String jwt = jwtUtils.generateToken(userDetails);
+            Map<String,Object> data = new LinkedHashMap<>();
+            data.put("access_token",jwt);
+            data.put("user_details",userDetailResponse);
+
+            Map<String,Object> res = new LinkedHashMap<>();
+            res.put("status",HttpStatus.OK.name());
+            res.put("message","success");
+            res.put("data",data);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        } catch (Exception e) {
+            Map<String,Object> res = new LinkedHashMap<>();
+            res.put("status",HttpStatus.BAD_REQUEST.name());
+            res.put("message","failed");
+            res.put("data",null);
+            res.put("error",e.getMessage());
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
         }
     }
 
