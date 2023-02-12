@@ -67,11 +67,9 @@ public class AccountService implements UserDetailsService {
         Optional<Account> account = accountRepository.findByEmail(email);
 
         if (account.isEmpty()){
-            Role role = roleRepository.findByName(EnumRole.ROLE_USER_PEMILIK).get();
-            Role role2 = roleRepository.findByName(EnumRole.ROLE_USER_PENCARI).get();
+            Role role = roleRepository.findByName(EnumRole.ROLE_USER_PENCARI).get();
             Set<Role> roleSet = new HashSet<>();
             roleSet.add(role);
-            roleSet.add(role2);
 
             UserProfile userProfile = new UserProfile();
             userProfile.setPhotoUrl(String.valueOf(userInfo.get("picture")));
