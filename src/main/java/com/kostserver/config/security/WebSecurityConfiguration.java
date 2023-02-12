@@ -93,26 +93,30 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                         Account account = accountService.processOAuthPostLogin(auth2User.getEmail(),userInfo);
 
-                        UserDetails userDetails = accountService.loadUserByUsername(account.getEmail());
+//                        UserDetails userDetails = accountService.loadUserByUsername(account.getEmail());
+//
+//                        UserDetailsRespond udr = new UserDetailsRespond(account,account.getUserProfile());
+//                        ObjectMapper objectMapper = new ObjectMapper();
+//
+//                        Map<String,Object> userDetailResponse = objectMapper.convertValue(udr,Map.class);
+//
+//                        String jwt = jwtUtils.generateToken(userDetails);
+//                        Map<String,Object> data = new LinkedHashMap<>();
+//                        data.put("access_token",jwt);
+//                        data.put("user_details",userDetailResponse);
+//
+//                        Map<String,Object> res = new LinkedHashMap<>();
+//                        res.put("status",HttpStatus.OK.name());
+//                        res.put("message","success");
+//                        res.put("data",data);
 
-                        UserDetailsRespond udr = new UserDetailsRespond(account,account.getUserProfile());
-                        ObjectMapper objectMapper = new ObjectMapper();
+                        response.sendRedirect("/v1/auth/google/"+account.getEmail());
 
-                        Map<String,Object> userDetailResponse = objectMapper.convertValue(udr,Map.class);
+//                        response.setStatus(HttpServletResponse.SC_OK);
+//                        response.getWriter().write(res.toString());
+//                        response.getWriter().flush();
 
-                        String jwt = jwtUtils.generateToken(userDetails);
-                        Map<String,Object> data = new LinkedHashMap<>();
-                        data.put("access_token",jwt);
-                        data.put("user_details",userDetailResponse);
 
-                        Map<String,Object> res = new LinkedHashMap<>();
-                        res.put("status",HttpStatus.OK.name());
-                        res.put("message","success");
-                        res.put("data",data);
-
-                        response.setStatus(HttpServletResponse.SC_OK);
-                        response.getWriter().write(res.toString());
-                        response.getWriter().flush();
                     }
                 });
 
