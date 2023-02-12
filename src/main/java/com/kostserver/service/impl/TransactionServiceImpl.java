@@ -141,7 +141,7 @@ public class TransactionServiceImpl implements TransactionService {
             Map<String,Object> transaction = new LinkedHashMap<>();
 
             transaction.put("id",t.getId());
-            transaction.put("name",t.getRoomKost().getKost().getKostName());
+            transaction.put("name",t.getRoomKost().getName());
             transaction.put("status",t.getStatus());
             transaction.put("label",t.getRoomKost().getLabel());
             if (!t.getRoomKost().getImageUrl().isEmpty()){

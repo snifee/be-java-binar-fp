@@ -54,6 +54,7 @@ public class KostServiceImpl implements KostService {
             Map<String,Object> itemKost = new LinkedHashMap<>();
             
             itemKost.put("id",k.getId());
+            itemKost.put("name",k.getKostName());
             itemKost.put("image",k.getOutdoorPhotoUrl());
             itemKost.put("label",null);
             itemKost.put("type",k.getKostType());
