@@ -108,39 +108,39 @@ public class AuthController {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
-
-    @GetMapping("/google/{email}")
-    ResponseEntity<Map> oauth2(@PathVariable("email") String email) {
-        try {
-
-            Account account = accountRepository.findByEmail(email).get();
-
-            UserDetails userDetails = accountService.loadUserByUsername(account.getEmail());
-
-            UserDetailsRespond udr = new UserDetailsRespond(account,account.getUserProfile());
-            ObjectMapper objectMapper = new ObjectMapper();
-
-            Map<String,Object> userDetailResponse = objectMapper.convertValue(udr,Map.class);
-
-            String jwt = jwtUtils.generateToken(userDetails);
-            Map<String,Object> data = new LinkedHashMap<>();
-            data.put("access_token",jwt);
-            data.put("user_details",userDetailResponse);
-
-            Map<String,Object> res = new LinkedHashMap<>();
-            res.put("status",HttpStatus.OK.name());
-            res.put("message","success");
-            res.put("data",data);
-            return new ResponseEntity<>(res, HttpStatus.OK);
-        } catch (Exception e) {
-            Map<String,Object> res = new LinkedHashMap<>();
-            res.put("status",HttpStatus.BAD_REQUEST.name());
-            res.put("message","failed");
-            res.put("data",null);
-            res.put("error",e.getMessage());
-            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
-        }
-    }
+//
+//    @GetMapping("/google/{email}")
+//    ResponseEntity<Map> oauth2(@PathVariable("email") String email) {
+//        try {
+//
+//            Account account = accountRepository.findByEmail(email).get();
+//
+//            UserDetails userDetails = accountService.loadUserByUsername(account.getEmail());
+//
+//            UserDetailsRespond udr = new UserDetailsRespond(account,account.getUserProfile());
+//            ObjectMapper objectMapper = new ObjectMapper();
+//
+//            Map<String,Object> userDetailResponse = objectMapper.convertValue(udr,Map.class);
+//
+//            String jwt = jwtUtils.generateToken(userDetails);
+//            Map<String,Object> data = new LinkedHashMap<>();
+//            data.put("access_token",jwt);
+//            data.put("user_details",userDetailResponse);
+//
+//            Map<String,Object> res = new LinkedHashMap<>();
+//            res.put("status",HttpStatus.OK.name());
+//            res.put("message","success");
+//            res.put("data",data);
+//            return new ResponseEntity<>(res, HttpStatus.OK);
+//        } catch (Exception e) {
+//            Map<String,Object> res = new LinkedHashMap<>();
+//            res.put("status",HttpStatus.BAD_REQUEST.name());
+//            res.put("message","failed");
+//            res.put("data",null);
+//            res.put("error",e.getMessage());
+//            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+//        }
+//    }
 
     //CORS TEST
 //    @GetMapping("/test")

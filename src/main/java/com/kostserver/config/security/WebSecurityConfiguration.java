@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -22,8 +21,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
@@ -90,32 +87,32 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                         log.info(auth2User.getEmail());
 
-                        UserDetails user = accountService.loadUserByUsername(auth2User.getEmail());
-
                         Map<String,Object> userInfo = new LinkedHashMap<>();
                         userInfo.put("name",auth2User.getClaims().get("name"));
                         userInfo.put("picture",auth2User.getClaims().get("picture"));
-//
-                        Account account = accountService.processOAuthPostLogin(auth2User.getEmail(),userInfo);
-//
-//                        UserDetails userDetails = accountService.loadUserByUsername(account.getEmail());
-//
-//                        UserDetailsRespond udr = new UserDetailsRespond(account,account.getUserProfile());
-//                        ObjectMapper objectMapper = new ObjectMapper();
-//
-//                        Map<String,Object> userDetailResponse = objectMapper.convertValue(udr,Map.class);
-//
-//                        String jwt = jwtUtils.generateToken(userDetails);
-//                        Map<String,Object> data = new LinkedHashMap<>();
-//                        data.put("access_token",jwt);
-//                        data.put("user_details",userDetailResponse);
-//
-//                        Map<String,Object> res = new LinkedHashMap<>();
-//                        res.put("status",HttpStatus.OK.name());
-//                        res.put("message","success");
-//                        res.put("data",data);
 
-                        response.sendRedirect("/v1/auth/google/"+auth2User.getEmail());
+                        Account account = accountService.processOAuthPostLogin(auth2User.getEmail(),userInfo);
+
+                        UserDetails userDetails = accountService.loadUserByUsername(account.getEmail());
+
+                        UserDetailsRespond udr = new UserDetailsRespond(account,account.getUserProfile());
+                        ObjectMapper objectMapper = new ObjectMapper();
+
+                        Map<String,Object> userDetailResponse = objectMapper.convertValue(udr,Map.class);
+
+                        String jwt = jwtUtils.generateToken(userDetails);
+                        Map<String,Object> data = new LinkedHashMap<>();
+                        data.put("access_token",jwt);
+                        data.put("user_details",userDetailResponse);
+
+                        Map<String,Object> res = new LinkedHashMap<>();
+                        res.put("status",HttpStatus.OK.name());
+                        res.put("message","success");
+                        res.put("data",data);
+
+                        response.setStatus(HttpServletResponse.SC_OK);
+                        response.getWriter().write(res.toString());
+                        response.getWriter().flush();
                     }
                 });
 
