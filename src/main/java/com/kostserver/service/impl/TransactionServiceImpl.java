@@ -203,6 +203,7 @@ public class TransactionServiceImpl implements TransactionService {
             transaction.put("room_address",t.getRoomKost().getKost().getAddress());
             transaction.put("room_type",t.getRoomKost().getKost().getKostType());
             transaction.put("price",t.getPrice());
+            transaction.put("status",t.getStatus());
 
             String transactionCreatedDate = null;
             if (t.getAccount().getCreatedDate()!=null){

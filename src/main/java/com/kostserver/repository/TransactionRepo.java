@@ -13,7 +13,8 @@ public interface TransactionRepo extends JpaRepository<Transaction,Long> {
     Optional<Transaction> findById(Long id);
 
     @Query("SELECT t FROM tbl_transaction t " +
-            "WHERE t.account.id = :id")
+            "WHERE t.account.id = :id " +
+            "ORDER BY t.createdDate desc")
     List<Transaction> getAllTransactionAccount(@Param("id") Long id);
 
 
@@ -21,7 +22,8 @@ public interface TransactionRepo extends JpaRepository<Transaction,Long> {
             "JOIN account a ON a.id = t.account_id " +
             "JOIN tbl_room r ON r.id = t.room_kost_id " +
             "JOIN tbl_kost k ON k.id = r.kost_id " +
-            "WHERE k.owner_id = ?1",nativeQuery = true)
+            "WHERE k.owner_id = ?1 " +
+            "ORDER BY t.created_date desc",nativeQuery = true)
     List<Transaction> getAllTransactionOwner(Long id);
 
     @Query(value = "select sum(t.num_of_people) from tbl_transaction t " +
