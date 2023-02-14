@@ -171,6 +171,7 @@ public class TransactionServiceImpl implements TransactionService {
         return data;
     }
 
+    //test
     @Override
     public List<Map<String, Object>> getOwnerTransactions(String email) throws Exception {
         Optional<Account> account = accountRepository.findByEmail(email);
