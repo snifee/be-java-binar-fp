@@ -93,7 +93,7 @@ public class AuthController {
         return new ResponseEntity<Map>(response, (HttpStatus) response.get("status"));
     }
 
-    @PutMapping("/password")
+    @PutMapping("/forgot")
     ResponseEntity<Response> forgotPassword(@Valid @RequestBody ForgotPasswordRequestDto request) {
         try {
             Response response = new Response();
